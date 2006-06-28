@@ -373,6 +373,28 @@ public class BContainer extends BComponent
         public void apply (BComponent child);
     }
 
+    /**
+     * Replace a given component oldc by newc (if it exits).
+     * @param oldc
+     * @param newc
+     * @return true if succeeds in replacing the old component by the new one.
+     */
+    public boolean replace(BComponent oldc, BComponent newc)
+    {
+    	int index = 0;
+    	for (BComponent comp : _children)
+    	{
+    		if (comp == oldc)
+    		{
+    			remove(oldc);
+    			add(index, newc);
+    			return true;
+    		}
+    		index++;
+    	}
+    	return false;
+    }
+    
     protected ArrayList<BComponent> _children = new ArrayList<BComponent>();
     protected BLayoutManager _layout;
 }
