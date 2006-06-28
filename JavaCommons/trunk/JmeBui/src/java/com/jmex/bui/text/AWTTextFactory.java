@@ -32,6 +32,7 @@ import java.awt.font.LineBreakMeasurer;
 import java.awt.font.TextAttribute;
 import java.awt.font.TextHitInfo;
 import java.awt.font.TextLayout;
+import java.awt.geom.AffineTransform;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 import java.text.AttributedString;
@@ -109,7 +110,7 @@ public class AWTTextFactory extends BTextFactory
             gfx.dispose();
         }
 
-        return createText(layout, color, effect, effectColor,
+        return createText(text, layout, color, effect, effectColor,
                           text.length(), useAdvance);
     }
 
@@ -153,11 +154,12 @@ public class AWTTextFactory extends BTextFactory
 
                 // skip past any newline that we used to terminate our wrap
                 pos = measurer.getPosition();
+                int unmodpos = pos;
                 if (pos < text.length() && text.charAt(pos) == '\n') {
                     pos++;
                 }
 
-                texts.add(createText(layout, color, effect, effectColor,
+                texts.add(createText(text.substring(unmodpos-length, unmodpos), layout, color, effect, effectColor,
                                      length, true));
             }
 
@@ -167,12 +169,92 @@ public class AWTTextFactory extends BTextFactory
 
         return texts.toArray(new BText[texts.size()]);
     }
+    
+    BufferedImage getGlowBackground(char c, Dimension size, ColorRGBA color)
+    {
+    	BufferedImage cached = glow_backgrounds.get(c);
+    	if(cached == null)
+    	{
+    		// Figure out the width of this char
+    		int width = (int)Math.ceil(new TextLayout(""+c, _attrs.get(TextAttribute.FONT), _stub.createGraphics().getFontRenderContext()).getAdvance());
+    		width += 6;
+    		
+    		cached = new BufferedImage(width, size.height, BufferedImage.TYPE_4BYTE_ABGR);
+    		//cached.set
+            Graphics2D gfx = cached.createGraphics();
+            gfx.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+    		//gfx.drawLine(0, 0, cached.getWidth(), cached.getHeight());
+    		//gfx.drawLine(cached.getWidth(), 0, 0, cached.getHeight());
+    		try
+    		{
+	    		TextLayout layout = new TextLayout(""+c, _attrs.get(TextAttribute.FONT), gfx.getFontRenderContext());
+	            {
+	            	int iterations = 10;
+	            	gfx.setColor(new Color(color.r, color.g, color.b, color.a/(iterations/2.0f)));
+	            	gfx.translate(3, layout.getAscent()+3);
+	                for(int i = iterations; i > 0; i--)
+	                {
+	                	gfx.setStroke(new BasicStroke(5.0f*((float)i/iterations), BasicStroke.CAP_ROUND, BasicStroke.JOIN_MITER, 1));
+	                    gfx.draw(layout.getOutline(null));
+	                }
+	            }
+	    		// Save for later
+	    		glow_backgrounds.put(c, cached);
+    		}
+    		finally
+    		{
+    			gfx.dispose();
+    		}
+    	}
+    	return cached;
+    }
 
+    BufferedImage getGlowForeground(char c, Dimension size, ColorRGBA color)
+    {
+    	BufferedImage cached = glow_foregrounds.get(c);
+    	if(cached == null)
+    	{
+    		// Figure out the width of this char
+    		int width = (int)Math.ceil(new TextLayout(""+c, _attrs.get(TextAttribute.FONT), _stub.createGraphics().getFontRenderContext()).getAdvance());
+    		
+    		cached = new BufferedImage(width, size.height, BufferedImage.TYPE_4BYTE_ABGR);
+    		//cached.set
+            Graphics2D gfx = cached.createGraphics();
+            gfx.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+    		//gfx.drawLine(0, 0, cached.getWidth(), cached.getHeight());
+    		//gfx.drawLine(cached.getWidth(), 0, 0, cached.getHeight());
+    		try
+    		{
+	    		TextLayout layout = new TextLayout(""+c, _attrs.get(TextAttribute.FONT), gfx.getFontRenderContext());
+	            {
+	            	gfx.setColor(new Color(color.r, color.g, color.b, color.a));
+	            	gfx.translate(0, layout.getAscent()+3);
+	                gfx.fill(layout.getOutline(null));
+	                gfx.fill(layout.getOutline(null));
+	                //gfx.fill(layout.getOutline(null));
+	            }
+	    		// Save for later
+	    		glow_foregrounds.put(c, cached);
+    		}
+    		finally
+    		{
+    			gfx.dispose();
+    		}
+    	}
+    	return cached;
+    }
+
+    
     /** Helper function. */
-    protected BText createText (final TextLayout layout, ColorRGBA color,
+    protected BText createText (final String origtext,
+    							final TextLayout layout, ColorRGBA color,
                                 final int effect, ColorRGBA effectColor,
                                 final int length, boolean useAdvance)
     {
+    	//System.out.println("layout:"+this.getHeight()+":"+_attrs.get(TextAttribute.FONT));
+    	//System.out.println("count:"+layout.getCharacterCount());
+    	//System.out.println("text:"+origtext);
+    	
         // determine the size of our rendered text
         final Dimension size = new Dimension();
         Rectangle2D bounds = layout.getBounds();
@@ -211,6 +293,8 @@ public class AWTTextFactory extends BTextFactory
         BufferedImage image = new BufferedImage(
             size.width, size.height, BufferedImage.TYPE_4BYTE_ABGR);
         Graphics2D gfx = image.createGraphics();
+		//gfx.drawLine(0, 0, image.getWidth(), image.getHeight());
+		//gfx.drawLine(image.getWidth(), 0, 0, image.getHeight());
         try {
         	switch(effect)
         	{
@@ -227,27 +311,32 @@ public class AWTTextFactory extends BTextFactory
                 gfx.draw(layout.getOutline(null));
                 break;
         	case GLOW:
-                if (_antialias) {
-                    gfx.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
-                                         RenderingHints.VALUE_ANTIALIAS_ON);
-                }
-                
-                // Draw the glow
-                {
-	                gfx.translate(3, layout.getAscent()+3);
-	            	gfx.setColor(new Color(effectColor.r, effectColor.g, effectColor.b, effectColor.a/3.0f));
-	                //Stroke oldstroke = gfx.getStroke();
-	                for(int i = 3; i > 0; i--)
+        		{
+	                // Draw the background of the glow
 	                {
-	                	gfx.setStroke(new BasicStroke(i*2, BasicStroke.CAP_ROUND, BasicStroke.JOIN_MITER, 1));
-	                    gfx.draw(layout.getOutline(null));
+	        			AffineTransform oldtrans = gfx.getTransform();
+		                gfx.translate(0, layout.getAscent()+3);
+		                for(char c : origtext.toCharArray())
+		                {
+		                	BufferedImage img = getGlowBackground(c, size, effectColor);
+		                	gfx.drawImage(img, null, 0, (int)-(layout.getAscent()+3));
+			                gfx.translate(img.getWidth()-6, 0);
+		                }
+		                gfx.setTransform(oldtrans);
 	                }
-	                //gfx.setStroke(oldstroke);
-                }
-                gfx.setColor(new Color(color.r, color.g, color.b, color.a));
-                gfx.fill(layout.getOutline(null));
-                gfx.fill(layout.getOutline(null));
-                //gfx.fill(layout.getOutline(null));
+	                
+	                // Draw the foreground of the glow
+	                {
+		                gfx.translate(3, layout.getAscent()+3);
+		                for(char c : origtext.toCharArray())
+		                {
+		                	BufferedImage img = getGlowForeground(c, size, color);
+		                	gfx.drawImage(img, null, 0, (int)-(layout.getAscent()+3));
+			                gfx.translate(img.getWidth(), 0);
+		                }
+	                	
+	                }
+        		}
                 break;
         	default:
                 // if we're antialiasing, we need to set a custom compositing
@@ -533,4 +622,8 @@ public class AWTTextFactory extends BTextFactory
     protected static final char UNDERLINE = 'u';
     protected static final char STRIKE = 's';
     protected static final char COLOR = '#';
+    
+    // For caching glow effect
+    HashMap<Character, BufferedImage> glow_backgrounds = new HashMap<Character, BufferedImage>();
+    HashMap<Character, BufferedImage> glow_foregrounds = new HashMap<Character, BufferedImage>();
 }
