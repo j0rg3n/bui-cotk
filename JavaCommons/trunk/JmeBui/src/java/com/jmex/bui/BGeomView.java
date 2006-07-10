@@ -59,6 +59,9 @@ public class BGeomView extends BComponent
      */
     public Camera getCamera ()
     {
+        if (_camera == null) {
+            _camera = createCamera(DisplaySystem.getDisplaySystem());
+        }
         return _camera;
     }
 
@@ -110,41 +113,49 @@ public class BGeomView extends BComponent
 
         applyDefaultStates();
         Camera cam = renderer.getCamera();
+        
+        boolean use_ortho = _geom.getRenderQueueMode() == Renderer.QUEUE_ORTHO;
         try {
-            renderer.unsetOrtho();
+        	if(!use_ortho)
+        	{
+        		renderer.unsetOrtho();
 
-            // create our camera if necessary
-            if (_camera == null) {
-                _camera = createCamera(DisplaySystem.getDisplaySystem());
-            }
-
-            // set up our camera viewport if it has changed
-            if (_cwidth != _width || _cheight != _height) {
-                _cwidth = _width;
-                _cheight = _height;
-                int ax = getAbsoluteX(), ay = getAbsoluteY();
-                float left =  ax / _swidth, right = left + _cwidth / _swidth;
-                float bottom = ay / _sheight;
-                float top = bottom + _cheight / _sheight;
-                _camera.setViewPort(left, right, bottom, top);
-                _camera.setFrustumPerspective(
-                    45.0f, _width / (float)_height, 1, 1000);
-            }
-
-            // now set up the custom camera and render our geometry
-            renderer.setCamera(_camera);
-            _camera.update();
+	            // create our camera if necessary
+	            if (_camera == null) {
+	                _camera = createCamera(DisplaySystem.getDisplaySystem());
+	            }
+	
+	            // set up our camera viewport if it has changed
+	            if (_cwidth != _width || _cheight != _height) {
+	                _cwidth = _width;
+	                _cheight = _height;
+	                int ax = getAbsoluteX(), ay = getAbsoluteY();
+	                float left =  ax / _swidth, right = left + _cwidth / _swidth;
+	                float bottom = ay / _sheight;
+	                float top = bottom + _cheight / _sheight;
+	                _camera.setViewPort(left, right, bottom, top);
+	                _camera.setFrustumPerspective(
+	                    45.0f, _width / (float)_height, 1, 1000);
+	            }
+	
+	            // now set up the custom camera and render our geometry
+	            renderer.setCamera(_camera);
+	            _camera.update();
+        	}
             renderer.draw(_geom);
 
         } finally {
             // restore the camera
-            renderer.setCamera(cam);
-            cam.update();
-            renderer.setOrtho();
-
-            // we need to restore the GL translation as that got wiped out when
-            // we left and re-entered ortho mode
-            GL11.glTranslatef(getAbsoluteX(), getAbsoluteY(), 0);
+            if(!use_ortho)
+            {
+            	renderer.setCamera(cam);
+            	cam.update();
+            	renderer.setOrtho();
+            	
+                // we need to restore the GL translation as that got wiped out when
+                // we left and re-entered ortho mode
+                GL11.glTranslatef(getAbsoluteX(), getAbsoluteY(), 0);
+            }
         }
     }
 

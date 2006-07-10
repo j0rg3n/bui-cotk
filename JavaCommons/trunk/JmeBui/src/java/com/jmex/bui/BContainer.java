@@ -356,7 +356,7 @@ public class BContainer extends BComponent
      */
     protected void applyOperation (ChildOp op)
     {
-        for (int ii = 0, ll = getComponentCount(); ii < ll; ii++) {
+        for (int ii = 0, ll = getComponentCount(); ii < ll && ii < getComponentCount(); ii++) {
             BComponent child = getComponent(ii);
             try {
                 op.apply(child);

@@ -515,7 +515,8 @@ public abstract class BRootNode extends Geometry
     protected int _tipWidth = -1;
 
     protected ArrayList<BWindow> _windows = new ArrayList<BWindow>();
-    protected BComponent _hcomponent, _ccomponent;
+    protected BComponent _hcomponent;
+	protected BComponent _ccomponent;
     protected BComponent _focus;
     protected ArrayList<BComponent> _defaults = new ArrayList<BComponent>();
     protected ArrayList<BGeomView> _geomviews = new ArrayList<BGeomView>();
