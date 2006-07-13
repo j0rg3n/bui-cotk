@@ -2,8 +2,8 @@
 <classpath>
 	<classpathentry kind="src" path="src/java"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
-	<classpathentry combineaccessrules="false" kind="src" path="/jme"/>
 	<classpathentry kind="lib" path="/jme/lib/lwjgl.jar"/>
 	<classpathentry sourcepath="lib/junit-4.0-src.jar" kind="lib" path="lib/junit-4.0.jar"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/jme"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
