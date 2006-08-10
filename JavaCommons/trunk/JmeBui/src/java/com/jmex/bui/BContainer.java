@@ -153,6 +153,18 @@ public class BContainer extends BComponent
     {
         return _children.get(index);
     }
+    
+    public int getIndexComponent(BComponent component)
+    {
+    	int index = -1;
+    	for (BComponent comp : _children)
+    	{
+    		index++;
+    		if (component == comp)
+    			break;
+    	}
+    	return index;
+    }
 
     /**
      * Removes all children of this container.
