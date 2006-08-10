@@ -173,6 +173,11 @@ public class ImageBackground extends BBackground
     protected void renderCentered (
         Renderer renderer, int x, int y, int width, int height, float alpha)
     {
+    	if(_image == null)
+    	{
+    		System.err.println("THE IMAGEBACKGROUND:"+this+" has a null image, WHAT THE CRAP !!!");
+    		return;
+    	}
         if (_mode == CENTER_X || _mode == CENTER_XY) {
             x += (width-_image.getWidth())/2;
         }
