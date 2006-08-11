@@ -178,15 +178,27 @@ public class ImageBackground extends BBackground
     		System.err.println("THE IMAGEBACKGROUND:"+this+" has a null image, WHAT THE CRAP !!!");
     		return;
     	}
-        if (_mode == CENTER_X || _mode == CENTER_XY) {
-            x += (width-_image.getWidth())/2;
+        if(_image.getWidth() <= width && _image.getHeight() <= height)
+        {
+	        if (_mode == CENTER_X || _mode == CENTER_XY) {
+	            x += (width-_image.getWidth())/2;
+	        }
+	        if (_mode == CENTER_Y || _mode == CENTER_XY) {
+	            y += (height-_image.getHeight())/2;
+	        }
+	        x += _offsetx;
+	        y += _offsety;
+	        
+            // No clipping
+        	_image.render(renderer, x, y, alpha);
         }
-        if (_mode == CENTER_Y || _mode == CENTER_XY) {
-            y += (height-_image.getHeight())/2;
+        else
+        {
+        	// With clipping
+        	int sx = (_image.getWidth()-width)/2 + _offsetx;
+        	int sy = (_image.getHeight()-height)/2 + _offsety;
+        	_image.render(renderer, sx, sy, width, height, x, y, width, height, alpha);
         }
-        x += _offsetx;
-        y += _offsety;
-        _image.render(renderer, x, y, alpha);
     }
 
     protected void renderScaled (
