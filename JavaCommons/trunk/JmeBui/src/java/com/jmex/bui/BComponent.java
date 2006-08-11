@@ -456,6 +456,12 @@ public class BComponent
             return false;
         }
     }
+   
+    public void removeAllListeners()
+    {
+    	_listeners.clear();
+    }
+    
     
     /**
      * Returns a listener at index <i>i</i>.
