@@ -77,6 +77,8 @@ public class TableLayout extends BLayoutManager
     public TableLayout (int columns, int rowgap, int colgap)
     {
         _columnWidths = new int[columns];
+        _setColumnWidths = new int[columns];
+        Arrays.fill(_setColumnWidths, -1);
         _rowgap = rowgap;
         _colgap = colgap;
     }
@@ -181,7 +183,10 @@ public class TableLayout extends BLayoutManager
                     maxrh = _rowHeights[row];
                 }
             }
-            if (psize.width > _columnWidths[col]) {
+            if (_setColumnWidths[col] != -1) {
+                _columnWidths[col] = _setColumnWidths[col];
+            }
+            else if (psize.width > _columnWidths[col]) {
                 _columnWidths[col] = psize.width;
             }
             if (++col == _columnWidths.length) {
@@ -197,13 +202,25 @@ public class TableLayout extends BLayoutManager
                 naturalWidth - (_colgap * (_columnWidths.length-1));
             int used = 0;
             for (int ii = 0; ii < _columnWidths.length; ii++) {
-                int adjust = _columnWidths[ii] * avail / naturalWidth;
-                _columnWidths[ii] += adjust;
-                used += adjust;
+            	// Only to those that are not set explicitly
+                if (_setColumnWidths[ii] == -1)
+                {
+	                int adjust = _columnWidths[ii] * avail / naturalWidth;
+	                _columnWidths[ii] += adjust;
+	                used += adjust;
+                }
             }
-            // add any rounding error to the first column
-            if (_columnWidths.length > 0) {
-                _columnWidths[0] += (avail - used);
+            // add any rounding error to the first column that was not exlicitly set
+            if (_columnWidths.length > 0)
+            {
+	            for (int ii = 0; ii < _columnWidths.length; ii++)
+	            {
+	                if (_setColumnWidths[ii] == -1)
+	                {
+		                _columnWidths[ii] += (avail - used);
+		                break;
+		            }
+                }
             }
         }
 
@@ -236,5 +253,12 @@ public class TableLayout extends BLayoutManager
     protected boolean _equalRows;
     protected int _rowgap, _colgap;
     protected int[] _columnWidths;
+    protected int[] _setColumnWidths;
     protected int[] _rowHeights;
+
+	public void setColumnWidth(int col, int width)
+	{
+		_setColumnWidths[col] = width;
+		_columnWidths[col] = width;
+	}
 }
