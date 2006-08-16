@@ -396,13 +396,23 @@ public class BContainer extends BComponent
     	int index = 0;
     	for (BComponent comp : _children)
     	{
-    		if (comp == oldc)
+    		if (comp.equals(oldc))
     		{
-    			remove(oldc);
+    			remove(index);
     			add(index, newc);
     			return true;
     		}
     		index++;
+    	}
+    	return false;
+    }
+    
+    public boolean remove(int index)
+    {
+    	if (index < _children.size())
+    	{
+    		_children.remove(index);
+    		return true;
     	}
     	return false;
     }

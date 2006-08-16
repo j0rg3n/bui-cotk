@@ -73,6 +73,11 @@ public class BGeomView extends BComponent
         _geom = geom;
     }
 
+    public Spatial getGeometry()
+    {
+    	return _geom;
+    }
+    
     /**
      * Called every frame (while we're added to the view hierarchy) by the
      * {@link BRootNode}.
