@@ -52,6 +52,7 @@ public class BGeomView extends BComponent
         DisplaySystem display = DisplaySystem.getDisplaySystem();
         _swidth = display.getWidth();
         _sheight = display.getHeight();
+        setStyleClass("");
     }
 
     /**
