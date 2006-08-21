@@ -33,7 +33,8 @@ import com.jmex.bui.BImage;
 public class TintedBackground extends BBackground
 {
     public static final BBackground red = new TintedBackground(new ColorRGBA(1,0,0,0.5f));
-
+    public static final BBackground green = new TintedBackground(new ColorRGBA(0,1,0,0.5f));
+    public static final BBackground blue = new TintedBackground(new ColorRGBA(0,0,1,0.5f));
 	/**
      * Creates a tinted background with the specified color.
      */
