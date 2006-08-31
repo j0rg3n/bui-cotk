@@ -17,79 +17,81 @@
 // You should have received a copy of the GNU Lesser General Public
 // License along with this library; if not, write to the Free Software
 // Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
-
 package com.jmex.bui.text;
 
 /**
- * Maps key presses with specific modifier combinations to editor
- * commands. These are used by the text-entry components.
+ * Maps key presses with specific modifier combinations to editor commands.
+ * These are used by the text-entry components.
  */
 public class BKeyMap
 {
-    /** A command constant indicating no mapping exists for a particular
-     * modifier and key code combination. */
-    public static final int NO_MAPPING = -1;
+	/**
+	 * A command constant indicating no mapping exists for a particular modifier
+	 * and key code combination.
+	 */
+	public static final int NO_MAPPING = -1;
 
-    /**
-     * Adds a mapping for the specified modifier and key code combination
-     * to the specified command.
-     */
-    public void addMapping (int modifiers, int keyCode, int command)
-    {
-        int kidx = keyCode % BUCKETS;
+	/**
+	 * Adds a mapping for the specified modifier and key code combination to the
+	 * specified command.
+	 */
+	public void addMapping(int modifiers, int keyCode, int command)
+	{
+		int kidx = keyCode % BUCKETS;
+		// override any preexisting mapping
+		for (Mapping map = _mappings[kidx]; map != null; map = map.next)
+		{
+			if (map.matches(modifiers, keyCode))
+			{
+				map.command = command;
+				return;
+			}
+		}
+		// create a new mapping
+		Mapping map = new Mapping(modifiers, keyCode, command);
+		map.next = _mappings[kidx];
+		_mappings[kidx] = map;
+	}
 
-        // override any preexisting mapping
-        for (Mapping map = _mappings[kidx]; map != null; map = map.next) {
-            if (map.matches(modifiers, keyCode)) {
-                map.command = command;
-                return;
-            }
-        }
+	/**
+	 * Looks up and returns the command associated with the specified set of
+	 * modifiers and key code. Returns {@link #NO_MAPPING} if no matching
+	 * mapping can be found.
+	 */
+	public int lookupMapping(int modifiers, int keyCode)
+	{
+		int kidx = keyCode % BUCKETS;
+		for (Mapping map = _mappings[kidx]; map != null; map = map.next)
+		{
+			if (map.matches(modifiers, keyCode))
+			{
+				return map.command;
+			}
+		}
+		return NO_MAPPING;
+	}
+	/** Contains information about a single key mapping. */
+	protected static class Mapping
+	{
+		public int modifiers;
+		public int keyCode;
+		public int command;
+		public Mapping next;
 
-        // create a new mapping
-        Mapping map = new Mapping(modifiers, keyCode, command);
-        map.next = _mappings[kidx];
-        _mappings[kidx] = map;
-    }
+		public Mapping(int modifiers, int keyCode, int command)
+		{
+			this.modifiers = modifiers;
+			this.keyCode = keyCode;
+			this.command = command;
+		}
 
-    /**
-     * Looks up and returns the command associated with the specified set
-     * of modifiers and key code. Returns {@link #NO_MAPPING} if no
-     * matching mapping can be found.
-     */
-    public int lookupMapping (int modifiers, int keyCode)
-    {
-        int kidx = keyCode % BUCKETS;
-        for (Mapping map = _mappings[kidx]; map != null; map = map.next) {
-            if (map.matches(modifiers, keyCode)) {
-                return map.command;
-            }
-        }
-        return NO_MAPPING;
-    }
-
-    /** Contains information about a single key mapping. */
-    protected static class Mapping
-    {
-        public int modifiers;
-        public int keyCode;
-        public int command;
-        public Mapping next;
-
-        public Mapping (int modifiers, int keyCode, int command) {
-            this.modifiers = modifiers;
-            this.keyCode = keyCode;
-            this.command = command;
-        }
-
-        public boolean matches (int modifiers1, int keyCode1) {
-            return (modifiers1 == this.modifiers && keyCode1 == this.keyCode);
-        }
-    }
-
-    /** Contains a primitive hashmap of mappings. */
-    protected Mapping[] _mappings = new Mapping[BUCKETS];
-
-    /** The number of mapping buckets we maintain. */
-    protected static final int BUCKETS = 64;
+		public boolean matches(int modifiers1, int keyCode1)
+		{
+			return (modifiers1 == this.modifiers && keyCode1 == this.keyCode);
+		}
+	}
+	/** Contains a primitive hashmap of mappings. */
+	protected Mapping[] _mappings = new Mapping[BUCKETS];
+	/** The number of mapping buckets we maintain. */
+	protected static final int BUCKETS = 64;
 }

@@ -17,7 +17,6 @@
 // You should have received a copy of the GNU Lesser General Public
 // License along with this library; if not, write to the Free Software
 // Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
-
 package com.jmex.bui.event;
 
 /**
@@ -25,8 +24,8 @@ package com.jmex.bui.event;
  */
 public interface TextListener extends ComponentListener
 {
-    /**
-     * Dispatched when the text value changes in a text component.
-     */
-    public void textChanged (TextEvent event);
+	/**
+	 * Dispatched when the text value changes in a text component.
+	 */
+	public void textChanged(TextEvent event);
 }

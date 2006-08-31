@@ -17,7 +17,6 @@
 // You should have received a copy of the GNU Lesser General Public
 // License along with this library; if not, write to the Free Software
 // Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
-
 package com.jmex.bui;
 
 import com.jmex.bui.event.ActionEvent;
@@ -30,60 +29,65 @@ import com.jmex.bui.layout.GroupLayout;
  */
 public class BPopupMenu extends BPopupWindow
 {
-    public BPopupMenu (BWindow parent)
-    {
-        this(parent, false);
-    }
+	public BPopupMenu(BWindow parent)
+	{
+		this(parent, false);
+	}
 
-    public BPopupMenu (BWindow parent, boolean horizontal)
-    {
-        super(parent, null);
-        GroupLayout gl = horizontal ?
-            GroupLayout.makeHStretch() : GroupLayout.makeVStretch();
-        gl.setGap(0);
-        setLayoutManager(gl);
-        _modal = true;
-    }
+	public BPopupMenu(BWindow parent, boolean horizontal)
+	{
+		this(parent, horizontal, -1);
+	}
 
-    /**
-     * Adds the supplied item to this menu.
-     */
-    public void addMenuItem (BMenuItem item)
-    {
-        // nothing more complicated needs to be done, yay!
-        add(item, GroupLayout.FIXED);
-    }
+	public BPopupMenu(BWindow parent, boolean horizontal, int width)
+	{
+		super(parent, null, width);
+		GroupLayout gl = horizontal ? GroupLayout.makeHStretch() : GroupLayout.makeVStretch();
+		gl.setGap(0);
+		setLayoutManager(gl);
+		_modal = true;
+	}
 
-    // documentation inherited
-    @Override
-	public boolean dispatchEvent (BEvent event)
-    {
-        if (event instanceof MouseEvent) {
-            MouseEvent mev = (MouseEvent)event;
-            // if the mouse clicked outside of our window bounds, dismiss
-            // ourselves
-            if (mev.getType() == MouseEvent.MOUSE_PRESSED &&
-                getHitComponent(mev.getX(), mev.getY()) == null) {
-                dismiss();
-                return true;
-            }
-        }
-        return super.dispatchEvent(event);
-    }
+	/**
+	 * Adds the supplied item to this menu.
+	 */
+	public void addMenuItem(BMenuItem item)
+	{
+		// nothing more complicated needs to be done, yay!
+		add(item, GroupLayout.FIXED);
+	}
 
-    // documentation inherited
-    @Override
-	protected String getDefaultStyleClass ()
-    {
-        return "popupmenu";
-    }
+	// documentation inherited
+	@Override
+	public boolean dispatchEvent(BEvent event)
+	{
+		if (event instanceof MouseEvent)
+		{
+			MouseEvent mev = (MouseEvent) event;
+			// if the mouse clicked outside of our window bounds, dismiss
+			// ourselves
+			if (mev.getType() == MouseEvent.MOUSE_PRESSED && getHitComponent(mev.getX(), mev.getY()) == null)
+			{
+				dismiss();
+				return true;
+			}
+		}
+		return super.dispatchEvent(event);
+	}
 
-    /**
-     * Called by any child {@link BMenuItem}s when they are selected.
-     */
-    protected void itemSelected (BMenuItem item, long when, int modifiers)
-    {
-        emitEvent(new ActionEvent(item, when, modifiers, item.getAction()));
-        dismiss();
-    }
+	// documentation inherited
+	@Override
+	protected String getDefaultStyleClass()
+	{
+		return "popupmenu";
+	}
+
+	/**
+	 * Called by any child {@link BMenuItem}s when they are selected.
+	 */
+	protected void itemSelected(BMenuItem item, long when, int modifiers)
+	{
+		emitEvent(new ActionEvent(item, when, modifiers, item.getAction()));
+		dismiss();
+	}
 }

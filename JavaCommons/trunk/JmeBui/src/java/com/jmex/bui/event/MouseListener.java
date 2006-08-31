@@ -17,7 +17,6 @@
 // You should have received a copy of the GNU Lesser General Public
 // License along with this library; if not, write to the Free Software
 // Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
-
 package com.jmex.bui.event;
 
 /**
@@ -25,26 +24,25 @@ package com.jmex.bui.event;
  */
 public interface MouseListener extends ComponentListener
 {
-    /**
-     * Dispatched when a button is pressed within the bounds of the target
-     * component.
-     */
-    public void mousePressed (MouseEvent event);
+	/**
+	 * Dispatched when a button is pressed within the bounds of the target
+	 * component.
+	 */
+	public void mousePressed(MouseEvent event);
 
-    /**
-     * Dispatched when a button is released after having been pressed
-     * within the bounds of the target component.
-     */
-    public void mouseReleased (MouseEvent event);
+	/**
+	 * Dispatched when a button is released after having been pressed within the
+	 * bounds of the target component.
+	 */
+	public void mouseReleased(MouseEvent event);
 
-    /**
-     * Dispatched when the mouse enters the bounds of the target
-     * component.
-     */
-    public void mouseEntered (MouseEvent event);
+	/**
+	 * Dispatched when the mouse enters the bounds of the target component.
+	 */
+	public void mouseEntered(MouseEvent event);
 
-    /**
-     * Dispatched when the mouse exits the bounds of the target component.
-     */
-    public void mouseExited (MouseEvent event);
+	/**
+	 * Dispatched when the mouse exits the bounds of the target component.
+	 */
+	public void mouseExited(MouseEvent event);
 }

@@ -17,7 +17,6 @@
 // You should have received a copy of the GNU Lesser General Public
 // License along with this library; if not, write to the Free Software
 // Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
-
 package com.jmex.bui.util;
 
 /**
@@ -25,31 +24,30 @@ package com.jmex.bui.util;
  */
 public class Point
 {
-    /** The x position of the entity in question. */
-    public int x;
+	/** The x position of the entity in question. */
+	public int x;
+	/** The y position of the entity in question. */
+	public int y;
 
-    /** The y position of the entity in question. */
-    public int y;
+	public Point(int x, int y)
+	{
+		this.x = x;
+		this.y = y;
+	}
 
-    public Point (int x, int y)
-    {
-        this.x = x;
-        this.y = y;
-    }
+	public Point(Point other)
+	{
+		x = other.x;
+		y = other.y;
+	}
 
-    public Point (Point other)
-    {
-        x = other.x;
-        y = other.y;
-    }
+	public Point()
+	{
+	}
 
-    public Point ()
-    {
-    }
-
-    @Override
-	public String toString ()
-    {
-        return (x >= 0 ? "+" : "") + x + (y >= 0 ? "+" : "") + y;
-    }
+	@Override
+	public String toString()
+	{
+		return (x >= 0 ? "+" : "") + x + (y >= 0 ? "+" : "") + y;
+	}
 }

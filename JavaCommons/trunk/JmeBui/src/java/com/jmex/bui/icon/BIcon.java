@@ -17,7 +17,6 @@
 // You should have received a copy of the GNU Lesser General Public
 // License along with this library; if not, write to the Free Software
 // Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
-
 package com.jmex.bui.icon;
 
 import com.jme.renderer.Renderer;
@@ -27,30 +26,30 @@ import com.jme.renderer.Renderer;
  */
 public abstract class BIcon
 {
-    /** Returns the width of this icon. */
-    public abstract int getWidth ();
+	/** Returns the width of this icon. */
+	public abstract int getWidth();
 
-    /** Returns the height of this icon. */
-    public abstract int getHeight ();
+	/** Returns the height of this icon. */
+	public abstract int getHeight();
 
-    /** Renders this icon. */
-    public void render (Renderer renderer, int x, int y, float alpha)
-    {
-    }
+	/** Renders this icon. */
+	public void render(Renderer renderer, int x, int y, float alpha)
+	{
+	}
 
-    /**
-     * Called when the component that contains this icon is was added to the
-     * interface hierarchy.
-     */
-    public void wasAdded ()
-    {
-    }
+	/**
+	 * Called when the component that contains this icon is was added to the
+	 * interface hierarchy.
+	 */
+	public void wasAdded()
+	{
+	}
 
-    /**
-     * Called when the component that contains this icon is no longer part of a
-     * user interface hierarchy.
-     */
-    public void wasRemoved ()
-    {
-    }
+	/**
+	 * Called when the component that contains this icon is no longer part of a
+	 * user interface hierarchy.
+	 */
+	public void wasRemoved()
+	{
+	}
 }

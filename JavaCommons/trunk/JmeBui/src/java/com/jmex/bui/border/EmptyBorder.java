@@ -17,28 +17,25 @@
 // You should have received a copy of the GNU Lesser General Public
 // License along with this library; if not, write to the Free Software
 // Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
-
 package com.jmex.bui.border;
 
 import com.jmex.bui.util.Insets;
 
 /**
- * Defines a border with no rendered geometry but that simply takes up
- * space.
+ * Defines a border with no rendered geometry but that simply takes up space.
  */
 public class EmptyBorder extends BBorder
 {
-    public EmptyBorder (int left, int top, int right, int bottom)
-    {
-        _insets = new Insets(left, top, right, bottom);
-    }
+	public EmptyBorder(int left, int top, int right, int bottom)
+	{
+		_insets = new Insets(left, top, right, bottom);
+	}
 
-    // documentation inherited
-    @Override
-	public Insets adjustInsets (Insets insets)
-    {
-        return _insets.add(insets);
-    }
-
-    protected Insets _insets;
+	// documentation inherited
+	@Override
+	public Insets adjustInsets(Insets insets)
+	{
+		return _insets.add(insets);
+	}
+	protected Insets _insets;
 }

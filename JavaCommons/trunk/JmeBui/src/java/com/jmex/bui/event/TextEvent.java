@@ -17,7 +17,6 @@
 // You should have received a copy of the GNU Lesser General Public
 // License along with this library; if not, write to the Free Software
 // Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
-
 package com.jmex.bui.event;
 
 /**
@@ -25,31 +24,31 @@ package com.jmex.bui.event;
  */
 public class TextEvent extends BEvent
 {
-    /**
+	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 140432958671048799L;
 
-	public TextEvent (Object source, long when)
-    {
-        super(source, when);
-    }
+	public TextEvent(Object source, long when)
+	{
+		super(source, when);
+	}
 
-    // documentation inherited
-    @Override
-	public void dispatch (ComponentListener listener)
-    {
-        super.dispatch(listener);
+	// documentation inherited
+	@Override
+	public void dispatch(ComponentListener listener)
+	{
+		super.dispatch(listener);
+		if (listener instanceof TextListener)
+		{
+			((TextListener) listener).textChanged(this);
+		}
+	}
 
-        if (listener instanceof TextListener) {
-            ((TextListener)listener).textChanged(this);
-        }
-    }
-
-    // documentation inherited
-    @Override
-	public boolean propagateUpHierarchy ()
-    {
-        return false;
-    }
+	// documentation inherited
+	@Override
+	public boolean propagateUpHierarchy()
+	{
+		return false;
+	}
 }

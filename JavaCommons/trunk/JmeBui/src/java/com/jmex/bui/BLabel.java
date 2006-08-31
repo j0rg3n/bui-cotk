@@ -17,7 +17,6 @@
 // You should have received a copy of the GNU Lesser General Public
 // License along with this library; if not, write to the Free Software
 // Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
-
 package com.jmex.bui;
 
 import com.jme.renderer.Renderer;
@@ -27,149 +26,165 @@ import com.jmex.bui.util.Dimension;
 /**
  * A simple component for displaying a textual label.
  */
-public class BLabel extends BTextComponent
-    implements BConstants
+public class BLabel extends BTextComponent implements BConstants
 {
-    /**
-     * Creates a label that will display the supplied text.
-     */
-    public BLabel (String text)
-    {
-        this(text, null);
-    }
+	/**
+	 * Creates a label that will display the supplied text.
+	 */
+	public BLabel(String text)
+	{
+		this(text, null, null, true);
+	}
 
-    /**
-     * Creates a label that will display the supplied text using the specified
-     * style class.
-     */
-    public BLabel (String text, String styleClass)
-    {
-        _label = new Label(this);
-        _label.setText(text);
+	/**
+	 * Creates a label that will display the supplied text using the specified
+	 * style class.
+	 */
+	public BLabel(String text, String styleClass)
+	{
+		this(text, styleClass, null);
+	}
 
-        if (styleClass != null) {
-            setStyleClass(styleClass);
-        }
-    }
+	public BLabel(String text, String styleClass, BIcon icon)
+	{
+		this(text, styleClass, icon, true);
+	}
 
-    /**
-     * Creates a label that will display the supplied icon.
-     */
-    public BLabel (BIcon icon)
-    {
-        _label = new Label(this);
-        _label.setIcon(icon);
-    }
+	/**
+	 * Creates a label that will display the supplied icon.
+	 */
+	public BLabel(BIcon icon)
+	{
+		this(null, null, icon, true);
+	}
 
-    /**
-     * Configures the label to display the specified icon.
-     */
-    public void setIcon (BIcon icon)
-    {
-        _label.setIcon(icon);
-    }
+	public BLabel(String text, String styleClass, BIcon icon, boolean text_wrap)
+	{
+		super();
+		_text_wrap = text_wrap;
+		_label = new Label(this);
+		if (text != null)
+		{
+			_label.setText(text);
+		}
+		if (styleClass != null)
+		{
+			setStyleClass(styleClass);
+		}
+		if (icon != null)
+		{
+			_label.setIcon(icon);
+		}
+	}
 
-    /**
-     * Returns the icon being displayed by this label.
-     */
-    public BIcon getIcon ()
-    {
-        return _label.getIcon();
-    }
+	/**
+	 * Configures the label to display the specified icon.
+	 */
+	public void setIcon(BIcon icon)
+	{
+		_label.setIcon(icon);
+	}
 
-    /**
-     * Configures the gap between the icon and the text.
-     */
-    public void setIconTextGap (int gap)
-    {
-        _label.setIconTextGap(gap);
-    }
+	/**
+	 * Returns the icon being displayed by this label.
+	 */
+	public BIcon getIcon()
+	{
+		return _label.getIcon();
+	}
 
-    /**
-     * Returns the gap between the icon and the text.
-     */
-    public int getIconTextGap ()
-    {
-        return _label.getIconTextGap();
-    }
+	/**
+	 * Configures the gap between the icon and the text.
+	 */
+	public void setIconTextGap(int gap)
+	{
+		_label.setIconTextGap(gap);
+	}
 
-    /**
-     * Sets the orientation of this label with respect to its icon. If the
-     * horizontal (the default) the text is displayed to the right of the icon,
-     * if vertical the text is displayed below it.
-     */
-    public void setOrientation (int orient)
-    {
-        _label.setOrientation(orient);
-    }
+	/**
+	 * Returns the gap between the icon and the text.
+	 */
+	public int getIconTextGap()
+	{
+		return _label.getIconTextGap();
+	}
 
-    // documentation inherited
-    @Override
-	public void setText (String text)
-    {
-        _label.setText(text);
-    }
+	/**
+	 * Sets the orientation of this label with respect to its icon. If the
+	 * horizontal (the default) the text is displayed to the right of the icon,
+	 * if vertical the text is displayed below it.
+	 */
+	public void setOrientation(int orient)
+	{
+		_label.setOrientation(orient);
+	}
 
-    // documentation inherited
-    @Override
-	public String getText ()
-    {
-        return _label.getText();
-    }
+	// documentation inherited
+	@Override
+	public void setText(String text)
+	{
+		_label.setText(text);
+	}
 
-    // documentation inherited
-    @Override
-	protected String getDefaultStyleClass ()
-    {
-        return "label";
-    }
+	// documentation inherited
+	@Override
+	public String getText()
+	{
+		return _label.getText();
+	}
 
-    // documentation inherited
-    @Override
-	protected void wasAdded ()
-    {
-        super.wasAdded();
-        _label.wasAdded();
-    }
+	// documentation inherited
+	@Override
+	protected String getDefaultStyleClass()
+	{
+		return "label";
+	}
 
-    // documentation inherited
-    @Override
-	protected void wasRemoved ()
-    {
-        super.wasRemoved();
-        _label.wasRemoved();
-    }
+	// documentation inherited
+	@Override
+	protected void wasAdded()
+	{
+		super.wasAdded();
+		_label.wasAdded();
+	}
 
-    // documentation inherited
-    @Override
-	protected void stateDidChange ()
-    {
-        super.stateDidChange();
-        _label.stateDidChange();
-    }
+	// documentation inherited
+	@Override
+	protected void wasRemoved()
+	{
+		super.wasRemoved();
+		_label.wasRemoved();
+	}
 
-    // documentation inherited
-    @Override
-	protected void layout ()
-    {
-        super.layout();
-        _label.layout(getInsets());
-    }
+	// documentation inherited
+	@Override
+	protected void stateDidChange()
+	{
+		super.stateDidChange();
+		_label.stateDidChange();
+	}
 
-    // documentation inherited
-    @Override
-	protected void renderComponent (Renderer renderer)
-    {
-        super.renderComponent(renderer);
-        _label.render(renderer, _alpha);
-    }
+	// documentation inherited
+	@Override
+	protected void layout()
+	{
+		super.layout();
+		_label.layout(getInsets());
+	}
 
-    // documentation inherited
-    @Override
-	protected Dimension computePreferredSize (int whint, int hhint)
-    {
-        return _label.computePreferredSize(whint, hhint);
-    }
+	// documentation inherited
+	@Override
+	protected void renderComponent(Renderer renderer)
+	{
+		super.renderComponent(renderer);
+		_label.render(renderer, _alpha);
+	}
 
-    protected Label _label;
+	// documentation inherited
+	@Override
+	protected Dimension computePreferredSize(int whint, int hhint)
+	{
+		return _label.computePreferredSize(whint, hhint);
+	}
+	protected Label _label;
 }

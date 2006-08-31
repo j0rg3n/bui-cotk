@@ -17,7 +17,6 @@
 // You should have received a copy of the GNU Lesser General Public
 // License along with this library; if not, write to the Free Software
 // Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
-
 package com.jmex.bui.event;
 
 import com.jme.input.KeyInput;
@@ -28,81 +27,79 @@ import com.jme.input.KeyInput;
 public class KeyEvent extends InputEvent
 {
 	private static final long serialVersionUID = -8385589293663208383L;
-
 	/** Indicates that an event represents a key pressing. */
-    public static final int KEY_PRESSED = 0;
+	public static final int KEY_PRESSED = 0;
+	/** Indicates that an event represents a key release. */
+	public static final int KEY_RELEASED = 1;
 
-    /** Indicates that an event represents a key release. */
-    public static final int KEY_RELEASED = 1;
+	public KeyEvent(Object source, long when, int modifiers, int type, char keyChar, int keyCode)
+	{
+		super(source, when, modifiers);
+		_type = type;
+		_keyChar = keyChar;
+		_keyCode = keyCode;
+	}
 
-    public KeyEvent (Object source, long when, int modifiers,
-                     int type, char keyChar, int keyCode)
-    {
-        super(source, when, modifiers);
-        _type = type;
-        _keyChar = keyChar;
-        _keyCode = keyCode;
-    }
+	/**
+	 * Indicates whether this was a {@link #KEY_PRESSED} or {@link
+	 * #KEY_RELEASED} event.
+	 */
+	public int getType()
+	{
+		return _type;
+	}
 
-    /**
-     * Indicates whether this was a {@link #KEY_PRESSED} or {@link
-     * #KEY_RELEASED} event.
-     */
-    public int getType ()
-    {
-        return _type;
-    }
+	/**
+	 * Returns the character associated with the key. <em>Note:</em> this is
+	 * only valid for {@link #KEY_PRESSED} events, however {@link #getKeyCode}
+	 * works in all cases.
+	 */
+	public char getKeyChar()
+	{
+		return _keyChar;
+	}
 
-    /**
-     * Returns the character associated with the key. <em>Note:</em> this
-     * is only valid for {@link #KEY_PRESSED} events, however {@link
-     * #getKeyCode} works in all cases.
-     */
-    public char getKeyChar ()
-    {
-        return _keyChar;
-    }
+	/**
+	 * Returns the numeric identifier associated with the key.
+	 * 
+	 * @see KeyInput
+	 */
+	public int getKeyCode()
+	{
+		return _keyCode;
+	}
 
-    /**
-     * Returns the numeric identifier associated with the key.
-     *
-     * @see KeyInput
-     */
-    public int getKeyCode ()
-    {
-        return _keyCode;
-    }
+	// documentation inherited
+	@Override
+	public void dispatch(ComponentListener listener)
+	{
+		super.dispatch(listener);
+		switch (_type)
+		{
+		case KEY_PRESSED:
+			if (listener instanceof KeyListener)
+			{
+				((KeyListener) listener).keyPressed(this);
+			}
+			break;
+		case KEY_RELEASED:
+			if (listener instanceof KeyListener)
+			{
+				((KeyListener) listener).keyReleased(this);
+			}
+			break;
+		}
+	}
 
-    // documentation inherited
-    @Override
-	public void dispatch (ComponentListener listener)
-    {
-        super.dispatch(listener);
-        switch (_type) {
-        case KEY_PRESSED:
-            if (listener instanceof KeyListener) {
-                ((KeyListener)listener).keyPressed(this);
-            }
-            break;
-
-        case KEY_RELEASED:
-            if (listener instanceof KeyListener) {
-                ((KeyListener)listener).keyReleased(this);
-            }
-            break;
-        }
-    }
-    
-    @Override
-	protected void toString (StringBuffer buf)
-    {
-        super.toString(buf);
-        buf.append(", type=").append(_type);
-        buf.append(", char=").append(_keyChar);
-        buf.append(", code=").append(_keyCode);
-    }
-
-    protected int _type;
-    protected char _keyChar;
-    protected int _keyCode;
+	@Override
+	protected void toString(StringBuffer buf)
+	{
+		super.toString(buf);
+		buf.append(", type=").append(_type);
+		buf.append(", char=").append(_keyChar);
+		buf.append(", code=").append(_keyCode);
+	}
+	protected int _type;
+	protected char _keyChar;
+	protected int _keyCode;
 }

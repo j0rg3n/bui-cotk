@@ -17,43 +17,41 @@
 // You should have received a copy of the GNU Lesser General Public
 // License along with this library; if not, write to the Free Software
 // Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
-
 package com.jmex.bui.event;
 
 /**
- * A convenience class for partially implementing the {@link
- * MouseListener} interface.
+ * A convenience class for partially implementing the {@link MouseListener}
+ * interface.
  */
-public class MouseAdapter
-    implements MouseListener, MouseMotionListener
+public class MouseAdapter implements MouseListener, MouseMotionListener
 {
-    // documentation inherited from interface MouseListener
-    public void mousePressed (MouseEvent event)
-    {
-    }
+	// documentation inherited from interface MouseListener
+	public void mousePressed(MouseEvent event)
+	{
+	}
 
-    // documentation inherited from interface MouseListener
-    public void mouseReleased (MouseEvent event)
-    {
-    }
+	// documentation inherited from interface MouseListener
+	public void mouseReleased(MouseEvent event)
+	{
+	}
 
-    // documentation inherited from interface MouseListener
-    public void mouseEntered (MouseEvent event)
-    {
-    }
+	// documentation inherited from interface MouseListener
+	public void mouseEntered(MouseEvent event)
+	{
+	}
 
-    // documentation inherited from interface MouseListener
-    public void mouseExited (MouseEvent event)
-    {
-    }
+	// documentation inherited from interface MouseListener
+	public void mouseExited(MouseEvent event)
+	{
+	}
 
-    // documentation inherited from interface MouseMotionListener
-    public void mouseMoved (MouseEvent event)
-    {
-    }
+	// documentation inherited from interface MouseMotionListener
+	public void mouseMoved(MouseEvent event)
+	{
+	}
 
-    // documentation inherited from interface MouseMotionListener
-    public void mouseDragged (MouseEvent event)
-    {
-    }
+	// documentation inherited from interface MouseMotionListener
+	public void mouseDragged(MouseEvent event)
+	{
+	}
 }

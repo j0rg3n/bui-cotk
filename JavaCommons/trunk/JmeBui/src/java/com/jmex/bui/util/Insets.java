@@ -17,7 +17,6 @@
 // You should have received a copy of the GNU Lesser General Public
 // License along with this library; if not, write to the Free Software
 // Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
-
 package com.jmex.bui.util;
 
 /**
@@ -25,86 +24,85 @@ package com.jmex.bui.util;
  */
 public class Insets
 {
-    /** A convenient set of blank insets. */
-    public static final Insets ZERO_INSETS = new Insets(0, 0, 0, 0);
+	/** A convenient set of blank insets. */
+	public static final Insets ZERO_INSETS = new Insets(0, 0, 0, 0);
+	/** The inset from the left edge. */
+	public int left;
+	/** The inset from the top edge. */
+	public int top;
+	/** The inset from the right edge. */
+	public int right;
+	/** The inset from the bottom edge. */
+	public int bottom;
 
-    /** The inset from the left edge. */
-    public int left;
+	public Insets(int left, int top, int right, int bottom)
+	{
+		this.left = left;
+		this.top = top;
+		this.right = right;
+		this.bottom = bottom;
+	}
 
-    /** The inset from the top edge. */
-    public int top;
+	public Insets(Insets other)
+	{
+		left = other.left;
+		top = other.top;
+		right = other.right;
+		bottom = other.bottom;
+	}
 
-    /** The inset from the right edge. */
-    public int right;
+	public Insets()
+	{
+	}
 
-    /** The inset from the bottom edge. */
-    public int bottom;
+	/**
+	 * Returns the sum of the horizontal insets.
+	 */
+	public int getHorizontal()
+	{
+		return left + right;
+	}
 
-    public Insets (int left, int top, int right, int bottom)
-    {
-        this.left = left;
-        this.top = top;
-        this.right = right;
-        this.bottom = bottom;
-    }
+	/**
+	 * Returns the sum of the vertical insets.
+	 */
+	public int getVertical()
+	{
+		return top + bottom;
+	}
 
-    public Insets (Insets other)
-    {
-        left = other.left;
-        top = other.top;
-        right = other.right;
-        bottom = other.bottom;
-    }
+	/**
+	 * Returns insets which are the sum of these insets with the specified
+	 * insets. <em>Note:</em> if either insets are all zeros, the other set
+	 * will be returned directly rather than creating a new insets instance.
+	 */
+	public Insets add(Insets insets)
+	{
+		if (ZERO_INSETS.equals(this))
+		{
+			return insets;
+		}
+		else if (ZERO_INSETS.equals(insets))
+		{
+			return this;
+		}
+		else
+		{
+			return new Insets(left + insets.left, top + insets.top, right + insets.right, bottom + insets.bottom);
+		}
+	}
 
-    public Insets ()
-    {
-    }
+	// documentation inherited
+	@Override
+	public boolean equals(Object other)
+	{
+		Insets oi = (Insets) other;
+		return (left == oi.left) && (top == oi.top) && (right == oi.right) && (bottom == oi.bottom);
+	}
 
-    /**
-     * Returns the sum of the horizontal insets.
-     */
-    public int getHorizontal ()
-    {
-        return left + right;
-    }
-
-    /**
-     * Returns the sum of the vertical insets.
-     */
-    public int getVertical ()
-    {
-        return top + bottom;
-    }
-
-    /**
-     * Returns insets which are the sum of these insets with the specified
-     * insets. <em>Note:</em> if either insets are all zeros, the other set
-     * will be returned directly rather than creating a new insets instance.
-     */
-    public Insets add (Insets insets)
-    {
-        if (ZERO_INSETS.equals(this)) {
-            return insets;
-        } else if (ZERO_INSETS.equals(insets)) {
-            return this;
-        } else {
-            return new Insets(left + insets.left, top + insets.top,
-                              right + insets.right, bottom + insets.bottom);
-        }
-    }
-
-    // documentation inherited
-    @Override
-	public boolean equals (Object other)
-    {
-        Insets oi = (Insets)other;
-        return (left == oi.left) && (top == oi.top) &&
-            (right == oi.right) && (bottom == oi.bottom);
-    }
-
-    @Override
-	public String toString ()
-    {
-        return "l:" + left + " t:" + top + " r:" + right + " b:" + bottom;
-    }
+	@Override
+	public String toString()
+	{
+		return "l:" + left + " t:" + top + " r:" + right + " b:" + bottom;
+	}
 }

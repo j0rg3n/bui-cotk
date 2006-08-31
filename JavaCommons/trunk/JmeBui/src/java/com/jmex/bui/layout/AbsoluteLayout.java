@@ -17,11 +17,9 @@
 // You should have received a copy of the GNU Lesser General Public
 // License along with this library; if not, write to the Free Software
 // Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
-
 package com.jmex.bui.layout;
 
 import java.util.HashMap;
-
 import com.jmex.bui.BComponent;
 import com.jmex.bui.BContainer;
 import com.jmex.bui.util.Dimension;
@@ -37,87 +35,91 @@ import com.jmex.bui.util.Rectangle;
  */
 public class AbsoluteLayout extends BLayoutManager
 {
-    // documentation inherited
-    @Override
-	public void addLayoutComponent (BComponent comp, Object constraints)
-    {
-        // various sanity checking
-        if (constraints instanceof Point) {
-            Point p = (Point)constraints;
-            if (p.x < 0 || p.y < 0) {
-                throw new IllegalArgumentException(
-                    "Components must be laid out at positive coords: " + p);
-            }
+	// documentation inherited
+	@Override
+	public void addLayoutComponent(BComponent comp, Object constraints)
+	{
+		// various sanity checking
+		if (constraints instanceof Point)
+		{
+			Point p = (Point) constraints;
+			if (p.x < 0 || p.y < 0)
+			{
+				throw new IllegalArgumentException("Components must be laid out at positive coords: " + p);
+			}
+		}
+		else if (constraints instanceof Rectangle)
+		{
+			Rectangle r = (Rectangle) constraints;
+			if (r.x < 0 || r.y < 0)
+			{
+				throw new IllegalArgumentException("Components must be laid out at positive coords: " + r);
+			}
+			if (r.width < 0 || r.height < 0)
+			{
+				throw new IllegalArgumentException("Constraints must specify positive dimensions: " + r);
+			}
+		}
+		else
+		{
+			throw new IllegalArgumentException("Components must be added to an AbsoluteLayout with " + "Point or Rectangle constraints.");
+		}
+		_spots.put(comp, constraints);
+	}
 
-        } else if (constraints instanceof Rectangle) {
-            Rectangle r = (Rectangle)constraints;
-            if (r.x < 0 || r.y < 0) {
-                throw new IllegalArgumentException(
-                    "Components must be laid out at positive coords: " + r);
-            }
-            if (r.width < 0 || r.height < 0) {
-                throw new IllegalArgumentException(
-                    "Constraints must specify positive dimensions: " + r);
-            }
+	// documentation inherited
+	@Override
+	public void removeLayoutComponent(BComponent comp)
+	{
+		_spots.remove(comp);
+	}
 
-        } else {
-            throw new IllegalArgumentException(
-                "Components must be added to an AbsoluteLayout with " +
-                "Point or Rectangle constraints.");
-        }
+	// documentation inherited
+	@Override
+	public Dimension computePreferredSize(BContainer target, int whint, int hhint)
+	{
+		// determine the largest rectangle that contains all of the components
+		Rectangle rec = new Rectangle();
+		for (int ii = 0, cc = target.getComponentCount(); ii < cc; ii++)
+		{
+			BComponent comp = target.getComponent(ii);
+			Object cons = _spots.get(comp);
+			if (cons instanceof Point)
+			{
+				Point p = (Point) cons;
+				Dimension d = comp.getPreferredSize(-1, -1);
+				rec.add(p.x, p.y, d.width, d.height);
+			}
+			else if (cons instanceof Rectangle)
+			{
+				Rectangle r = (Rectangle) cons;
+				rec.add(r.x, r.y, r.width, r.height);
+			}
+		}
+		return new Dimension(rec.x + rec.width, rec.y + rec.height);
+	}
 
-        _spots.put(comp, constraints);
-    }
-
-    // documentation inherited
-    @Override
-	public void removeLayoutComponent (BComponent comp)
-    {
-        _spots.remove(comp);
-    }
-
-    // documentation inherited
-    @Override
-	public Dimension computePreferredSize (
-        BContainer target, int whint, int hhint)
-    {
-        // determine the largest rectangle that contains all of the components
-        Rectangle rec = new Rectangle();
-        for (int ii = 0, cc = target.getComponentCount(); ii < cc; ii++) {
-            BComponent comp = target.getComponent(ii);
-            Object cons = _spots.get(comp);
-            if (cons instanceof Point) {
-                Point p = (Point)cons;
-                Dimension d = comp.getPreferredSize(-1, -1);
-                rec.add(p.x, p.y, d.width, d.height);
-            } else if (cons instanceof Rectangle) {
-                Rectangle r = (Rectangle)cons;
-                rec.add(r.x, r.y, r.width, r.height);
-            }
-        }
-        return new Dimension(rec.x + rec.width, rec.y + rec.height);
-    }
-
-    // documentation inherited
-    @Override
-	public void layoutContainer (BContainer target)
-    {
-        Insets insets = target.getInsets();
-        for (int ii = 0, cc = target.getComponentCount(); ii < cc; ii++) {
-            BComponent comp = target.getComponent(ii);
-            Object cons = _spots.get(comp);
-            if (cons instanceof Point) {
-                Point p = (Point)cons;
-                Dimension d = comp.getPreferredSize(-1, -1);
-                comp.setBounds(insets.left + p.x,
-                               insets.bottom + p.y, d.width, d.height);
-            } else if (cons instanceof Rectangle) {
-                Rectangle r = (Rectangle)cons;
-                comp.setBounds(insets.left + r.x,
-                               insets.bottom + r.y, r.width, r.height);
-            }
-        }
-    }
-
-    protected HashMap<BComponent, Object> _spots = new HashMap<BComponent, Object>();
+	// documentation inherited
+	@Override
+	public void layoutContainer(BContainer target)
+	{
+		Insets insets = target.getInsets();
+		for (int ii = 0, cc = target.getComponentCount(); ii < cc; ii++)
+		{
+			BComponent comp = target.getComponent(ii);
+			Object cons = _spots.get(comp);
+			if (cons instanceof Point)
+			{
+				Point p = (Point) cons;
+				Dimension d = comp.getPreferredSize(-1, -1);
+				comp.setBounds(insets.left + p.x, insets.bottom + p.y, d.width, d.height);
+			}
+			else if (cons instanceof Rectangle)
+			{
+				Rectangle r = (Rectangle) cons;
+				comp.setBounds(insets.left + r.x, insets.bottom + r.y, r.width, r.height);
+			}
+		}
+	}
+	protected HashMap<BComponent, Object> _spots = new HashMap<BComponent, Object>();
 }

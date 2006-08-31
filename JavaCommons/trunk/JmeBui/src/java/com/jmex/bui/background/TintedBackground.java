@@ -17,11 +17,9 @@
 // You should have received a copy of the GNU Lesser General Public
 // License along with this library; if not, write to the Free Software
 // Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
-
 package com.jmex.bui.background;
 
 import org.lwjgl.opengl.GL11;
-
 import com.jme.renderer.ColorRGBA;
 import com.jme.renderer.Renderer;
 import com.jmex.bui.BComponent;
@@ -32,35 +30,32 @@ import com.jmex.bui.BImage;
  */
 public class TintedBackground extends BBackground
 {
-    public static final BBackground red = new TintedBackground(new ColorRGBA(1,0,0,0.5f));
-    public static final BBackground green = new TintedBackground(new ColorRGBA(0,1,0,0.5f));
-    public static final BBackground blue = new TintedBackground(new ColorRGBA(0,0,1,0.5f));
+	public static final BBackground red = new TintedBackground(new ColorRGBA(1, 0, 0, 0.5f));
+	public static final BBackground green = new TintedBackground(new ColorRGBA(0, 1, 0, 0.5f));
+	public static final BBackground blue = new TintedBackground(new ColorRGBA(0, 0, 1, 0.5f));
+
 	/**
-     * Creates a tinted background with the specified color.
-     */
-    public TintedBackground (ColorRGBA color)
-    {
-        _color = color;
-    }
+	 * Creates a tinted background with the specified color.
+	 */
+	public TintedBackground(ColorRGBA color)
+	{
+		_color = color;
+	}
 
-    // documentation inherited
-    @Override
-	public void render (Renderer renderer, int x, int y, int width, int height,
-        float alpha)
-    {
-        super.render(renderer, x, y, width, height, alpha);
-
-        BComponent.applyDefaultStates();
-        BImage.blendState.apply();
-
-        GL11.glColor4f(_color.r, _color.g, _color.b, _color.a * alpha);
-        GL11.glBegin(GL11.GL_QUADS);
-        GL11.glVertex2f(x, y);
-        GL11.glVertex2f(x + width, y);
-        GL11.glVertex2f(x + width, y + height);
-        GL11.glVertex2f(x, y + height);
-        GL11.glEnd();
-    }
-
-    protected ColorRGBA _color;
+	// documentation inherited
+	@Override
+	public void render(Renderer renderer, int x, int y, int width, int height, float alpha)
+	{
+		super.render(renderer, x, y, width, height, alpha);
+		BComponent.applyDefaultStates();
+		BImage.blendState.apply();
+		GL11.glColor4f(_color.r, _color.g, _color.b, _color.a * alpha);
+		GL11.glBegin(GL11.GL_QUADS);
+		GL11.glVertex2f(x, y);
+		GL11.glVertex2f(x + width, y);
+		GL11.glVertex2f(x + width, y + height);
+		GL11.glVertex2f(x, y + height);
+		GL11.glEnd();
+	}
+	protected ColorRGBA _color;
 }
