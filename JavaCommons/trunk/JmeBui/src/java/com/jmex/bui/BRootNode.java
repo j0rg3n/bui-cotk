@@ -502,6 +502,11 @@ public abstract class BRootNode extends Geometry
 	{
 		return _windows.get(index);
 	}
+	
+	public long getTimeStamp()
+	{
+		return _tickStamp;
+	}
 	protected long _tickStamp;
 	protected int _modifiers;
 	protected int _mouseX, _mouseY;
