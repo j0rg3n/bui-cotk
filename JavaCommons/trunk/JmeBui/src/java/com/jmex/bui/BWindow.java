@@ -27,7 +27,7 @@ import com.jmex.bui.util.Dimension;
  * A window defines the top-level of a component hierarchy. It must be created
  * with a stylesheet and layout manager.
  */
-public class BWindow extends BContainer implements Comparable
+public class BWindow extends BContainer implements Comparable<BWindow>
 {
 	public BWindow(BStyleSheet style, BLayoutManager layout)
 	{
@@ -163,11 +163,7 @@ public class BWindow extends BContainer implements Comparable
 		}
 	}
 
-	// documentation inherited from interface Comparable
-	public int compareTo(Object other)
-	{
-		return _layer - ((BWindow) other)._layer;
-	}
+
 
 	// documentation inherited
 	@Override
@@ -268,4 +264,11 @@ public class BWindow extends BContainer implements Comparable
 	 * top-most window.
 	 */
 	protected BComponent _savedFocus;
+	public int compareTo(BWindow o) {
+
+		return _layer - o._layer;
+	}
+	
+	
+	
 }
