@@ -30,7 +30,6 @@ public class BSimpleScrollBar extends BContainer implements BConstants
 	{
 		super(new BorderLayout());
 		_model = model;
-		// _model.addChangeListener(_updater);
 	}
 
 	/**

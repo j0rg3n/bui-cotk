@@ -207,6 +207,8 @@ public class BFileChooser extends BPopupWindow
 		if (file != null)
 		{
 			File p = file.isDirectory() ? file : file.getParentFile();
+			System.out.println("file: "+file);
+			System.out.println("p:    "+p);
 			if (p != null && !p.equals(filelist.getDirectory()))
 			{
 				filelist.setDirectory(p);
