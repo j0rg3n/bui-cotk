@@ -415,12 +415,12 @@ public abstract class BRootNode extends Geometry
 	 * recomputation of the hover component as the window may have moved out
 	 * from under or under the mouse.
 	 */
-	protected void windowDidMove(BWindow window)
+	public void windowDidMove(BWindow window)
 	{
 		updateHoverComponent(_mouseX, _mouseY);
 	}
 
-	protected void mouseDidMove(int mouseX, int mouseY)
+	public void mouseDidMove(int mouseX, int mouseY)
 	{
 		// update some tracking bits
 		_mouseX = mouseX;
@@ -508,7 +508,7 @@ public abstract class BRootNode extends Geometry
 		return _tickStamp;
 	}
 	protected long _tickStamp;
-	protected int _modifiers;
+	public int _modifiers;
 	protected int _mouseX, _mouseY;
 	protected BWindow _tipwin;
 	protected float _lastMoveTime, _tipTime = 1f;
