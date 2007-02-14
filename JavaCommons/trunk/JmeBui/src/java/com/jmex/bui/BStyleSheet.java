@@ -126,7 +126,7 @@ public class BStyleSheet
 		/**
 		 * Loads the image with the specified path.
 		 */
-		public BImage loadImage(String path) throws IOException;
+		public BImage loadImage(String path, boolean required) throws IOException;
 	}
 	/** A default implementation of the stylesheet resource provider. */
 	public static class DefaultResourceProvider implements ResourceProvider
@@ -149,7 +149,7 @@ public class BStyleSheet
 			return new AWTTextFactory(new Font(family, nstyle, size), true);
 		}
 
-		public BImage loadImage(String path) throws IOException
+		public BImage loadImage(String path, boolean required) throws IOException
 		{
 			if (!path.startsWith("/"))
 			{
@@ -158,8 +158,16 @@ public class BStyleSheet
 			URL url = getClass().getResource(path);
 			if (url == null)
 			{
-				throw new IOException("Can't locate image '" + path + "'.");
+				if(required)
+				{
+					throw new IOException("Can't locate image '" + path + "'.");
+				}
+				else
+				{
+					return null;
+				}
 			}
+			
 			return new BImage(url);
 		}
 	}
@@ -678,7 +686,7 @@ public class BStyleSheet
 				BImage image;
 				try
 				{
-					image = rsrcprov.loadImage(ipath);
+					image = rsrcprov.loadImage(ipath, true);
 				}
 				catch (IOException ioe)
 				{
@@ -707,7 +715,7 @@ public class BStyleSheet
 				BImage image;
 				try
 				{
-					image = rsrcprov.loadImage(ipath);
+					image = rsrcprov.loadImage(ipath, true);
 				}
 				catch (IOException ioe)
 				{
