@@ -22,6 +22,8 @@ package com.jmex.bui;
 import java.util.ArrayList;
 import com.jmex.bui.event.ActionEvent;
 import com.jmex.bui.event.ActionListener;
+import com.jmex.bui.event.ChangeEvent;
+import com.jmex.bui.event.ChangeListener;
 import com.jmex.bui.layout.BorderLayout;
 import com.jmex.bui.layout.GroupLayout;
 
@@ -48,10 +50,14 @@ public class BTabbedPane extends BContainer
 		add(_buttons, BorderLayout.NORTH);
 	}
 
+	public void addTab(String title, BComponent tab)
+	{
+		addTab(title, tab, null);
+	}
 	/**
 	 * Adds a tab to the pane using the specified tile.
 	 */
-	public void addTab(String title, BComponent tab)
+	public void addTab(String title, BComponent tab, final ChangeListener listener)
 	{
 		BToggleButton tbutton = new BToggleButton(title, String.valueOf(_tabs.size()))
 		{
@@ -60,6 +66,10 @@ public class BTabbedPane extends BContainer
 			{
 				if (!_selected)
 				{
+					if(listener != null)
+					{
+						listener.stateChanged(new ChangeEvent(this));
+					}
 					super.fireAction(when, modifiers);
 				}
 			}
