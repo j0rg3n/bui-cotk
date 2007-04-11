@@ -192,7 +192,7 @@ public class BImage extends Quad
 		_theight = image.getHeight();
 		texture.setFilter(Texture.FM_LINEAR);
 		texture.setMipmapState(Texture.MM_NONE);
-		texture.setCorrection(Texture.CM_AFFINE);
+		_tstate.setCorrection(TextureState.CM_AFFINE);
 		_tstate.setTexture(texture);
 		_tstate.setEnabled(true);
 		setRenderState(_tstate);
@@ -319,8 +319,10 @@ public class BImage extends Quad
 		if (_tstate.getNumberOfSetTextures() > 0)
 		{
 			_tstate.deleteAll();
+			/* TODO: Make sure this was safe to comment out
 			_tstate.getTexture().setNeedsFilterRefresh(true);
 			_tstate.getTexture().setNeedsWrapRefresh(true);
+			*/
 		}
 	}
 

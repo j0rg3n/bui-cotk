@@ -24,7 +24,9 @@ import java.util.HashMap;
 import org.lwjgl.opengl.GL11;
 import com.jme.input.KeyInput;
 import com.jme.renderer.ColorRGBA;
+import com.jme.renderer.RenderContext;
 import com.jme.renderer.Renderer;
+import com.jme.system.DisplaySystem;
 import com.jmex.bui.background.BBackground;
 import com.jmex.bui.border.BBorder;
 import com.jmex.bui.event.BEvent;
@@ -62,14 +64,15 @@ public class BComponent
 
 	public static void applyDefaultStates()
 	{
+		RenderContext context = DisplaySystem.getDisplaySystem().getCurrentContext();
 		for (int ii = 0; ii < Renderer.defaultStateList.length; ii++)
 		{
-			if (Renderer.defaultStateList[ii] != null && Renderer.defaultStateList[ii] != Renderer.getCurrentState(ii))
+			if (Renderer.defaultStateList[ii] != null && Renderer.defaultStateList[ii] != context.getCurrentState(ii))
 			{
 				Renderer.defaultStateList[ii].apply();
 			}
 		}
-		Renderer.clearCurrentStates();
+		context.clearCurrentStates();
 	}
 
 	/**
