@@ -72,7 +72,7 @@ public class BComponent
 				Renderer.defaultStateList[ii].apply();
 			}
 		}
-		context.clearCurrentStates();
+		//According to JME-forum, this is no longer required: Renderer.clearCurrentStates();
 	}
 
 	/**

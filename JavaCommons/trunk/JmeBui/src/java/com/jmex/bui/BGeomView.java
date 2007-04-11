@@ -130,7 +130,7 @@ public class BGeomView extends BComponent
 					_camera = createCamera(DisplaySystem.getDisplaySystem());
 				}
 				// set up our camera viewport if it has changed
-				if (_cwidth != _width || _cheight != _height)
+				//if (_cwidth != _width || _cheight != _height)
 				{
 					_cwidth = _width;
 					_cheight = _height;
@@ -154,9 +154,9 @@ public class BGeomView extends BComponent
 			{
 				renderer.setCamera(cam);
 				cam.update();
+				cam.apply();
 				renderer.setOrtho();
-				// we need to restore the GL translation as that got wiped out
-				// when
+				// we need to restore the GL translation as that got wiped out when
 				// we left and re-entered ortho mode
 				GL11.glTranslatef(getAbsoluteX(), getAbsoluteY(), 0);
 			}
