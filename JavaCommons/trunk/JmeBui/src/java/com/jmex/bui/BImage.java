@@ -49,6 +49,8 @@ public class BImage extends Quad
 	private static final long serialVersionUID = 1L;
 	/** An alpha state that blends the source plus one minus destination. */
 	public static AlphaState blendState;
+	/** Just to avoid continous printing of errors. */
+	private transient boolean has_printed_error = false;
 
 	/**
 	 * Configures the supplied spatial with transparency in the standard user
@@ -253,7 +255,11 @@ public class BImage extends Quad
 		if (_referents == 0)
 		{
 			Log.log.warning("Unreferenced image rendered " + this + "!");
-			Thread.dumpStack();
+			if(!has_printed_error)
+			{
+				Thread.dumpStack();
+				has_printed_error = true;
+			}
 			return;
 		}
 		setTextureCoords(sx, sy, swidth, sheight);
