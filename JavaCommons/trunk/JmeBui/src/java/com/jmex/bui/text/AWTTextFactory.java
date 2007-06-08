@@ -310,9 +310,12 @@ public class AWTTextFactory extends BTextFactory
 					gfx.translate(3, layout.getAscent() + 3);
 					for (char c : origtext.toCharArray())
 					{
-						BufferedImage img = getGlowForeground(c, size, color);
-						gfx.drawImage(img, null, 0, (int) -(layout.getAscent() + 3));
-						gfx.translate(img.getWidth(), 0);
+						if(c != '\n' && c != '\r')
+						{
+							BufferedImage img = getGlowForeground(c, size, color);
+							gfx.drawImage(img, null, 0, (int) -(layout.getAscent() + 3));
+							gfx.translate(img.getWidth(), 0);
+						}
 					}
 				}
 			}
