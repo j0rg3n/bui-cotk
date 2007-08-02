@@ -15,8 +15,10 @@ import com.jmex.bui.event.BEvent;
 import com.jmex.bui.event.MouseEvent;
 import com.jmex.bui.icon.BIcon;
 import com.jmex.bui.icon.ImageIcon;
+import com.jmex.bui.layout.AbsoluteLayout;
 import com.jmex.bui.layout.TableLayout;
 import com.jmex.bui.util.Dimension;
+import com.jmex.bui.util.Point;
 
 /**
  * This class displays a file-chooser.
@@ -38,7 +40,7 @@ public class BFileChooser extends BPopupWindow
 	}
 	FilterMode filtermode;
 	File _selected_file = null;
-	private BTextField selected_file_label;
+	private BTextField selected_file_field;
 	private BSelectList drivelist;
 	BFileList filelist;
 	private BButton cancelbutton;
@@ -53,6 +55,26 @@ public class BFileChooser extends BPopupWindow
 			dismiss();
 		}
 	};
+	
+	/**
+	 * A special class button for the filechooser.
+	 * @author emanuel
+	 *
+	 */
+	class BFileChooserButton extends BButton
+	{
+		public BFileChooserButton(String label)
+		{
+			super(label);
+		}
+
+		@Override
+		public String getDefaultStyleClass()
+		{
+			return BFileChooser.this.getStyleClass()+"_button";
+		}
+	}
+
 	/**
 	 * A special select-list that displays files/directories.
 	 * 
@@ -69,7 +91,6 @@ public class BFileChooser extends BPopupWindow
 			{
 				super((_directory == null || _directory.getParentFile() == null || !_directory.getParentFile().equals(file)) ? file.getName() : "[..]", null, (filesystemview.getSystemIcon(file) != null ? new ImageIcon(filesystemview.getSystemIcon(file)) : null), false);
 				this.file = file;
-				System.out.println("Constructor[2]: " + useTextWrap());
 			}
 		}
 		File _directory;
@@ -104,22 +125,59 @@ public class BFileChooser extends BPopupWindow
 			Arrays.sort(fso);
 			setItems(fso);
 		}
+		
+		@Override
+		public String getDefaultStyleClass()
+		{
+			return BFileChooser.this.getStyleClass()+"_filelist";
+		}
+	}
+	
+	class BFileCooserTextField extends BTextField
+	{
+		public BFileCooserTextField(String text)
+		{
+			super(text);
+		}
+		
+		/**
+		 * Called when this text field has lost the focus.
+		 */
+		@Override
+		protected void lostFocus()
+		{
+			super.lostFocus();
+			setSelectedFile(new File(getText()));
+		}
+
+		@Override
+		public String getDefaultStyleClass()
+		{
+			return BFileChooser.this.getStyleClass()+"_textfield";
+		}
 	}
 
 	public BFileChooser(BWindow parent)
 	{
-		super(parent, new TableLayout(1, 5, 5));
-		TableLayout lay = (TableLayout) getLayoutManager();
-		lay.setHorizontalAlignment(TableLayout.STRETCH);
+		super(parent, new AbsoluteLayout());
+		
+		int padding = 20;
+		int width = 510;
+		int height = 340;
+		
+		int drive_w = 125;
+		int drive_h = 200;
+		int file_w = 325;
+		int file_h = 200;
+		int txt_w = width - 2*padding;
+		int txt_h = 30;
+		int button_w = 100;
+		int button_h = 30;
+		
 		// Add the top part (drives/filelist)
 		{
-			BContainer toppart;
-			TableLayout tmplay;
-			add(toppart = new BContainer(tmplay = new TableLayout(2)));
-			tmplay.setHorizontalAlignment(TableLayout.STRETCH);
-			tmplay.setVerticalAlignment(TableLayout.TOP);
-			toppart.add(drivelist = new BFileList());
-			drivelist.setPreferredSize(new Dimension(125, 200));
+			add(drivelist = new BFileList(), new Point(padding, height-padding-drive_h));
+			drivelist.setPreferredSize(new Dimension(drive_w, drive_h));
 			for (File f : filesystemview.getRoots())
 			{
 				drivelist.addItem(f);
@@ -131,9 +189,8 @@ public class BFileChooser extends BPopupWindow
 					System.out.println("TODO: we must react on the drive-list clicks: " + event.getAction());
 				}
 			});
-			toppart.add(filelist = new BFileList());
-			filelist.setPreferredSize(new Dimension(325, 200));
-			filelist.setBackground(BComponent.DEFAULT, TintedBackground.red);
+			add(filelist = new BFileList(), new Point(padding+drive_w+padding, height-padding-file_h));
+			filelist.setPreferredSize(new Dimension(file_w, file_h));
 			filelist.addListener(new ActionListener()
 			{
 				public void actionPerformed(ActionEvent event)
@@ -147,25 +204,28 @@ public class BFileChooser extends BPopupWindow
 			});
 		}
 		// Add middle-part (the selected file)
-		add(selected_file_label = new BTextField("..."));
-		selected_file_label.setStyleClass("textfield");
+		add(selected_file_field = new BFileCooserTextField("..."), new Point(padding, padding+button_h+padding));
+		selected_file_field.setPreferredSize(new Dimension(txt_w, txt_h));
 		// Add the bottom part (ok and cancel buttons)
 		{
-			BContainer bottompart;
-			TableLayout tmplay;
-			add(bottompart = new BContainer(tmplay = new TableLayout(2)));
 			// tmplay.set
-			bottompart.add(okbutton = new BButton("OK"));
-			okbutton.setPreferredSize(new Dimension(100, 30));
+			add(okbutton = new BFileChooserButton("OK"), new Point((width/2-button_w)/2, padding));
+			okbutton.setPreferredSize(new Dimension(button_w, button_h));
 			okbutton.setAction("ok");
 			okbutton.addListener(_button_listener);
-			bottompart.add(cancelbutton = new BButton("Cancel"));
-			cancelbutton.setPreferredSize(new Dimension(100, 30));
+			add(cancelbutton = new BFileChooserButton("Cancel"), new Point(((width/2-button_w)/2)+(padding+width)/2, padding));
+			cancelbutton.setPreferredSize(new Dimension(button_w, button_h));
 			cancelbutton.setAction("cancel");
 			cancelbutton.addListener(_button_listener);
 		}
 		// And set our size
-		setPreferredSize(new Dimension(450, 300));
+		setPreferredSize(new Dimension(width, height));
+	}
+
+	@Override
+	public String getDefaultStyleClass()
+	{
+		return "filechooser";
 	}
 
 	/**
@@ -207,19 +267,20 @@ public class BFileChooser extends BPopupWindow
 		if (file != null)
 		{
 			File p = file.isDirectory() ? file : file.getParentFile();
-			System.out.println("file: "+file);
-			System.out.println("p:    "+p);
-			if (p != null && !p.equals(filelist.getDirectory()))
+			if (p != null)
 			{
-				filelist.setDirectory(p);
+				if(!p.equals(filelist.getDirectory()))
+				{
+					filelist.setDirectory(p);
+				}
 			}
 			else
 			{
-				filelist.setDirectory(new File("."));
+				filelist.setDirectory(new File(".").getAbsoluteFile());
 			}
 		}
 		_selected_file = file;
-		selected_file_label.setText(file != null ? file.getAbsolutePath() : "");
+		selected_file_field.setText(file != null ? file.getAbsolutePath() : "");
 	}
 
 	public void popup(File directory)

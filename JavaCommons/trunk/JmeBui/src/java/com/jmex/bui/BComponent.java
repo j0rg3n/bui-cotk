@@ -763,9 +763,21 @@ public class BComponent
 			{
 				_insets[ii] = _borders[ii].adjustInsets(_insets[ii]);
 			}
-			if (getBackground() == null)
+			if(_backgrounds[ii] == null)
+			{
 				_backgrounds[ii] = style.getBackground(this, getStatePseudoClass(ii));
+			}
 		}
+		/*
+		// Fix missing backgrounds (set them to the first found background)
+		for (int ii = 0; ii < getStateCount(); ii++)
+		{
+			if(_backgrounds[ii] == null)
+			{
+				_backgrounds[ii] = _backgrounds[BComponent.DEFAULT];
+			}
+		}
+		*/
 	}
 
 	/**

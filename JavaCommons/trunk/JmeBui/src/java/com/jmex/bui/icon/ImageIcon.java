@@ -42,7 +42,7 @@ public class ImageIcon extends BIcon
 
 	public ImageIcon(Icon icon)
 	{
-		System.out.println("Trying to make an ImageIcon from: " + icon);
+		//System.out.println("Trying to make an ImageIcon from: " + icon);
 		BufferedImage cached = new BufferedImage(icon.getIconWidth(), icon.getIconHeight(), BufferedImage.TYPE_4BYTE_ABGR);
 		// cached.set
 		Graphics2D gfx = cached.createGraphics();

@@ -83,7 +83,6 @@ public class BFileField extends BTextField
 					_filechooser.setFileHidingEnabled(true);
 					_filechooser.setLayer(Integer.MAX_VALUE);
 					_filechooser.setModal(true);
-					_filechooser.setBackground(BComponent.DEFAULT, TintedBackground.blue);
 					_filechooser.addListener(_listener);
 					_filechooser.setSelectedFile(_selectedfile);
 				}
