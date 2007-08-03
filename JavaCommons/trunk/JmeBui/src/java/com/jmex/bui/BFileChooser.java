@@ -55,11 +55,11 @@ public class BFileChooser extends BPopupWindow
 			dismiss();
 		}
 	};
-	
 	/**
 	 * A special class button for the filechooser.
+	 * 
 	 * @author emanuel
-	 *
+	 * 
 	 */
 	class BFileChooserButton extends BButton
 	{
@@ -71,10 +71,9 @@ public class BFileChooser extends BPopupWindow
 		@Override
 		public String getDefaultStyleClass()
 		{
-			return BFileChooser.this.getStyleClass()+"_button";
+			return BFileChooser.this.getStyleClass() + "_button";
 		}
 	}
-
 	/**
 	 * A special select-list that displays files/directories.
 	 * 
@@ -89,7 +88,12 @@ public class BFileChooser extends BPopupWindow
 
 			public BFileListItem(File file)
 			{
-				super((_directory == null || _directory.getParentFile() == null || !_directory.getParentFile().equals(file)) ? file.getName() : "[..]", null, (filesystemview.getSystemIcon(file) != null ? new ImageIcon(filesystemview.getSystemIcon(file)) : null), false);
+				super(
+						_directory == null || _directory.getParentFile() == null || !_directory.getParentFile().equals(file) ? file.getName() : "[..]",
+						null,
+						(filesystemview.getSystemIcon(file) != null ? new ImageIcon(filesystemview.getSystemIcon(file)) : null)
+				);
+				setFit(Fit.TRUNCATE);
 				this.file = file;
 			}
 		}
@@ -125,21 +129,20 @@ public class BFileChooser extends BPopupWindow
 			Arrays.sort(fso);
 			setItems(fso);
 		}
-		
+
 		@Override
 		public String getDefaultStyleClass()
 		{
-			return BFileChooser.this.getStyleClass()+"_filelist";
+			return BFileChooser.this.getStyleClass() + "_filelist";
 		}
 	}
-	
 	class BFileCooserTextField extends BTextField
 	{
 		public BFileCooserTextField(String text)
 		{
 			super(text);
 		}
-		
+
 		/**
 		 * Called when this text field has lost the focus.
 		 */
@@ -153,30 +156,27 @@ public class BFileChooser extends BPopupWindow
 		@Override
 		public String getDefaultStyleClass()
 		{
-			return BFileChooser.this.getStyleClass()+"_textfield";
+			return BFileChooser.this.getStyleClass() + "_textfield";
 		}
 	}
 
 	public BFileChooser(BWindow parent)
 	{
 		super(parent, new AbsoluteLayout());
-		
 		int padding = 20;
 		int width = 510;
 		int height = 340;
-		
 		int drive_w = 125;
 		int drive_h = 200;
 		int file_w = 325;
 		int file_h = 200;
-		int txt_w = width - 2*padding;
+		int txt_w = width - 2 * padding;
 		int txt_h = 30;
 		int button_w = 100;
 		int button_h = 30;
-		
 		// Add the top part (drives/filelist)
 		{
-			add(drivelist = new BFileList(), new Point(padding, height-padding-drive_h));
+			add(drivelist = new BFileList(), new Point(padding, height - padding - drive_h));
 			drivelist.setPreferredSize(new Dimension(drive_w, drive_h));
 			for (File f : filesystemview.getRoots())
 			{
@@ -189,7 +189,7 @@ public class BFileChooser extends BPopupWindow
 					System.out.println("TODO: we must react on the drive-list clicks: " + event.getAction());
 				}
 			});
-			add(filelist = new BFileList(), new Point(padding+drive_w+padding, height-padding-file_h));
+			add(filelist = new BFileList(), new Point(padding + drive_w + padding, height - padding - file_h));
 			filelist.setPreferredSize(new Dimension(file_w, file_h));
 			filelist.addListener(new ActionListener()
 			{
@@ -204,16 +204,16 @@ public class BFileChooser extends BPopupWindow
 			});
 		}
 		// Add middle-part (the selected file)
-		add(selected_file_field = new BFileCooserTextField("..."), new Point(padding, padding+button_h+padding));
+		add(selected_file_field = new BFileCooserTextField("..."), new Point(padding, padding + button_h + padding));
 		selected_file_field.setPreferredSize(new Dimension(txt_w, txt_h));
 		// Add the bottom part (ok and cancel buttons)
 		{
 			// tmplay.set
-			add(okbutton = new BFileChooserButton("OK"), new Point((width/2-button_w)/2, padding));
+			add(okbutton = new BFileChooserButton("OK"), new Point((width / 2 - button_w) / 2, padding));
 			okbutton.setPreferredSize(new Dimension(button_w, button_h));
 			okbutton.setAction("ok");
 			okbutton.addListener(_button_listener);
-			add(cancelbutton = new BFileChooserButton("Cancel"), new Point(((width/2-button_w)/2)+(padding+width)/2, padding));
+			add(cancelbutton = new BFileChooserButton("Cancel"), new Point(((width / 2 - button_w) / 2) + (padding + width) / 2, padding));
 			cancelbutton.setPreferredSize(new Dimension(button_w, button_h));
 			cancelbutton.setAction("cancel");
 			cancelbutton.addListener(_button_listener);
@@ -269,7 +269,7 @@ public class BFileChooser extends BPopupWindow
 			File p = file.isDirectory() ? file : file.getParentFile();
 			if (p != null)
 			{
-				if(!p.equals(filelist.getDirectory()))
+				if (!p.equals(filelist.getDirectory()))
 				{
 					filelist.setDirectory(p);
 				}

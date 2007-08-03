@@ -17,6 +17,7 @@
 // You should have received a copy of the GNU Lesser General Public
 // License along with this library; if not, write to the Free Software
 // Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
+
 package com.jmex.bui.event;
 
 /**
@@ -24,17 +25,14 @@ package com.jmex.bui.event;
  */
 public class ChangeEvent extends BEvent
 {
-	private static final long serialVersionUID = -5006528069492334722L;
+    public ChangeEvent (Object source)
+    {
+        super(source, -1L);
+    }
 
-	public ChangeEvent(Object source)
-	{
-		super(source, -1L);
-	}
-
-	// documentation inherited
-	@Override
-	public boolean propagateUpHierarchy()
-	{
-		return false;
-	}
+    // documentation inherited
+    public boolean propagateUpHierarchy ()
+    {
+        return false;
+    }
 }

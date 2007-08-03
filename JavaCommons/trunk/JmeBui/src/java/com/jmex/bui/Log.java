@@ -17,6 +17,7 @@
 // You should have received a copy of the GNU Lesser General Public
 // License along with this library; if not, write to the Free Software
 // Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
+
 package com.jmex.bui;
 
 import java.util.logging.Logger;
@@ -26,6 +27,6 @@ import java.util.logging.Logger;
  */
 public class Log
 {
-	/** We dispatch our log messages through this logger. */
-	public static Logger log = Logger.getLogger("com.jmex.bui");
+    /** We dispatch our log messages through this logger. */
+    public static Logger log = Logger.getLogger("com.jmex.bui");
 }

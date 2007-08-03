@@ -17,6 +17,7 @@
 // You should have received a copy of the GNU Lesser General Public
 // License along with this library; if not, write to the Free Software
 // Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
+
 package com.jmex.bui;
 
 import com.jmex.bui.icon.BIcon;
@@ -26,37 +27,36 @@ import com.jmex.bui.icon.BIcon;
  */
 public class BCheckBox extends BToggleButton
 {
-	public BCheckBox(String label)
-	{
-		super(label);
-	}
+    public BCheckBox (String label)
+    {
+        super(label);
+    }
 
-	// documentation inherited
-	@Override
-	protected String getDefaultStyleClass()
-	{
-		return "checkbox";
-	}
+    // documentation inherited
+    protected String getDefaultStyleClass ()
+    {
+        return "checkbox";
+    }
 
-	// documentation inherited
-	@Override
-	protected void configureStyle(BStyleSheet style)
-	{
-		super.configureStyle(style);
-		for (int ii = 0; ii < getStateCount(); ii++)
-		{
-			_icons[ii] = style.getIcon(this, getStatePseudoClass(ii));
-		}
-		_label.setIcon(_icons[getState()]);
-	}
+    // documentation inherited
+    protected void configureStyle (BStyleSheet style)
+    {
+        super.configureStyle(style);
 
-	// documentation inherited
-	@Override
-	protected void stateDidChange()
-	{
-		super.stateDidChange();
-		// configure our checkbox icon
-		_label.setIcon(_icons[getState()]);
-	}
-	protected BIcon[] _icons = new BIcon[getStateCount()];
+        for (int ii = 0; ii < getStateCount(); ii++) {
+            _icons[ii] = style.getIcon(this, getStatePseudoClass(ii));
+        }
+        _label.setIcon(_icons[getState()]);
+    }
+
+    // documentation inherited
+    protected void stateDidChange ()
+    {
+        super.stateDidChange();
+
+        // configure our checkbox icon
+        _label.setIcon(_icons[getState()]);
+    }
+
+    protected BIcon[] _icons = new BIcon[getStateCount()];
 }

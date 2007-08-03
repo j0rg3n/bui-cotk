@@ -9,11 +9,6 @@ import com.jmex.bui.util.Dimension;
 
 public class BSimpleScrollPane extends BContainer
 {
-	protected BViewport _vport;
-	protected BSimpleScrollBar _vbar;
-	boolean autohidescrollers = true;
-	private BComponent mainarea;
-
 	public BSimpleScrollPane(BComponent child, boolean autohide, int scrollBarConstraint)
 	{
 		super(new BorderLayout(0, 0));
@@ -73,11 +68,13 @@ public class BSimpleScrollPane extends BContainer
 			{
 				add(_vbar, BorderLayout.EAST);
 				changed_anything = true;
+				System.out.println("Added the scrollbar");
 			}
 			else if (_vport.getVModel().getExtent() >= _vport.getVModel().getRange() && _vbar.getParent() != null)
 			{
 				remove(_vbar);
 				changed_anything = true;
+				System.out.println("Removed the scrollbar");
 			}
 		}
 		// Do we need a second validation ?
@@ -89,4 +86,9 @@ public class BSimpleScrollPane extends BContainer
 	{
 		return _vport;
 	}
+	
+	protected BViewport _vport;
+	protected BSimpleScrollBar _vbar;
+	boolean autohidescrollers = true;
+	private BComponent mainarea;
 }

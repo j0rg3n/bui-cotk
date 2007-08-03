@@ -17,6 +17,7 @@
 // You should have received a copy of the GNU Lesser General Public
 // License along with this library; if not, write to the Free Software
 // Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
+
 package com.jmex.bui.text;
 
 /**
@@ -24,22 +25,30 @@ package com.jmex.bui.text;
  */
 public interface EditCommands
 {
-	/** A text editing command. */
-	public static final int ACTION = 0;
-	/** A text editing command. */
-	public static final int BACKSPACE = 1;
-	/** A text editing command. */
-	public static final int DELETE = 2;
-	/** A text editing command. */
-	public static final int CURSOR_LEFT = 3;
-	/** A text editing command. */
-	public static final int CURSOR_RIGHT = 4;
-	/** A text editing command. */
-	public static final int START_OF_LINE = 5;
-	/** A text editing command. */
-	public static final int END_OF_LINE = 6;
-	/** A text editing command. */
-	public static final int RELEASE_FOCUS = 7;
-	/** A text editing command. */
-	public static final int CLEAR = 8;
+    /** A text editing command. */
+    public static final int ACTION = 0;
+
+    /** A text editing command. */
+    public static final int BACKSPACE = 1;
+
+    /** A text editing command. */
+    public static final int DELETE = 2;
+
+    /** A text editing command. */
+    public static final int CURSOR_LEFT = 3;
+
+    /** A text editing command. */
+    public static final int CURSOR_RIGHT = 4;
+
+    /** A text editing command. */
+    public static final int START_OF_LINE = 5;
+
+    /** A text editing command. */
+    public static final int END_OF_LINE = 6;
+
+    /** A text editing command. */
+    public static final int RELEASE_FOCUS = 7;
+
+    /** A text editing command. */
+    public static final int CLEAR = 8;
 }

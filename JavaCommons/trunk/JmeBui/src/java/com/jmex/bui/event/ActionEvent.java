@@ -17,53 +17,49 @@
 // You should have received a copy of the GNU Lesser General Public
 // License along with this library; if not, write to the Free Software
 // Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
+
 package com.jmex.bui.event;
 
 /**
- * Dispatched by a component when some sort of component-specific action has
- * occurred.
+ * Dispatched by a component when some sort of component-specific action
+ * has occurred.
  */
 public class ActionEvent extends InputEvent
 {
-	private static final long serialVersionUID = 6036906307944538315L;
+    public ActionEvent (Object source, long when, int modifiers, String action)
+    {
+        super(source, when, modifiers);
+        _action = action;
+    }
 
-	public ActionEvent(Object source, long when, int modifiers, String action)
-	{
-		super(source, when, modifiers);
-		_action = action;
-	}
+    /**
+     * Returns the action associated with this event.
+     */
+    public String getAction ()
+    {
+        return _action;
+    }
 
-	/**
-	 * Returns the action associated with this event.
-	 */
-	public String getAction()
-	{
-		return _action;
-	}
+    // documentation inherited
+    public void dispatch (ComponentListener listener)
+    {
+        super.dispatch(listener);
+        if (listener instanceof ActionListener) {
+            ((ActionListener)listener).actionPerformed(this);
+        }
+    }
 
-	// documentation inherited
-	@Override
-	public void dispatch(ComponentListener listener)
-	{
-		super.dispatch(listener);
-		if (listener instanceof ActionListener)
-		{
-			((ActionListener) listener).actionPerformed(this);
-		}
-	}
+    // documentation inherited
+    public boolean propagateUpHierarchy ()
+    {
+        return false;
+    }
 
-	// documentation inherited
-	@Override
-	public boolean propagateUpHierarchy()
-	{
-		return false;
-	}
+    protected void toString (StringBuffer buf)
+    {
+        super.toString(buf);
+        buf.append(", action=").append(_action);
+    }
 
-	@Override
-	protected void toString(StringBuffer buf)
-	{
-		super.toString(buf);
-		buf.append(", action=").append(_action);
-	}
-	protected String _action;
+    protected String _action;
 }

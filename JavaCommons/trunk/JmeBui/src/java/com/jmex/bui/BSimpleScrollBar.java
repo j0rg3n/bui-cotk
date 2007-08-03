@@ -20,7 +20,7 @@ import com.jmex.bui.util.Insets;
  */
 public class BSimpleScrollBar extends BContainer implements BConstants
 {
-	ImageBackground _well_background;
+	//ImageBackground _well_background;
 
 	/**
 	 * Creates a scroll bar with the specified orientation which will interact
@@ -52,9 +52,6 @@ public class BSimpleScrollBar extends BContainer implements BConstants
 		_well = new BComponent();
 		_well.setStyleClass(oprefix + "well");
 		add(_well, BorderLayout.CENTER);
-		// MOVED: _well_background = new ImageBackground(ImageBackground.TILE_Y,
-		// ClientApplication.getTheGameWindow().getGUIResourceProvider().loadImage("/scrollbar/scroll_vertical_on.png"));
-		// MOVED: _well.setBackground(BComponent.DEFAULT, _well_background );
 		// Now listen to the well
 		_well.addListener(_mousedragListener);
 		_less = new BButton("");
@@ -139,14 +136,16 @@ public class BSimpleScrollBar extends BContainer implements BConstants
 				_model.setValue(_sv + dv);
 				if (oldval != _model.getValue())
 				{
+					ImageBackground _well_background = (ImageBackground) _well.getBackground();
+					/*
 					if (_well_background == null)
 					{
-						// HACK: here we duplicate the background (to get our
-						// own)
+						// HACK: here we duplicate the background (to get our own)
 						_well_background = (ImageBackground) _well.getBackground();
 						_well_background = new ImageBackground(_well_background.getMode(), _well_background.getImage());
 						_well.setBackground(BComponent.DEFAULT, _well_background);
 					}
+					*/
 					_well_background.setOffset(0, -(_sy - my));
 				}
 			}

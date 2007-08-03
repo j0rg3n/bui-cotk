@@ -17,6 +17,7 @@
 // You should have received a copy of the GNU Lesser General Public
 // License along with this library; if not, write to the Free Software
 // Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
+
 package com.jmex.bui;
 
 import com.jmex.bui.layout.GroupLayout;
@@ -28,26 +29,26 @@ import com.jmex.bui.layout.GroupLayout;
  */
 public class BDecoratedWindow extends BWindow
 {
-	/**
-	 * Creates a decorated window using the supplied look and feel.
-	 * 
-	 * @param title
-	 *            the title of the window or null if no title bar is desired.
-	 */
-	public BDecoratedWindow(BStyleSheet style, String title)
-	{
-		super(style, GroupLayout.makeVStretch());
-		((GroupLayout) getLayoutManager()).setOffAxisPolicy(GroupLayout.NONE);
-		if (title != null)
-		{
-			add(new BLabel(title, "window_title"), GroupLayout.FIXED);
-		}
-	}
+    /**
+     * Creates a decorated window using the supplied look and feel.
+     *
+     * @param title the title of the window or null if no title bar is
+     * desired.
+     */
+    public BDecoratedWindow (BStyleSheet style, String title)
+    {
+        super(style, GroupLayout.makeVStretch());
+        ((GroupLayout)getLayoutManager()).setOffAxisPolicy(
+            GroupLayout.CONSTRAIN);
 
-	// documentation inherited
-	@Override
-	protected String getDefaultStyleClass()
-	{
-		return "decoratedwindow";
-	}
+        if (title != null) {
+            add(new BLabel(title, "window_title"), GroupLayout.FIXED);
+        }
+    }
+
+    // documentation inherited
+    protected String getDefaultStyleClass ()
+    {
+        return "decoratedwindow";
+    }
 }

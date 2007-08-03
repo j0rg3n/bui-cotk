@@ -17,6 +17,7 @@
 // You should have received a copy of the GNU Lesser General Public
 // License along with this library; if not, write to the Free Software
 // Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
+
 package com.jmex.bui;
 
 /**
@@ -24,38 +25,41 @@ package com.jmex.bui;
  */
 public class BoundedSnappingRangeModel extends BoundedRangeModel
 {
-	/**
-	 * Creates a bounded range model with the specified minimum, current, extent
-	 * and maximum values, and a snap period.
-	 */
-	public BoundedSnappingRangeModel(int min, int value, int extent, int max, int snap)
-	{
-		super(min, value, extent, max);
-		_snap = snap;
-	}
+    /**
+     * Creates a bounded range model with the specified minimum,
+     * current, extent and maximum values, and a snap period.
+     */
+    public BoundedSnappingRangeModel (
+            int min, int value, int extent, int max, int snap)
+    {
+        super(min, value, extent, max);
+        _snap = snap;
+    }
 
-	/**
-	 * Configures the value of this model. The new value will be adjusted if it
-	 * does not fall within the range of <code>min
-	 * <= value <= max - extent<code> or if value is not a modulus
-	 * of <code>snap</code>.
-	 */
-	public void setValue(int value)
-	{
-		int val = Math.min(_max - _extent, Math.max(_min, value));
-		int tmpval = val - (val % _snap);
-		// snapping is applied only if we are not at the end of the interval
-		if (tmpval + _snap < _max - _extent)
-		{
-			val = tmpval;
-		}
-		setRange(_min, val, _extent, _max);
-	}
+    /**
+     * Configures the value of this model.  The new value will be
+     * adjusted if it does not fall within the range of <code>min
+     * <= value <= max - extent<code> or if value is not a modulus
+     * of <code>snap</code>.
+     */
+    public void setValue (int value)
+    {
+        int val = Math.min(_max - _extent, Math.max(_min, value));
+        //val = val - (val % _snap);
+        int tmpval = val - (val % _snap);
+        // snapping is applied only if we are not at the end of the interval
+        if(tmpval + _snap < _max - _extent)
+        {
+        	val = tmpval;
+        }
+        setRange(_min, val, _extent, _max);
+    }
 
-	// documentation inherited
-	public int getScrollIncrement()
-	{
-		return _snap;
-	}
-	protected int _snap;
+    // documentation inherited
+    public int getScrollIncrement ()
+    {
+        return _snap;
+    }
+
+    protected int _snap;
 }

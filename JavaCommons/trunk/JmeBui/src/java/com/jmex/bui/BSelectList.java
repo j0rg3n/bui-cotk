@@ -93,6 +93,7 @@ public class BSelectList extends BSimpleScrollPane
 		{
 			addItem(items[ii]);
 		}
+		invalidate(); // Scrollbars might need updating due to this.
 	}
 
 	/**
@@ -270,7 +271,7 @@ public class BSelectList extends BSimpleScrollPane
 			else if (item instanceof BLabel)
 			{
 				BLabel l = (BLabel) item;
-				setUseTextWrap(l.useTextWrap());
+				setFit(l.getFit());
 				setIcon(l.getIcon());
 				setText(l.getText());
 			}

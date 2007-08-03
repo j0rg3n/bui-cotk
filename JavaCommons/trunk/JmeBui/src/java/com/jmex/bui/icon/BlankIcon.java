@@ -17,6 +17,7 @@
 // You should have received a copy of the GNU Lesser General Public
 // License along with this library; if not, write to the Free Software
 // Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
+
 package com.jmex.bui.icon;
 
 import com.jme.renderer.Renderer;
@@ -26,31 +27,29 @@ import com.jme.renderer.Renderer;
  */
 public class BlankIcon extends BIcon
 {
-	public BlankIcon(int width, int height)
-	{
-		_width = width;
-		_height = height;
-	}
+    public BlankIcon (int width, int height)
+    {
+        _width = width;
+        _height = height;
+    }
 
-	// documentation inherited
-	@Override
-	public int getWidth()
-	{
-		return _width;
-	}
+    // documentation inherited
+    public int getWidth ()
+    {
+        return _width;
+    }
 
-	// documentation inherited
-	@Override
-	public int getHeight()
-	{
-		return _height;
-	}
+    // documentation inherited
+    public int getHeight ()
+    {
+        return _height;
+    }
 
-	// documentation inherited
-	@Override
-	public void render(Renderer renderer, int x, int y, float alpha)
-	{
-		// nothing doing
-	}
-	protected int _width, _height;
+    // documentation inherited
+    public void render (Renderer renderer, int x, int y, float alpha)
+    {
+        // nothing doing
+    }
+
+    protected int _width, _height;
 }

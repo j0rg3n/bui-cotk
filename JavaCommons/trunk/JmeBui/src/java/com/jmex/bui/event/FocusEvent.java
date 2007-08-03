@@ -17,6 +17,7 @@
 // You should have received a copy of the GNU Lesser General Public
 // License along with this library; if not, write to the Free Software
 // Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
+
 package com.jmex.bui.event;
 
 /**
@@ -24,32 +25,32 @@ package com.jmex.bui.event;
  */
 public class FocusEvent extends BEvent
 {
-	private static final long serialVersionUID = -3955768035318382563L;
-	/** Indicates that a component gained the focus. */
-	public static final int FOCUS_GAINED = 0;
-	/** Indicates that a component lost the focus. */
-	public static final int FOCUS_LOST = 1;
+    /** Indicates that a component gained the focus. */
+    public static final int FOCUS_GAINED = 0;
 
-	public FocusEvent(Object source, long when, int type)
-	{
-		super(source, when);
-		_type = type;
-	}
+    /** Indicates that a component lost the focus. */
+    public static final int FOCUS_LOST = 1;
 
-	/**
-	 * Indicates whether this was a {@link #FOCUS_GAINED} or {@link #FOCUS_LOST}
-	 * event.
-	 */
-	public int getType()
-	{
-		return _type;
-	}
+    public FocusEvent (Object source, long when, int type)
+    {
+        super(source, when);
+        _type = type;
+    }
 
-	// documentation inherited
-	@Override
-	public boolean propagateUpHierarchy()
-	{
-		return false;
-	}
-	protected int _type;
+    /**
+     * Indicates whether this was a {@link #FOCUS_GAINED} or {@link
+     * #FOCUS_LOST} event.
+     */
+    public int getType ()
+    {
+        return _type;
+    }
+
+    // documentation inherited
+    public boolean propagateUpHierarchy ()
+    {
+        return false;
+    }
+
+    protected int _type;
 }

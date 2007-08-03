@@ -17,6 +17,7 @@
 // You should have received a copy of the GNU Lesser General Public
 // License along with this library; if not, write to the Free Software
 // Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
+
 package com.jmex.bui.util;
 
 /**
@@ -24,30 +25,30 @@ package com.jmex.bui.util;
  */
 public class Dimension
 {
-	/** The width of the entity in question. */
-	public int width;
-	/** The height of the entity in question. */
-	public int height;
+    /** The width of the entity in question. */
+    public int width;
 
-	public Dimension(int width, int height)
-	{
-		this.width = width;
-		this.height = height;
-	}
+    /** The height of the entity in question. */
+    public int height;
 
-	public Dimension(Dimension other)
-	{
-		width = other.width;
-		height = other.height;
-	}
+    public Dimension (int width, int height)
+    {
+        this.width = width;
+        this.height = height;
+    }
 
-	public Dimension()
-	{
-	}
+    public Dimension (Dimension other)
+    {
+        width = other.width;
+        height = other.height;
+    }
 
-	@Override
-	public String toString()
-	{
-		return width + "x" + height;
-	}
+    public Dimension ()
+    {
+    }
+
+    public String toString ()
+    {
+        return width + "x" + height;
+    }
 }
