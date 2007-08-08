@@ -852,7 +852,7 @@ public class BComponent
      */
     protected void renderBorder (Renderer renderer)
     {
-        BBorder border = new LineBorder(new ColorRGBA(1,0,0,1), 1); //getBorder();
+        BBorder border = DEBUG_DRAW_BORDERS ? new LineBorder(new ColorRGBA((float)Math.random(),(float)Math.random(),(float)Math.random(),1), 1) : getBorder();
         if (border != null) {
             border.render(renderer, 0, 0, _width, _height, _alpha);
         }
@@ -1060,6 +1060,7 @@ public class BComponent
     /** Temporary storage for scissor box queries. */
     protected static IntBuffer _bbuf = BufferUtils.createIntBuffer(16);
 
+    public static boolean DEBUG_DRAW_BORDERS = false;
     protected static final int STATE_COUNT = 3;
     protected static final String[] STATE_PCLASSES = { null, "hover", "disabled" };
 }
