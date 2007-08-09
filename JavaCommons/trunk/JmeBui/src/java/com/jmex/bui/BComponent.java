@@ -852,8 +852,9 @@ public class BComponent
      */
     protected void renderBorder (Renderer renderer)
     {
-        BBorder border = DEBUG_DRAW_BORDERS ? new LineBorder(new ColorRGBA((float)Math.random(),(float)Math.random(),(float)Math.random(),1), 1) : getBorder();
-        if (border != null) {
+        BBorder border = DEBUG_DRAW_BORDERS ? new LineBorder(new ColorRGBA((float)(hashCode()%8631)/8631f,(float)(hashCode()%5321)/5321f,(float)(hashCode()%7600)/7600f,1), 1) : getBorder();
+        if (border != null) 
+        {
             border.render(renderer, 0, 0, _width, _height, _alpha);
         }
     }
