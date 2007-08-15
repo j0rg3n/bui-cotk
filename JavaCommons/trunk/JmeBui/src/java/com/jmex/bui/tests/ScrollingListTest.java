@@ -20,36 +20,108 @@
 
 package com.jmex.bui.tests;
 
+import java.net.URL;
 import java.util.logging.Level;
 
 import com.jme.util.LoggingSystem;
 
 import com.jmex.bui.*;
 import com.jmex.bui.layout.GroupLayout;
+import com.jmex.bui.layout.TableLayout;
+import com.jmex.bui.background.TintedBackground;
+import com.jmex.bui.event.ComponentListener;
+import com.jmex.bui.event.MouseEvent;
+import com.jmex.bui.event.MouseListener;
 import com.jmex.bui.icon.ImageIcon;
 
 public class ScrollingListTest extends BaseTest
     implements BConstants
 {
+	BImage image = null;
+	class MySuperThing extends BContainer
+	{
+
+		public MySuperThing(String str)
+		{
+			setLayoutManager(new TableLayout(2));
+			MouseListener ml = new MouseListener()
+			{
+				MySuperThing t = MySuperThing.this;
+				public void mouseEntered(MouseEvent event)
+				{
+					t.setBackground(BComponent.DEFAULT, TintedBackground.blue);
+					t.setBackground(BComponent.HOVER, TintedBackground.blue);
+				}
+
+				public void mouseExited(MouseEvent event)
+				{
+					t.setBackground(BComponent.DEFAULT, null);
+					t.setBackground(BComponent.HOVER, null);
+				}
+
+				public void mousePressed(MouseEvent event)
+				{
+					t.setBackground(BComponent.DEFAULT, TintedBackground.red);
+					t.setBackground(BComponent.HOVER, TintedBackground.red);
+				}
+
+				public void mouseReleased(MouseEvent event)
+				{
+					t.setBackground(BComponent.DEFAULT, TintedBackground.green);
+					t.setBackground(BComponent.HOVER, TintedBackground.green);
+				}
+			};
+			add(new BButton("Button:"+str));
+			add(new BLabel(str, null, new ImageIcon(image)));
+			add(new BLabel("some string"));
+			add(new BLabel(null, null, new ImageIcon(image)));
+			for(int i = 0; i < getComponentCount(); i++)
+			{
+				if(getComponent(i) instanceof BButton)
+				{
+					// Do nothing about buttons.
+				}
+				else
+				{
+					getComponent(i).addListener(ml);
+				}
+			}
+			addListener(ml);
+		}
+		
+		
+	}
+	
     protected void createWindows (BRootNode root, BStyleSheet style)
     {
         BWindow window = new BDecoratedWindow(style, null);
         window.setLayoutManager(GroupLayout.makeVStretch());
 
-        BImage image = null;
+        
         try {
-            image = new BImage(getClass().getClassLoader().
-                               getResource("rsrc/textures/scroll_right.png"));
+        	URL url = getClass().getClassLoader().getResource("rsrc/textures/flag.png");
+        	System.out.println("url:"+url);
+            image = new BImage(url);
         } catch (Exception e) {
             e.printStackTrace(System.err);
+            throw new RuntimeException(e);
         }
 
+        /*
         BScrollingList<String, BButton> list =
             new BScrollingList<String, BButton>() {
             public BButton createComponent(String str) {
                 return new BButton(str);
             }
         };
+        */
+        BScrollingList<String, MySuperThing> list =
+            new BScrollingList<String, MySuperThing>() {
+            public MySuperThing createComponent(String str) {
+                return new MySuperThing(str);
+            }
+        };
+
 
         window.add(list);
 
@@ -69,3 +141,4 @@ public class ScrollingListTest extends BaseTest
         test.start();
     }
 }
+
