@@ -127,7 +127,7 @@ public class BSimpleScrollBar extends BContainer implements BConstants
 		@Override
 		public void mouseDragged(MouseEvent event)
 		{
-			if(_model == null || _well == null)
+			if(_model == null || _well == null || _well.getInsets() == null)
 				return;
 			int dv = 0;
 			int my = event.getY();
