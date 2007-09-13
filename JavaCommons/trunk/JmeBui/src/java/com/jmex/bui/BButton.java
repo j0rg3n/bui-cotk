@@ -146,15 +146,15 @@ public class BButton extends BLabel
                 return super.dispatchEvent(event);
 
             case MouseEvent.MOUSE_PRESSED:
-                if (mev.getButton() == 0) {
+                if (mev.getButton() == MouseEvent.BUTTON1) {
                     _pressed = true;
                     _armed = true;
-                } else if (mev.getButton() == 1) {
+                } else if (mev.getButton() == MouseEvent.BUTTON2) {
                     // clicking the right mouse button after arming the
                     // button disarms it
                     _armed = false;
                     // But we let the event slip, for other handlers
-                    blockevent = false;
+                    blockevent = true;
                     System.out.println("Not block event:"+this);
                 }
                 break;
