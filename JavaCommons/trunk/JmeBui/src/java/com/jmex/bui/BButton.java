@@ -154,9 +154,8 @@ public class BButton extends BLabel
                     // button disarms it
                     _armed = false;
                     // But we let the event slip, for other handlers
-                    blockevent = true;
-                    System.out.println("Not block event:"+this);
                 }
+                blockevent = true;
                 break;
 
             case MouseEvent.MOUSE_RELEASED:
