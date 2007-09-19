@@ -138,16 +138,16 @@ public class BSimpleScrollBar extends BContainer implements BConstants
 				_model.setValue(_sv + dv);
 				if (oldval != _model.getValue())
 				{
-					ImageBackground _well_background = (ImageBackground) _well.getBackground();
-					/*
+					//ImageBackground _well_background = (ImageBackground) _well.getBackground();
 					if (_well_background == null)
 					{
 						// HACK: here we duplicate the background (to get our own)
 						_well_background = (ImageBackground) _well.getBackground();
 						_well_background = new ImageBackground(_well_background.getMode(), _well_background.getImage());
 						_well.setBackground(BComponent.DEFAULT, _well_background);
+						_well.setBackground(BComponent.HOVER, _well_background);
 					}
-					*/
+					//System.out.println("-(_sy - my):"+(-(_sy - my)));
 					_well_background.setOffset(0, -(_sy - my));
 				}
 			}
@@ -173,4 +173,5 @@ public class BSimpleScrollBar extends BContainer implements BConstants
 	protected BButton _less, _more;
 	protected BComponent _well;
 	protected MouseWheelListener _wheelListener;
+	protected ImageBackground _well_background;
 }
