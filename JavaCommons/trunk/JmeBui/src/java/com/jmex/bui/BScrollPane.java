@@ -23,6 +23,9 @@ package com.jmex.bui;
 import org.lwjgl.opengl.GL11;
 
 import com.jme.renderer.Renderer;
+import com.jmex.bui.BContainer.ChildOp;
+import com.jmex.bui.event.BEvent;
+import com.jmex.bui.event.MouseEvent;
 import com.jmex.bui.event.MouseWheelListener;
 import com.jmex.bui.layout.BorderLayout;
 import com.jmex.bui.util.Dimension;
@@ -227,7 +230,50 @@ public class BScrollPane extends BContainer
             _valid = false;
             root.rootInvalidated(this);
         }
+        
+        
+        // documentation inherited
+        public void validate ()
+        {
+            if (!_valid) {
+                // lay ourselves out
+                layout();
 
+                // then validate our children
+                applyOperation(new ChildOp() {
+                    public void apply (BComponent child) {
+                        child.validate();
+                    }
+                });
+                
+                // and recompute our scrollbar range
+                {
+	                Insets insets = getInsets();
+	                int twidth = getWidth() - insets.getHorizontal();
+	                int theight = getHeight() - insets.getVertical();
+	                Dimension d = _target.getPreferredSize(twidth, theight);
+	                d.width = (_hmodel != null) ?
+	                    Math.max(d.width, twidth) : twidth;
+	                d.height = (_vmodel != null) ?
+	                    Math.max(d.height, theight) : theight;
+	                if (_vmodel != null) {
+	                    int extent = getHeight() - insets.getVertical();
+	                    int value = Math.max(0,Math.min(_vmodel.getValue(), d.height - extent));
+	                    _vmodel.setRange(0, value, extent, d.height);
+	                }
+	                if (_hmodel != null) {
+	                    int extent = getWidth() - insets.getHorizontal();
+	                    int value = Math.max(0,Math.min(_hmodel.getValue(), d.width - extent));
+	                    _hmodel.setRange(0, value, extent, d.width);
+	                }
+                }
+                
+                // finally mark ourselves as valid
+                _valid = true;
+            }
+        }
+        
+        
         // documentation inherited
         public void layout ()
         {
@@ -249,18 +295,6 @@ public class BScrollPane extends BContainer
 
             // lay out our target component
             _target.layout();
-
-            // and recompute our scrollbar range
-            if (_vmodel != null) {
-                int extent = getHeight() - insets.getVertical();
-                int value = Math.max(0,Math.min(_vmodel.getValue(), d.height - extent));
-                _vmodel.setRange(0, value, extent, d.height);
-            }
-            if (_hmodel != null) {
-                int extent = getWidth() - insets.getHorizontal();
-                int value = Math.max(0,Math.min(_hmodel.getValue(), d.width - extent));
-                _hmodel.setRange(0, value, extent, d.width);
-            }
         }
 
         // documentation inherited
@@ -358,6 +392,21 @@ public class BScrollPane extends BContainer
         protected final int getXOffset ()
         {
             return _hmodel == null ? 0 : -_hmodel.getValue();
+        }
+        
+        @Override
+		public boolean dispatchEvent(BEvent event)
+        {
+        	boolean handled = super.dispatchEvent(event);
+        	if(!handled && event instanceof MouseEvent)
+        	{
+        		MouseEvent mevent = (MouseEvent) event;
+        		if(mevent.getType() == MouseEvent.MOUSE_WHEELED)
+        		{
+        			return true; // We block these.
+        		}
+        	}
+        	return handled;
         }
 
         protected BoundedRangeModel _vmodel, _hmodel;

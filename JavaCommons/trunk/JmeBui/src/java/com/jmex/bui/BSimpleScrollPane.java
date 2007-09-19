@@ -78,7 +78,7 @@ public class BSimpleScrollPane extends BContainer
 			}
 		}
 		// Do we need a second validation ?
-		if (changed_anything || true)
+		if (changed_anything)
 			super.validate();
 	}
 
