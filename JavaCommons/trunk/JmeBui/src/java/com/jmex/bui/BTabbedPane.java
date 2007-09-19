@@ -21,6 +21,7 @@
 package com.jmex.bui;
 
 import java.util.ArrayList;
+import java.util.logging.Level;
 
 import com.jmex.bui.event.ActionEvent;
 import com.jmex.bui.event.ActionListener;
@@ -292,7 +293,7 @@ public class BTabbedPane extends BContainer
             try {
                 selectTab(Integer.parseInt(event.getAction()));
             } catch (Exception e) {
-                Log.log.warning("Got weird action event " + event + ".");
+            	Log.log.log(Level.WARNING, "Got weird action event " + event + ".", e);
             }
         }
     };
