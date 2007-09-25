@@ -87,6 +87,12 @@ public class ImageBackground extends BBackground
         _mode = mode;
         _image = image;
         _frame = frame;
+        
+        if(image == null)
+        {
+            Log.log.warning("ImageBackground:"+this+" has a null image! using fall-back image.");
+            Thread.dumpStack();
+        }
 
         // compute the frame for our framed mode if one was not specially provided
         if (_frame == null && (_mode == FRAME_X || _mode == FRAME_Y || _mode == FRAME_XY)) {
@@ -125,9 +131,7 @@ public class ImageBackground extends BBackground
         super.render(renderer, x, y, width, height, alpha);
     	if(_image == null)
     	{
-            Log.log.warning("ImageBackground:"+this+" has a null image!");
-            Thread.dumpStack();
-    		return;
+    		return; // Cannot render a null-image
     	}    	
         switch (_mode/3) {
         case CENTER:
