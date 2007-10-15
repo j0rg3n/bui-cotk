@@ -77,6 +77,17 @@ public abstract class BRootNode extends Geometry
      */
     public void addWindow (BWindow window, boolean topLayer)
     {
+    	// OAK: make sure no windows is here twize
+    	for(BWindow w : _windows)
+    	{
+    		if(w == window)
+    		{
+    			System.err.println("You may not add a window twize");
+    			Thread.dumpStack();
+    			return;
+    		}
+    	}
+    	
         // make a note of the current top window
         BWindow curtop = null;
         if (_windows.size() > 0) {

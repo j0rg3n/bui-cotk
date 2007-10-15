@@ -326,6 +326,12 @@ public class BComboBox extends BLabel
             for (int ii = 0; ii < _items.size(); ii++) {
                 addMenuItem(_items.get(ii));
             }
+            System.out.println("style-class:"+getStyleClass());
+        }
+        
+        public String getStyleClass()
+        {
+        	return BComboBox.this.getStyleClass()+"_popupmenu";
         }
 
         protected void itemSelected (BMenuItem item, long when, int modifiers) {
@@ -355,6 +361,12 @@ public class BComboBox extends BLabel
             }
             this.item = item;
         }
+
+        public String getStyleClass()
+        {
+        	return BComboBox.this.getStyleClass()+"_menuitem";
+        }
+
     }
 
     /** The index of the currently selected item. */
