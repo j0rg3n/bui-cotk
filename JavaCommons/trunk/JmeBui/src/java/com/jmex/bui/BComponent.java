@@ -556,7 +556,10 @@ public class BComponent
     
     public void removeAllListeners()
     {
-    	_listeners.clear();
+    	if (_listeners != null)
+		{
+			_listeners.clear();
+		}
     }
 
     /**
