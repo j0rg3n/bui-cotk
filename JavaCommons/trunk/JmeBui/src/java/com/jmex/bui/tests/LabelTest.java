@@ -21,8 +21,7 @@
 package com.jmex.bui.tests;
 
 import java.util.logging.Level;
-
-import com.jme.util.LoggingSystem;
+import java.util.logging.Logger;
 
 import com.jmex.bui.*;
 import com.jmex.bui.layout.GroupLayout;
@@ -70,7 +69,7 @@ public class LabelTest extends BaseTest
 
     public static void main (String[] args)
     {
-        LoggingSystem.getLogger().setLevel(Level.OFF);
+    	Logger.global.setLevel(Level.OFF);
         LabelTest test = new LabelTest();
         test.start();
     }

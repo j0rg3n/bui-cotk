@@ -22,8 +22,7 @@ package com.jmex.bui.tests;
 
 import java.net.URL;
 import java.util.logging.Level;
-
-import com.jme.util.LoggingSystem;
+import java.util.logging.Logger;
 
 import com.jmex.bui.*;
 import com.jmex.bui.layout.GroupLayout;
@@ -136,7 +135,7 @@ public class ScrollingListTest extends BaseTest
 
     public static void main (String[] args)
     {
-        LoggingSystem.getLogger().setLevel(Level.WARNING);
+    	Logger.global.setLevel(Level.WARNING);
         ScrollingListTest test = new ScrollingListTest();
         test.start();
     }

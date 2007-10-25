@@ -22,14 +22,13 @@ package com.jmex.bui.tests;
 
 import java.io.StringReader;
 import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import java.awt.Font;
 import javax.swing.text.AttributeSet;
 import javax.swing.text.StyleConstants;
 import javax.swing.text.html.CSS;
 import javax.swing.text.html.StyleSheet;
-
-import com.jme.util.LoggingSystem;
 
 import com.jmex.bui.BRootNode;
 import com.jmex.bui.BStyleSheet;
@@ -101,7 +100,7 @@ public class HTMLTest extends BaseTest
 
     public static void main (String[] args)
     {
-        LoggingSystem.getLogger().setLevel(Level.WARNING);
+    	Logger.global.setLevel(Level.WARNING);
         HTMLTest test = new HTMLTest();
         test.start();
     }
