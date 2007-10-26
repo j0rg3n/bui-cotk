@@ -45,9 +45,19 @@ public class BFileField extends BTextField
 	{
 		super(file == null ? "[Click to select file...]" : file.getAbsolutePath());
 		_selectedfile = file;
-		// setUseTextWrap(false);
-		System.err.println("FIXME: cannot call> setEnabled(false); as this requires the style-sheet to be ready.");
+		//setUseTextWrap(false);
+		//setEnabled(false);
 	}
+	
+	@Override
+	protected void wasAdded()
+	{
+		super.wasAdded();
+		
+		// We are never enabled (as the user may not write in us)
+		setEnabled(false);
+	}
+	
 
 	public void setFilterMode(FilterMode mode)
 	{

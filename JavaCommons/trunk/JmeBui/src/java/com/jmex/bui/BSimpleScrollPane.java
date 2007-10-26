@@ -68,13 +68,11 @@ public class BSimpleScrollPane extends BContainer
 			{
 				add(_vbar, BorderLayout.EAST);
 				changed_anything = true;
-				System.out.println("Added the scrollbar");
 			}
 			else if (_vport.getVModel().getExtent() >= _vport.getVModel().getRange() && _vbar.getParent() != null)
 			{
 				remove(_vbar);
 				changed_anything = true;
-				System.out.println("Removed the scrollbar");
 			}
 		}
 		// Do we need a second validation ?
