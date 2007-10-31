@@ -704,8 +704,11 @@ public class BComponent
                 int modifiers = kev.getModifiers(), keyCode = kev.getKeyCode();
                 if (keyCode == KeyInput.KEY_TAB) {
                     if (modifiers == 0) {
-                        getWindow().requestFocus(getNextFocus());
-                        processed = true;
+                    	if(getWindow() != null)
+                    	{
+                    		getWindow().requestFocus(getNextFocus());
+                    		processed = true;
+                    	}
                     } else if (modifiers == KeyEvent.SHIFT_DOWN_MASK) {
                         getWindow().requestFocus(getPreviousFocus());
                         processed = true;
