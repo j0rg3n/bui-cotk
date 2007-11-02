@@ -326,7 +326,6 @@ public class BComboBox extends BLabel
             for (int ii = 0; ii < _items.size(); ii++) {
                 addMenuItem(_items.get(ii));
             }
-            System.out.println("style-class:"+getStyleClass());
         }
         
         public String getStyleClass()
