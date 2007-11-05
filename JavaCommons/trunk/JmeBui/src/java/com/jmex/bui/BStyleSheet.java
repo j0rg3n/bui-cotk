@@ -250,14 +250,17 @@ public class BStyleSheet
         throws IOException
     {
         _rsrcprov = rsrcprov;
-        StreamTokenizer tok = new StreamTokenizer(new BufferedReader(reader));
-        tok.lowerCaseMode(true);
-        tok.slashSlashComments(true);
-        tok.slashStarComments(true);
-        tok.eolIsSignificant(false);
-        tok.wordChars('#', '#');
-        tok.wordChars('_', '_');
-        parse(tok);
+        if(reader != null)
+        {
+	        StreamTokenizer tok = new StreamTokenizer(new BufferedReader(reader));
+	        tok.lowerCaseMode(true);
+	        tok.slashSlashComments(true);
+	        tok.slashStarComments(true);
+	        tok.eolIsSignificant(false);
+	        tok.wordChars('#', '#');
+	        tok.wordChars('_', '_');
+	        parse(tok);
+        }
     }
 
     public ColorRGBA getColor (BComponent component, String pseudoClass)
