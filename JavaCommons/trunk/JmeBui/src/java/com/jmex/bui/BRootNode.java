@@ -486,7 +486,6 @@ public abstract class BRootNode extends Geometry
         for (int ii = _defaults.size()-1; ii >= 0; ii--) {
             BComponent deftarg = _defaults.get(ii);
             if (deftarg.dispatchEvent(event)) {
-            	System.out.println("hit default event targets "+deftarg);
                 return true;
             }
         }
