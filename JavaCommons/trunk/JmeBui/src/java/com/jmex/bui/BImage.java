@@ -201,6 +201,11 @@ public class BImage extends Quad
         }
         updateRenderState();
     }
+    
+    public boolean isTransparent ()
+    {
+    	return getRenderState(RenderState.RS_ALPHA) != null;
+    }
 
     /**
      * Configures the image data to be used by this image.
@@ -288,6 +293,9 @@ public class BImage extends Quad
             Thread.dumpStack();
             return;
         }
+        
+        sx += _toffset_x;
+    	sy += _theight-(_toffset_y+_height);
 
         setTextureCoords(sx, sy, swidth, sheight);
 
@@ -326,6 +334,34 @@ public class BImage extends Quad
             releaseTexture();
         }
     }
+    
+    /**
+     * Create this image as a sub-image of the given image.
+     * @param orig
+     * @param x
+     * @param y
+     * @param width
+     * @param height
+     */
+    public BImage (BImage orig, int x, int y, int width, int height)
+    {
+    	super("BImage("+width+"+"+x+"x"+height+"+"+y, width, height);
+    	_toffset_x = x;
+    	_toffset_y = y;
+    	_width = width;
+    	_height = height;
+    	_twidth = orig._twidth;
+    	_theight = orig._theight;
+    	setTransparent(orig.isTransparent());
+    	_tstate = orig._tstate;
+    	//_tstate = DisplaySystem.getDisplaySystem().getRenderer().createTextureState();
+    	//_tstate.setTexture(orig._tstate.getTexture());
+    	setRenderState(_tstate);
+        updateRenderState();
+    	//setImage(orig.)
+        // make sure we have a unique default color object
+        getBatch(0).getDefaultColor().set(ColorRGBA.white);
+    }
 
     /**
      * Helper constructor.
@@ -361,6 +397,7 @@ public class BImage extends Quad
 
     protected TextureState _tstate;
     protected int _width, _height;
+    protected int _toffset_x, _toffset_y;
     protected int _twidth, _theight;
     protected int _referents;
 
@@ -371,7 +408,7 @@ public class BImage extends Quad
             tstate.apply(); // preload
         }
         public void releaseTextures (TextureState tstate) {
-            tstate.deleteAll();
+            //tstate.deleteAll();
         }
     };
 
