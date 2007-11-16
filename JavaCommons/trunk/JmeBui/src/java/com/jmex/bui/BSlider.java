@@ -184,8 +184,16 @@ public class BSlider extends BComponent
         int offset = _model.getValue() - _model.getMinimum();
         if (_orient == HORIZONTAL) {
             y = (getHeight() - frob.getHeight())/2;
-            x = insets.left + (getWidth() - insets.getHorizontal() -
+            if (range == 0)
+			{
+            	x = insets.left + (getWidth() - insets.getHorizontal() -
+                        frob.getWidth()) * 1;
+			}
+            else
+            {
+            	x = insets.left + (getWidth() - insets.getHorizontal() -
                                frob.getWidth()) * offset / range;
+            }
         } else {
             x = (getWidth() - frob.getWidth())/2;
             y = insets.bottom + (getHeight() - insets.getVertical() -
