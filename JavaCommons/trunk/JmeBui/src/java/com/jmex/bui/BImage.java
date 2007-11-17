@@ -222,6 +222,9 @@ public class BImage extends Quad
 
         _twidth = image.getWidth();
         _theight = image.getHeight();
+    	_toffset_x = 0;
+    	_toffset_y = _theight - _height;
+
 
         texture.setFilter(Texture.FM_LINEAR);
         texture.setMipmapState(Texture.MM_LINEAR);
