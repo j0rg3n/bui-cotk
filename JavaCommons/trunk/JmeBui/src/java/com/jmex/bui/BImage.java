@@ -369,7 +369,7 @@ public class BImage extends Quad
     /**
      * Helper constructor.
      */
-    protected BImage (int width, int height)
+    public BImage (int width, int height)
     {
         super("name", width, height);
         _width = width;

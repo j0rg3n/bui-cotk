@@ -874,19 +874,27 @@ public class BComponent
     /**
      * Renders the border for this component.
      */
-    protected void renderBorder (Renderer renderer)
-    {
-        BBorder border = DEBUG_DRAW_BORDERS ? new LineBorder(new ColorRGBA((float)(hashCode()%8631)/8631f,(float)(hashCode()%5321)/5321f,(float)(hashCode()%7600)/7600f,1), 1) : getBorder();
-        if (border != null) 
-        {
-            border.render(renderer, 0, 0, _width, _height, _alpha);
-        }
-    }
+    protected void renderBorder(Renderer renderer)
+	{
+		if (DEBUG_DRAW_BORDERS)
+		{
+			BBorder border = new LineBorder(new ColorRGBA((float) (hashCode() % 8631) / 8631f, (float) (hashCode() % 5321) / 5321f, (float) (hashCode() % 7600) / 7600f, 1), 1);
+			border.render(renderer, 0, 0, _width, _height, _alpha);
+		}
+		else
+		{
+			BBorder border = getBorder();
+			if (border != null)
+			{
+				border.render(renderer, 0, 0, _width, _height, _alpha);
+			}
+		}
+	}
 
     /**
-     * Renders any custom bits for this component. This is called with the graphics context
-     * translated to (0, 0) relative to this component.
-     */
+	 * Renders any custom bits for this component. This is called with the
+	 * graphics context translated to (0, 0) relative to this component.
+	 */
     protected void renderComponent (Renderer renderer)
     {
     }
