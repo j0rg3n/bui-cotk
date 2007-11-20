@@ -411,7 +411,7 @@ public class BImage extends Quad
             tstate.apply(); // preload
         }
         public void releaseTextures (TextureState tstate) {
-            tstate.deleteAll();
+           // tstate.deleteAll();
         }
     };
 
