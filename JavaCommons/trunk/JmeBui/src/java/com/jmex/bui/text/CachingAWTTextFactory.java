@@ -38,10 +38,12 @@ import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 import java.text.AttributedString;
 
+import java.lang.ref.WeakReference;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Hashtable;
 import java.util.logging.Level;
 
 import org.lwjgl.opengl.GL11;
@@ -260,6 +262,20 @@ public class CachingAWTTextFactory extends BTextFactory
         // determine the size of our rendered text
         final Dimension size = new Dimension();
         Rectangle2D bounds = layout.getBounds();
+        
+        //System.out.println("createText("+origtext+", "+layout+", "+color+", "+effect+", "+effectSize);
+        BTextKey cached_key = null;
+        if(length < 40)
+        {
+	        cached_key = new BTextKey(origtext, layout, color, effect, effectSize, effectColor, length, useAdvance);
+	        WeakReference<BText> cached = cached_BTexts.get(cached_key);
+	        BText cached_text = null;
+	        if(cached != null && (cached_text = cached.get()) != null)
+	        {
+	        	//System.out.println("Using cached: "+origtext);
+	        	return cached_text;
+	        }
+        }
 
         // MacOS font rendering is buggy, so we must compute the outline and use that for bounds
         // computation and rendering
@@ -401,7 +417,7 @@ public class CachingAWTTextFactory extends BTextFactory
 //         idata.flip();
 
         // wrap it all up in the right object
-        return new BText() {
+        BText text = new BText() {
             public int getLength () {
                 return length;
             }
@@ -433,6 +449,9 @@ public class CachingAWTTextFactory extends BTextFactory
                 bimage.release();
             }
         };
+        if(cached_key != null)
+        	cached_BTexts.put(cached_key, new WeakReference<BText>(text));
+        return text;
     }
 
     /**
@@ -640,4 +659,57 @@ public class CachingAWTTextFactory extends BTextFactory
 	// For caching glow effect
 	HashMap<Character, BufferedImage> glow_backgrounds = new HashMap<Character, BufferedImage>();
 	HashMap<Character, BufferedImage> glow_foregrounds = new HashMap<Character, BufferedImage>();
+	
+	Hashtable<BTextKey, WeakReference<BText>> cached_BTexts = new Hashtable<BTextKey, WeakReference<BText>>();
+}
+
+class BTextKey
+{
+	String origtext;
+	TextLayout layout;
+	ColorRGBA color;
+	int effect;
+    int effectSize;
+    ColorRGBA effectColor;
+    int length;
+    boolean useAdvance;
+	private int hash_code;
+    
+    public BTextKey(String origtext, TextLayout layout, ColorRGBA color, int effect, int effectSize, ColorRGBA effectColor, int length, boolean useAdvance)
+	{
+		this.origtext = origtext;
+		this.layout = layout;
+		this.color = color;
+		this.effect = effect;
+		this.effectSize = effectSize;
+		this.effectColor = effectColor;
+		this.length = length;
+		this.useAdvance = useAdvance;
+		this.hash_code = (origtext+":"+effect+":"+effectSize+":"+effectColor+":"+length+":").hashCode();
+	}
+    
+    @Override
+    public int hashCode()
+    {
+    	return hash_code;
+    }
+
+
+	@Override
+    public boolean equals(Object obj)
+    {
+    	if(obj == null || !(obj instanceof BTextKey))
+    		return false;
+    	BTextKey o = (BTextKey) obj;
+    	return o.hash_code == hash_code;
+    	/*
+    	
+    	System.out.println("sdf:"+o.origtext);
+    	
+		return o.effect == effect && 
+				o.effectSize == effectSize &&
+				o.length == length && 
+				(effectColor == o.effectColor || (effectColor != null && effectColor.equals(o.effectColor)));
+	    */
+    }   
 }

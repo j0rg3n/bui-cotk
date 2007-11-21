@@ -407,6 +407,7 @@ public class BImage extends Quad
     protected static boolean _supportsNonPowerOfTwo;
 
     protected static TexturePool _texturePool = new TexturePool() {
+    	
         public void acquireTextures (TextureState tstate) {
             tstate.apply(); // preload
         }
