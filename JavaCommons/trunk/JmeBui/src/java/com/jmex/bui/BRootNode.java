@@ -408,7 +408,7 @@ public abstract class BRootNode extends Geometry
         }
 
         // render all of our windows
-        for (int ii = 0, ll = _windows.size(); ii < ll; ii++) {
+        for (int ii = 0; ii < _windows.size(); ii++) {
             BWindow win = _windows.get(ii);
             try {
                 if (win == modalWin) {
