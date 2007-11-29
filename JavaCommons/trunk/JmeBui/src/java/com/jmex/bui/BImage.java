@@ -424,4 +424,9 @@ public class BImage extends Quad
         blendState.setEnabled(true);
         _supportsNonPowerOfTwo = GLContext.getCapabilities().GL_ARB_texture_non_power_of_two;
     }
+
+	public int getReferenceCount()
+	{
+		return _referents;
+	}
 }

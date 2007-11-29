@@ -418,39 +418,60 @@ public class CachingAWTTextFactory extends BTextFactory
 
         // wrap it all up in the right object
         BText text = new BText() {
-            public int getLength () {
+            @Override
+			public int getLength () {
                 return length;
             }
-            public Dimension getSize () {
+            @Override
+			public Dimension getSize () {
                 return size;
             }
-            public int getHitPos (int x, int y) {
+            @Override
+			public int getHitPos (int x, int y) {
                 TextHitInfo info = layout.hitTestChar(x, y);
                 return info.getInsertionIndex();
             }
-            public int getCursorPos (int index) {
+            @Override
+			public int getCursorPos (int index) {
                 Shape[] carets = layout.getCaretShapes(index);
                 Rectangle2D bounds = carets[0].getBounds2D();
                 return (int)Math.round(bounds.getX() + bounds.getWidth()/2);
             }
-            public void wasAdded () {
+            @Override
+			public void wasAdded () {
                 bimage.reference();
             }
-            public void wasRemoved () {
+            @Override
+			public void wasRemoved () {
                 bimage.release();
             }
-            public void render (Renderer renderer, int x, int y, float alpha) {
-                bimage.render(renderer, x, y, alpha);
+            @Override
+			public void render (Renderer renderer, int x, int y, float alpha) {
+            	if(bimage.getReferenceCount() == 0)
+            	{
+            		new Exception("Unadded text: "+origtext).printStackTrace();
+            	}
+            	else
+            	{
+            		bimage.render(renderer, x, y, alpha);
+            	}
             }
-            public void render (Renderer renderer, int x, int y, int w, int h, float alpha) {
-                bimage.render(renderer, x, y, w, h, alpha);
-            }
-            public void release () {
-                bimage.release();
+            @Override
+			public void render (Renderer renderer, int x, int y, int w, int h, float alpha) {
+            	if(bimage.getReferenceCount() == 0)
+            	{
+            		new Exception("Unadded text: "+origtext).printStackTrace();
+            	}
+            	else
+            	{
+                    bimage.render(renderer, x, y, w, h, alpha);
+            	}
             }
         };
         if(cached_key != null)
+        {
         	cached_BTexts.put(cached_key, new WeakReference<BText>(text));
+        }
         return text;
     }
 
