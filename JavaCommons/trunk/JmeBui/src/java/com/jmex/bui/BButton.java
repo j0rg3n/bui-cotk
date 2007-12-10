@@ -74,6 +74,20 @@ public class BButton extends BLabel
     }
 
     /**
+     * Creates a button with the specified label and action with the specified style. The action will be
+     * dispatched via an {@link ActionEvent} to the specified {@link
+     * ActionListener} when the button is clicked.
+     */
+    public BButton (String text, ActionListener listener, String action, String styleClass)
+    {
+        super(text, styleClass);
+        _action = action;
+        if (listener != null) {
+            addListener(listener);
+        }
+    }
+    
+    /**
      * Creates a button with the specified icon and action. The action will be
      * dispatched via an {@link ActionEvent} when the button is clicked.
      */
