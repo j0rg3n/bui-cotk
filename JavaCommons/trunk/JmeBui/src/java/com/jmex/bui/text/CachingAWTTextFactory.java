@@ -706,7 +706,7 @@ class BTextKey
 		this.effectColor = effectColor;
 		this.length = length;
 		this.useAdvance = useAdvance;
-		this.hash_code = (origtext+":"+effect+":"+effectSize+":"+effectColor+":"+length+":").hashCode();
+		this.hash_code = (origtext+":"+color+":"+effect+":"+effectSize+":"+effectColor+":"+length+":").hashCode();
 	}
     
     @Override
