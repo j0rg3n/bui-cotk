@@ -123,14 +123,15 @@ public class CachingAWTTextFactory extends BTextFactory
             gfx.dispose();
         }
 
-        return createText(text, layout, color, effect, effectSize, effectColor,
+        return createText(text, text, layout, color, effect, effectSize, effectColor,
                           text.length(), useAdvance);
     }
 
     // documentation inherited
-    public BText[] wrapText (String text, ColorRGBA color, int effect, int effectSize,
+    public BText[] wrapText (String origtext, ColorRGBA color, int effect, int effectSize,
                              ColorRGBA effectColor, int maxWidth)
     {
+    	String text = new String(origtext);
         // the empty string will break things; so use a single space instead
         if (text.length() == 0) {
             text = " ";
@@ -172,7 +173,9 @@ public class CachingAWTTextFactory extends BTextFactory
                     pos++;
                 }
 
-                texts.add(createText(text.substring(unmodpos - length, unmodpos), layout, color, effect, effectSize, effectColor, length, true));
+                //System.out.println("("+unmodpos+" - "+length+") == 0 && "+pos+" == "+text.length()+"-1");
+                boolean one_liner = (unmodpos - length) == 0 && pos == text.length();
+                texts.add(createText(one_liner ? origtext : null, text.substring(unmodpos - length, unmodpos), layout, color, effect, effectSize, effectColor, length, true));
             }
 
         } finally {
@@ -255,24 +258,30 @@ public class CachingAWTTextFactory extends BTextFactory
 	}
 
     /** Helper function. */
-    protected BText createText (final String origtext, final TextLayout layout, ColorRGBA color, final int effect,
-                                final int effectSize, ColorRGBA effectColor, final int length,
-                                boolean useAdvance)
+    protected BText createText (final String styledtext, final String origtext, final TextLayout layout, 
+    							ColorRGBA color, final int effect, final int effectSize, ColorRGBA effectColor, 
+    							final int length, boolean useAdvance)
     {
         // determine the size of our rendered text
         final Dimension size = new Dimension();
         Rectangle2D bounds = layout.getBounds();
         
-        //System.out.println("createText("+origtext+", "+layout+", "+color+", "+effect+", "+effectSize);
+        //System.out.println("createText("+styledtext+", "+origtext+", "+layout+", "+color+", "+effect+", "+effectSize);
         BTextKey cached_key = null;
-        if(length < 40)
+        if(length < 40 && styledtext != null)
         {
-	        cached_key = new BTextKey(origtext, layout, color, effect, effectSize, effectColor, length, useAdvance);
+	        cached_key = new BTextKey(styledtext);
 	        WeakReference<BText> cached = cached_BTexts.get(cached_key);
 	        BText cached_text = null;
 	        if(cached != null && (cached_text = cached.get()) != null)
 	        {
-	        	//System.out.println("Using cached: "+origtext);
+	        	/*
+	        	if(!styledtext.equals(origtext))
+	        	{
+	        		System.err.println("Using cached: "+styledtext+" : "+origtext);
+	        		Thread.dumpStack();
+	        	}
+	        	*/
 	        	return cached_text;
 	        }
         }
@@ -546,7 +555,7 @@ public class CachingAWTTextFactory extends BTextFactory
 
             int parenidx = text.indexOf('(', ii);
             if (parenidx == -1) {
-                Log.log.info("Invalid style specification, missing paren " +
+                Log.log.warning("Invalid style specification, missing paren " +
                                 "[text=" + text + ", pos=" + ii + "].");
                 continue;
             }
@@ -687,32 +696,18 @@ public class CachingAWTTextFactory extends BTextFactory
 class BTextKey
 {
 	String origtext;
-	TextLayout layout;
-	ColorRGBA color;
-	int effect;
-    int effectSize;
-    ColorRGBA effectColor;
-    int length;
-    boolean useAdvance;
-	private int hash_code;
+	//private int hash_code;
     
-    public BTextKey(String origtext, TextLayout layout, ColorRGBA color, int effect, int effectSize, ColorRGBA effectColor, int length, boolean useAdvance)
+    public BTextKey(String origtext)
 	{
 		this.origtext = origtext;
-		this.layout = layout;
-		this.color = color;
-		this.effect = effect;
-		this.effectSize = effectSize;
-		this.effectColor = effectColor;
-		this.length = length;
-		this.useAdvance = useAdvance;
-		this.hash_code = (origtext+":"+color+":"+effect+":"+effectSize+":"+effectColor+":"+length+":").hashCode();
+		//this.hash_code = (origtext+":"+color+":"+effect+":"+effectSize+":"+effectColor+":"+length+":").hashCode();
 	}
     
     @Override
     public int hashCode()
     {
-    	return hash_code;
+    	return origtext != null ? origtext.hashCode() : 0;
     }
 
 
@@ -722,7 +717,7 @@ class BTextKey
     	if(obj == null || !(obj instanceof BTextKey))
     		return false;
     	BTextKey o = (BTextKey) obj;
-    	return o.hash_code == hash_code;
+    	return origtext != null ? origtext.equals(o.origtext) : o.origtext == null;
     	/*
     	
     	System.out.println("sdf:"+o.origtext);
