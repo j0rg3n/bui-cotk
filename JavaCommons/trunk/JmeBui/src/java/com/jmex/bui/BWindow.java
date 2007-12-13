@@ -255,7 +255,7 @@ public class BWindow extends BContainer
     /**
      * Requests that the specified component be given the input focus.
      */
-    protected void requestFocus (BComponent component)
+    public void requestFocus (BComponent component)
     {
         if (_root == null) {
             _savedFocus = component;
