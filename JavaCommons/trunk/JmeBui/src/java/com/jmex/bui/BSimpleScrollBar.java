@@ -131,7 +131,11 @@ public class BSimpleScrollBar extends BContainer implements BConstants
 				return;
 			int dv = 0;
 			int my = event.getY();
-			dv = (_sy - my) * _model.getRange() / (_well.getHeight() - _well.getInsets().getVertical());
+			int dvd = _well.getHeight() - _well.getInsets().getVertical();
+			if (dvd != 0)
+			{
+				dv = (_sy - my) * _model.getRange() /dvd;
+			}
 			if (dv != 0)
 			{
 				int oldval = _model.getValue();
