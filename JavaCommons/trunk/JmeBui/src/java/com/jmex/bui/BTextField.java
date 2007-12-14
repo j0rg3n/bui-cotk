@@ -25,7 +25,6 @@ import org.lwjgl.opengl.GL11;
 import com.jme.renderer.ColorRGBA;
 import com.jme.renderer.Renderer;
 
-import com.jmex.bui.background.BBackground;
 import com.jmex.bui.event.ActionEvent;
 import com.jmex.bui.event.BEvent;
 import com.jmex.bui.event.FocusEvent;
@@ -245,7 +244,8 @@ public class BTextField extends BTextComponent
                             setCursorPos(_cursp + 1);
                         }
                     } else {
-                        return super.dispatchEvent(event);
+                        //return super.dispatchEvent(event);
+                    	return true;
                     }
                     break;
                 }
