@@ -23,6 +23,7 @@ package com.jmex.bui;
 import org.lwjgl.opengl.GL11;
 
 import java.util.ArrayList;
+import java.util.logging.Level;
 
 import com.jme.renderer.ColorRGBA;
 import com.jme.renderer.Renderer;
@@ -393,7 +394,10 @@ public class Label
         }
 
         // render up some new text
-        BTextFactory tfact = _container.getTextFactory(this);
+        BTextFactory tfact = _container.getTextFactory();
+        if(tfact == null) {
+        	Log.log.log(Level.WARNING, "The text-factory was null for "+this+" with text "+_value, new Throwable());
+        }
         Text text = new Text();
         text.lines = tfact.wrapText(
             _value, config.color, config.effect, config.effectSize, config.effectColor, twidth);
