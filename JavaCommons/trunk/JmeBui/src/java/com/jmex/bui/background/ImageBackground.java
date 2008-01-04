@@ -240,11 +240,13 @@ public class ImageBackground extends BBackground
 		// height -= (_offsety - height);
 		if (_offsety != 0)
 		{
-			y -= (height - _image.getHeight() - _offsety);
+			y += _offsety;
+			height -= _offsety; 
 		}
 		if (_offsetx != 0)
 		{
-			x -= (width - _image.getWidth() - _offsetx);
+			x += _offsetx;
+			width -= _offsetx;
 		}
 		// height -= (height - _image.getHeight() - _offsety);
 		_image.render(renderer, x, y, width, height, alpha);
