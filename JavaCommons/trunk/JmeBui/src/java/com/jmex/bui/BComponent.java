@@ -22,10 +22,13 @@ package com.jmex.bui;
 
 import java.nio.IntBuffer;
 
+import java.security.InvalidParameterException;
 import java.util.ArrayList;
 import java.util.HashMap;
 
 import org.lwjgl.opengl.GL11;
+import org.lwjgl.opengl.OpenGLException;
+import org.lwjgl.opengl.Util;
 
 import com.jme.input.KeyInput;
 import com.jme.renderer.ColorRGBA;
@@ -523,6 +526,11 @@ public class BComponent
         if (_width != width || _height != height) {
             _width = width;
             _height = height;
+            
+            if(_width < 0 || _height < 0)
+            {
+            	throw new InvalidParameterException("The width or height was invalid: "+_width+"x"+_height);
+            }
             invalidate();
         }
     }
@@ -665,6 +673,17 @@ public class BComponent
 
         } finally {
             GL11.glTranslatef(-_x, -_y, 0);
+        }
+        
+        try
+        {
+        	Util.checkGLError();
+        }
+        catch(OpenGLException ogle)
+        {
+        	ogle.printStackTrace();
+        	System.err.println("Failed in "+this);
+        	System.exit(-1);
         }
     }
 
