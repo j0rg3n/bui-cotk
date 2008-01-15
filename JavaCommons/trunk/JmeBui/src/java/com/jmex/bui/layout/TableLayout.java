@@ -81,6 +81,17 @@ public class TableLayout extends BLayoutManager
         _halign = horiz_align;
         _valign = vert_align;
     }
+    
+    /**
+     * Creates a table layout with the specified number of columns and a zero pixel gap between
+     * rows and columns. also takes Alignment 
+     */
+    public TableLayout (int columns, int rowgap, int colgap,  Alignment vert_align, Alignment horiz_align)
+    {
+        this(columns, rowgap, colgap);
+        _halign = horiz_align;
+        _valign = vert_align;
+    }
 
     /**
      * Creates a table layout with the specified number of columns and the specifeid gap between
