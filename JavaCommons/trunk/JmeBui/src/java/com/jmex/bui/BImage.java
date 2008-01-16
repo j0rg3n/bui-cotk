@@ -25,13 +25,13 @@ import java.net.URL;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.nio.FloatBuffer;
+
 import javax.imageio.ImageIO;
 
 import java.awt.Graphics2D;
 import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
 
-import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GLContext;
 
 import com.jme.image.Image;
@@ -191,7 +191,7 @@ public class BImage extends Quad
         {
         	for(int y = 0; y < _height; y++)
         	{
-        		scratch.put(data, y*_width, _width*bpp);
+        		scratch.put(data, y*_width*bpp, _width*bpp);
         		// Just fill crap in for the rest
         		scratch.put(data, 0, (twidth - _width)*bpp);
         	}
