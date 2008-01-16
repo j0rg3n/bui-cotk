@@ -212,7 +212,7 @@ public class BoundedRangeModel
     {
         return new MouseWheelListener() {
             public void mouseWheeled (MouseEvent event) {
-                int delta = getScrollIncrement();
+                int delta = getScrollIncrement() * 6;
                 if ((event.getModifiers() & MouseEvent.CTRL_DOWN_MASK) != 0) {
                     delta *= 2;
                 }
