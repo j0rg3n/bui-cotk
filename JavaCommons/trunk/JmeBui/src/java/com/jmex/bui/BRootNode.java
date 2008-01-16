@@ -653,7 +653,7 @@ public abstract class BRootNode extends Geometry
     protected int _mouseX, _mouseY;
 
     protected BWindow _tipwin;
-    protected float _lastMoveTime, _tipTime = 1f, _lastTipTime;
+    protected float _lastMoveTime, _tipTime = 0.2f, _lastTipTime;
     protected int _tipWidth = -1;
     protected ColorRGBA _modalShade;
 
