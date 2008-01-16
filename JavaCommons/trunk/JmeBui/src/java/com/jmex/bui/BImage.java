@@ -158,6 +158,61 @@ public class BImage extends Quad
         // make sure we have a unique default color object
         getBatch(0).getDefaultColor().set(ColorRGBA.white);
     }
+    
+    /**
+     * This will re-upload the image data (note how-ever that "flip" is currently not supported).
+     * @param image
+     * @param flip
+     */
+    public void reUploadImage(BufferedImage image, boolean flip)
+    {
+    	// We can only do this with equal size.
+        assert (image.getWidth(null) == getWidth() 
+        		&& image.getHeight(null) == getHeight());
+
+        // expand the texture data to a power of two if necessary
+        int twidth = _width, theight = _height;
+        if (!_supportsNonPowerOfTwo) {
+            twidth = nextPOT(twidth);
+            theight = nextPOT(theight);
+        }
+
+        // grab the image memory and stuff it into a direct byte buffer
+        ByteBuffer scratch = getTextureState().getTexture().getImage().getData();
+        scratch.clear();
+        int bpp = (TextureManager.hasAlpha(image) ? 4 : 3);
+        byte data[] = (byte[])image.getRaster().getDataElements(0, 0, getWidth(), getHeight(), null);
+        if(_width == twidth && _height == theight)
+        {
+        	// Easy !
+        	scratch.put(data);
+        }
+        else
+        {
+        	for(int y = 0; y < _height; y++)
+        	{
+        		scratch.put(data, y*_width, _width*bpp);
+        		// Just fill crap in for the rest
+        		scratch.put(data, 0, (twidth - _width)*bpp);
+        	}
+        }
+        scratch.flip();
+        //Image textureImage = new Image();
+        Image textureImage = getTextureState().getTexture().getImage();
+        //textureImage.setType(hasAlpha ? Image.RGBA8888 : Image.RGB888);
+        //textureImage.setWidth(twidth);
+        //textureImage.setHeight(theight);
+        textureImage.setData(scratch);
+        getTextureState().setNeedsRefresh(true);
+        getTextureState().load(0);
+        updateRenderState();
+
+        //setImage(textureImage);
+
+        // make sure we have a unique default color object
+        //getBatch(0).getDefaultColor().set(ColorRGBA.white);
+    }
+
 
     /**
      * Creates an image of the specified size, using the supplied JME image data. The image should
@@ -390,6 +445,15 @@ public class BImage extends Quad
         if (_tstate.getNumberOfSetTextures() > 0) {
             _texturePool.releaseTextures(_tstate);
         }
+    }
+    
+    /**
+     * Return the texture state for changing things (advanced).
+     * @return
+     */
+    public TextureState getTextureState()
+    {
+    	return _tstate;
     }
 
     /** Rounds the supplied value up to a power of two. */
