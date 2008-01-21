@@ -178,7 +178,8 @@ public class BImage extends Quad
         }
 
         // grab the image memory and stuff it into a direct byte buffer
-        ByteBuffer scratch = getTextureState().getTexture().getImage().getData();
+        Image textureImage = getTextureState().getTexture().getImage();
+        ByteBuffer scratch = textureImage.getData();
         scratch.clear();
         int bpp = (TextureManager.hasAlpha(image) ? 4 : 3);
         byte data[] = (byte[])image.getRaster().getDataElements(0, 0, getWidth(), getHeight(), null);
@@ -198,11 +199,10 @@ public class BImage extends Quad
         }
         scratch.flip();
         //Image textureImage = new Image();
-        Image textureImage = getTextureState().getTexture().getImage();
         //textureImage.setType(hasAlpha ? Image.RGBA8888 : Image.RGB888);
         //textureImage.setWidth(twidth);
         //textureImage.setHeight(theight);
-        textureImage.setData(scratch);
+        //textureImage.setData(scratch);
         getTextureState().setNeedsRefresh(true);
         getTextureState().load(0);
         updateRenderState();
