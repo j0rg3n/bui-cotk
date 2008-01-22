@@ -160,6 +160,15 @@ public class BImage extends Quad
     }
     
     /**
+     * Construct a BImage from a JME-image.
+     * @param image
+     */
+    public BImage(Image image) {
+    	this(image.getWidth(), image.getHeight());
+    	setImage(image);
+    }
+    
+    /**
      * This will re-upload the image data (note how-ever that "flip" is currently not supported).
      * @param image
      * @param flip
