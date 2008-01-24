@@ -821,6 +821,12 @@ public class BComponent
      */
     protected void configureStyle (BStyleSheet style)
     {
+    	if(style == _stylesheet)
+    		return;
+    	
+    	// Added by OAK to avoid re-styling.
+    	_stylesheet = style;
+
         if (_preferredSize == null) {
             _preferredSize = style.getSize(this, null);
         }
@@ -1097,6 +1103,9 @@ public class BComponent
     protected String _tiptext;
     protected String _tipStyle;
     protected boolean _tipmouse;
+    
+    // Added by OAK: optimize re-adding
+    protected transient BStyleSheet _stylesheet;
 
     protected boolean _valid, _enabled = true, _visible = true, _hover;
     protected float _alpha = 1f;
