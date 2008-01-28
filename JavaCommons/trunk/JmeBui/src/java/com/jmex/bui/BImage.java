@@ -403,34 +403,6 @@ public class BImage extends Quad
     }
     
     /**
-     * Create this image as a sub-image of the given image.
-     * @param orig
-     * @param x
-     * @param y
-     * @param width
-     * @param height
-     */
-    public BImage (BImage orig, int x, int y, int width, int height)
-    {
-    	super("BImage("+width+"+"+x+"x"+height+"+"+y, width, height);
-    	_toffset_x = x;
-    	_toffset_y = y;
-    	_width = width;
-    	_height = height;
-    	_twidth = orig._twidth;
-    	_theight = orig._theight;
-    	setTransparent(orig.isTransparent());
-    	_tstate = orig._tstate;
-    	//_tstate = DisplaySystem.getDisplaySystem().getRenderer().createTextureState();
-    	//_tstate.setTexture(orig._tstate.getTexture());
-    	setRenderState(_tstate);
-        updateRenderState();
-    	//setImage(orig.)
-        // make sure we have a unique default color object
-        getBatch(0).getDefaultColor().set(ColorRGBA.white);
-    }
-
-    /**
      * Helper constructor.
      */
     public BImage (int width, int height)
