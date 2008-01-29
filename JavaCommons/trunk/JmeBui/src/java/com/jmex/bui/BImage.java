@@ -411,6 +411,7 @@ public class BImage extends Quad
         _width = width;
         _height = height;
         _tstate = DisplaySystem.getDisplaySystem().getRenderer().createTextureState();
+        clearRenderState(RenderState.RS_MATERIAL);
         setTransparent(true);
     }
 
