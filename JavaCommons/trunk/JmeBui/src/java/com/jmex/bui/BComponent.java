@@ -988,7 +988,7 @@ public class BComponent
     /**
      * Returns the window that defines the root of our component hierarchy.
      */
-    protected BWindow getWindow ()
+    public BWindow getWindow ()
     {
         if (this instanceof BWindow) {
             return (BWindow)this;
