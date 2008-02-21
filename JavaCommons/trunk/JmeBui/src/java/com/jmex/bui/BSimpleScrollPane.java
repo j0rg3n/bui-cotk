@@ -42,42 +42,59 @@ public class BSimpleScrollPane extends BContainer
 	{
 		return _vport.getVModel();
 	}
+	
+	@Override
+	public void setBounds(int x, int y, int width, int height)
+	{
+	    if (_height != height) {
+	    	int diff = height - _height;
+	    	int ext = getModel().getExtent();
+	    	int new_ext = ext+diff;
+	    	int max = getModel().getMaximum();
+	    	int min = getModel().getMinimum();
+	    	int val = getModel().getValue();
+	    	int new_val = val-diff;
+	    	getModel().setRange(min, new_val, new_ext, max);
+	    }
+	    // Ok, lets do it then.
+		super.setBounds(x, y, width, height);
+	}
 
 	@Override
 	public void validate()
 	{
-		// Make sure our main-area is also re-evaluated
-		/*
-		 * Dimension dim = mainarea.getPreferredSize(_vport.getWidth(),
-		 * _vport.getHeight()); System.out.println("mainarea[1]: "+dim.height);
-		 * mainarea.invalidate(); mainarea.validate();
-		 * System.out.println("mainarea[2]: "+mainarea.getHeight());
-		 */
-		// _vport.getVModel().setValue(_vport.getVModel().getValue());
 		// Do the first validation
 		super.validate();
-		// Is the mainpane too small compared to the viewport and scroll ?
-		// mainarea.validate();
-		// _vport.getVModel().setRange(_vport.getVModel().getMinimum(),
-		// _vport.getVModel().getValue(), _vport.getVModel().getExtent(),
-		// _vport.getVModel().getMaximum());
+
+		// Figure out if we need an other one.
 		boolean changed_anything = false;
 		if (autohidescrollers)
 		{
-			if (_vport.getVModel().getExtent() < _vport.getVModel().getRange() && _vbar.getParent() == null)
+			if (getModel().getExtent() < getModel().getRange() && _vbar.getParent() == null)
 			{
 				add(_vbar, BorderLayout.EAST);
 				changed_anything = true;
 			}
-			else if (_vport.getVModel().getExtent() >= _vport.getVModel().getRange() && _vbar.getParent() != null)
+			else if (getModel().getExtent() >= getModel().getRange() && _vbar.getParent() != null)
 			{
 				remove(_vbar);
 				changed_anything = true;
 			}
 		}
+		
 		// Do we need a second validation ?
 		if (changed_anything)
+		{
+			invalidate();
 			super.validate();
+		}
+	}
+	
+	@Override
+	public void invalidate()
+	{
+		getViewport().invalidate();
+		super.invalidate();
 	}
 
 	public BViewport getViewport()

@@ -15,6 +15,8 @@ public class UniformLayout extends BLayoutManager
 	public static final UniformSize FULL_PARENT_SIZE = new UniformSize(0, 0, 0, 0, 1, 0, 1, 0);
 	/** Example showing a 100x100 in the center */
 	public static final UniformSize CENTERED_100x100_SIZE = new UniformSize(0.5f, -50, 0.5f, -50, 0, 100, 0, 100);
+	/** Example showing centered with 10px padding on each side */
+	public static final UniformSize CENTERED_WITH_10PX_PADDING = new UniformSize(0f, 10, 0f, 10, 1, -20, 1, -20);
 	
 	Hashtable<BComponent, UniformSize> constraints = new Hashtable<BComponent, UniformSize>();
 	Dimension preferredSize = new Dimension(-1, -1);
@@ -85,6 +87,9 @@ public class UniformLayout extends BLayoutManager
 	@Override
 	public Dimension computePreferredSize(BContainer target, int whint, int hhint)
 	{
+		int w = target.getWidth();
+		int h = target.getHeight();
+		
 		// TODO: make this work with other things than "full size"
 		if(preferredSize.width == -1 || preferredSize.height == -1)
 		{
@@ -109,9 +114,12 @@ public class UniformLayout extends BLayoutManager
             BContainer parent = comp.getParent();
             UniformSize size = constraints.get(comp);
             //Rectangle r = (Rectangle)cons;
-            comp.setBounds(insets.left + size.getX(parent),
-                    (_flipped ? height - size.getH(parent) - insets.top - size.getY(parent) : 
-                               insets.bottom + size.getY(parent)), size.getW(parent), size.getH(parent));
+            int x = insets.left + size.getX(parent);
+            int y = (_flipped ? height - size.getH(parent) - insets.top - size.getY(parent) : 
+                insets.bottom + size.getY(parent));
+            int w = size.getW(parent);
+            int h = size.getH(parent);
+            comp.setBounds(x, y, w, h);
         }
 	}
 	

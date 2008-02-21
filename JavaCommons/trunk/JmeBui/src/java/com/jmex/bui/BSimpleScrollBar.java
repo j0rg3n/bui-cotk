@@ -1,5 +1,6 @@
 package com.jmex.bui;
 
+import com.jme.renderer.Renderer;
 import com.jmex.bui.BButton;
 import com.jmex.bui.BComponent;
 import com.jmex.bui.BConstants;
@@ -100,6 +101,35 @@ public class BSimpleScrollBar extends BContainer implements BConstants
 		// we do special processing for the thumb
 		return super.getHitComponent(mx, my);
 	}
+	
+	@Override
+	public void render(Renderer renderer)
+	{
+		// Ensure the chain is following the scroll-pane
+		if(_model.getValue() != _lastModelValue)
+		{
+			int dvd = _well.getHeight() - _well.getInsets().getVertical();
+			if(dvd != 0 && _model.getRange() != 0)
+			{
+				int speed_mod = _model.getRange()/dvd;
+				if(speed_mod != 0)
+				{
+					if (_well_background == null)
+					{
+						// HACK: here we duplicate the background (to get our own)
+						_well_background = (ImageBackground) _well.getBackground();
+						_well_background = new ImageBackground(_well_background.getMode(), _well_background.getImage());
+						_well.setBackground(BComponent.DEFAULT, _well_background);
+						_well.setBackground(BComponent.HOVER, _well_background);
+					}
+					_well_background.setOffset(0, -_model.getValue()/speed_mod);
+				}
+			}
+		}
+		_lastModelValue = _model.getValue();
+		
+		super.render(renderer);
+	}
 
 	/**
 	 * Recomputes and repositions the scroll bar thumb to reflect the current
@@ -140,6 +170,7 @@ public class BSimpleScrollBar extends BContainer implements BConstants
 			{
 				int oldval = _model.getValue();
 				_model.setValue(_sv + dv);
+				/*
 				if (oldval != _model.getValue())
 				{
 					//ImageBackground _well_background = (ImageBackground) _well.getBackground();
@@ -154,6 +185,7 @@ public class BSimpleScrollBar extends BContainer implements BConstants
 					//System.out.println("-(_sy - my):"+(-(_sy - my)));
 					_well_background.setOffset(0, -(_sy - my));
 				}
+				*/
 			}
 		}
 		protected int _sy, _sv;
@@ -178,4 +210,5 @@ public class BSimpleScrollBar extends BContainer implements BConstants
 	protected BComponent _well;
 	protected MouseWheelListener _wheelListener;
 	protected ImageBackground _well_background;
+	protected int _lastModelValue;
 }
