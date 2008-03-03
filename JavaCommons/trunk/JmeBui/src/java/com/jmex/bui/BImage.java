@@ -25,6 +25,7 @@ import java.net.URL;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.nio.FloatBuffer;
+import java.util.logging.Level;
 
 import javax.imageio.ImageIO;
 
@@ -289,6 +290,11 @@ public class BImage extends Quad
     	_toffset_x = 0;
     	_toffset_y = _theight - _height;
 
+    	// Warn if we end here with unsupported NPOT
+    	if(!_supportsNonPowerOfTwo && (nextPOT(_twidth) != _twidth || nextPOT(_theight) != _theight))
+    	{
+    		Log.log.log(Level.WARNING, "NPOT image set as texture ("+_twidth+"x"+_theight+", this will look bad", new Throwable());
+    	}
 
         texture.setFilter(Texture.FM_LINEAR);
         texture.setMipmapState(Texture.MM_LINEAR);
