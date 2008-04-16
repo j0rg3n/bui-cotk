@@ -877,6 +877,8 @@ public class BComponent
     protected BComponent createTooltipComponent (String tiptext)
     {
         if (tiptext.startsWith("<html>")) {
+        	System.err.println(this.getClass().getSimpleName()+": Though shalt not use the nasty HTML-mother of doom for ("+tiptext+")!");
+        	Thread.dumpStack();
             return new HTMLView("", tiptext);
         } else {
             return new BLabel(tiptext, _tipStyle);
