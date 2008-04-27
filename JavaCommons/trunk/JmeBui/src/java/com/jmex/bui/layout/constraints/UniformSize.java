@@ -69,4 +69,21 @@ public class UniformSize {
 	{
 		return (int)(h_parent*parent.getHeight() + h_absolute);
 	}
+
+	/**
+	 * Create a UniformSize that correspond to an inset with absolute values.
+	 * @param west
+	 * @param east
+	 * @param north
+	 * @param south
+	 * @return
+	 */
+	public static UniformSize absoluteInset(int west, int east, int north, int south)
+	{
+		return new UniformSize(
+				0, west,
+				0, north, 
+				1, -east-west, 
+				1, -north-south);
+	}
 }
