@@ -209,6 +209,10 @@ public class BTabbedPane extends BContainer
         add(tab.component, BorderLayout.CENTER);
         updateClose(tab.close);
         _selidx = tabidx;
+        
+        
+        // Any change-listeners could hear this
+    	emitEvent(new ActionEvent(this, 0, 0, ""+_selidx));        
     }
 
     /**
@@ -291,7 +295,9 @@ public class BTabbedPane extends BContainer
     protected ActionListener _selector = new ActionListener() {
         public void actionPerformed (ActionEvent event) {
             try {
-                selectTab(Integer.parseInt(event.getAction()));
+            	int old_sel = getSelectedTabIndex();
+            	int new_sel = Integer.parseInt(event.getAction());
+                selectTab(new_sel);
             } catch (Exception e) {
             	Log.log.log(Level.WARNING, "Got weird action event " + event + ".", e);
             }
