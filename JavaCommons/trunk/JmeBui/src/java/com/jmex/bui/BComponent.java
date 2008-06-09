@@ -25,6 +25,7 @@ import java.nio.IntBuffer;
 import java.security.InvalidParameterException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.logging.Level;
 
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.OpenGLException;
@@ -681,9 +682,8 @@ public class BComponent
         }
         catch(OpenGLException ogle)
         {
-        	ogle.printStackTrace();
-        	System.err.println("Failed in "+this);
-        	System.exit(-1);
+        	Log.log.log(Level.SEVERE, "Failed in "+this, ogle);
+        	//System.exit(-1);
         }
     }
 
