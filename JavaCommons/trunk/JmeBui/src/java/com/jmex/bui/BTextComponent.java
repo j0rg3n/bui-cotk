@@ -122,9 +122,10 @@ public abstract class BTextComponent extends BComponent
 
 
     // documentation inherited
-    protected void configureStyle (BStyleSheet style)
+    protected boolean configureStyle (BStyleSheet style)
     {
-        super.configureStyle(style);
+    	if(!super.configureStyle(style))
+        	return false;
 
         int[] haligns = new int[getStateCount()];
         for (int ii = 0; ii < getStateCount(); ii++) {
@@ -168,6 +169,7 @@ public abstract class BTextComponent extends BComponent
         if (nondef) {
             _effcols = effcols;
         }
+        return true;
     }
 
     /**

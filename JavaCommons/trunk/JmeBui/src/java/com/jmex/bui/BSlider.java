@@ -73,14 +73,16 @@ public class BSlider extends BComponent
     }
 
     // documentation inherited
-    protected void configureStyle (BStyleSheet style)
+    protected boolean configureStyle (BStyleSheet style)
     {
-        super.configureStyle(style);
+        if(!super.configureStyle(style))
+        	return false;
 
         // load up our frobs
         for (int ii = 0; ii < getStateCount(); ii++) {
             _frobs[ii] = style.getIcon(this, getStatePseudoClass(ii));
         }
+        return true;
     }
 
     // documentation inherited

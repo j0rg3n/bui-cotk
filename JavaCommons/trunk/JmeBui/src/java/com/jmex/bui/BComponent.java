@@ -819,10 +819,10 @@ public class BComponent
      * Instructs this component to fetch its style configuration from the supplied style
      * sheet. This method is called when a component is added to the interface hierarchy.
      */
-    protected void configureStyle (BStyleSheet style)
+    protected boolean configureStyle (BStyleSheet style)
     {
     	if(style == _stylesheet)
-    		return;
+    		return false;
     	
     	// Added by OAK to avoid re-styling.
     	_stylesheet = style;
@@ -844,6 +844,7 @@ public class BComponent
 	            _backgrounds[ii] =
 	                style.getBackground(this, getStatePseudoClass(ii));
         }
+        return true;
     }
 
     /**

@@ -39,14 +39,16 @@ public class BCheckBox extends BToggleButton
     }
 
     // documentation inherited
-    protected void configureStyle (BStyleSheet style)
+    protected boolean configureStyle (BStyleSheet style)
     {
-        super.configureStyle(style);
+        if(!super.configureStyle(style))
+        	return false;
 
         for (int ii = 0; ii < getStateCount(); ii++) {
             _icons[ii] = style.getIcon(this, getStatePseudoClass(ii));
         }
         _label.setIcon(_icons[getState()]);
+        return true;
     }
 
     // documentation inherited

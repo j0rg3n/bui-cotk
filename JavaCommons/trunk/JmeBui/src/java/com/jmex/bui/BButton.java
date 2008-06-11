@@ -223,9 +223,10 @@ public class BButton extends BLabel
     }
 
     // documentation inherited
-    protected void configureStyle (BStyleSheet style)
+    protected boolean configureStyle (BStyleSheet style)
     {
-        super.configureStyle(style);
+        if(!super.configureStyle(style))
+        	return false;
 
         // check to see if our stylesheet provides us with an icon
         if (_label.getIcon() == null) {
@@ -234,6 +235,7 @@ public class BButton extends BLabel
                 _label.setIcon(icon);
             }
         }
+        return true;
     }
 
     /**

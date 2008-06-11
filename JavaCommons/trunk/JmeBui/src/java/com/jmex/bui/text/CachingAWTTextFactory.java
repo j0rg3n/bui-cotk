@@ -38,7 +38,7 @@ import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 import java.text.AttributedString;
 
-import java.lang.ref.WeakReference;
+import java.lang.ref.SoftReference;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.util.ArrayList;
@@ -271,7 +271,7 @@ public class CachingAWTTextFactory extends BTextFactory
         if(length < 40 && styledtext != null)
         {
 	        cached_key = new BTextKey(styledtext);
-	        WeakReference<BText> cached = cached_BTexts.get(cached_key);
+	        SoftReference<BText> cached = cached_BTexts.get(cached_key);
 	        BText cached_text = null;
 	        if(cached != null && (cached_text = cached.get()) != null)
 	        {
@@ -479,7 +479,7 @@ public class CachingAWTTextFactory extends BTextFactory
         };
         if(cached_key != null)
         {
-        	cached_BTexts.put(cached_key, new WeakReference<BText>(text));
+        	cached_BTexts.put(cached_key, new SoftReference<BText>(text));
         }
         return text;
     }
@@ -690,7 +690,7 @@ public class CachingAWTTextFactory extends BTextFactory
 	HashMap<Character, BufferedImage> glow_backgrounds = new HashMap<Character, BufferedImage>();
 	HashMap<Character, BufferedImage> glow_foregrounds = new HashMap<Character, BufferedImage>();
 	
-	Hashtable<BTextKey, WeakReference<BText>> cached_BTexts = new Hashtable<BTextKey, WeakReference<BText>>();
+	Hashtable<BTextKey, SoftReference<BText>> cached_BTexts = new Hashtable<BTextKey, SoftReference<BText>>();
 }
 
 class BTextKey

@@ -288,12 +288,14 @@ public class BTextField extends BTextComponent
     }
 
     // documentation inherited
-    protected void configureStyle (BStyleSheet style)
+    protected boolean configureStyle (BStyleSheet style)
     {
-        super.configureStyle(style);
+        if(!super.configureStyle(style))
+        	return false;
 
         // look up our keymap
         _keymap = style.getKeyMap(this, null);
+        return true;
     }
 
     // documentation inherited

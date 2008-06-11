@@ -270,9 +270,10 @@ public class BTextArea extends BContainer
     }
 
     // documentation inherited
-    protected void configureStyle (BStyleSheet style)
+    protected boolean configureStyle (BStyleSheet style)
     {
-        super.configureStyle(style);
+    	if(!super.configureStyle(style))
+        	return false;
 
         for (int ii = 0; ii < getStateCount(); ii++) {
             _textfacts[ii] = style.getTextFactory(
@@ -315,6 +316,7 @@ public class BTextArea extends BContainer
         if (nondef) {
             _effcols = effcols;
         }
+        return true;
     }
 
     protected int[] checkNonDefault (int[] styles, int defval)
