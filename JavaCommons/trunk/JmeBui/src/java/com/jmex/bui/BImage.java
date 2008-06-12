@@ -157,8 +157,8 @@ public class BImage extends Quad
 	        // grab the image memory and stuff it into a direct byte buffer
 	        scratch.clear();
 	        scratch.put((byte[])tex.getRaster().getDataElements(0, 0, twidth, theight, null));
+	        scratch.flip();
 		}
-        scratch.flip();
         Image textureImage = new Image();
         textureImage.setType(hasAlpha ? Image.RGBA8888 : Image.RGB888);
         textureImage.setWidth(twidth);
@@ -242,13 +242,13 @@ public class BImage extends Quad
 	        	}
 	        	break;
         	default:
-        		logger.log(Level.WARNING, "Could not convert image of type:"+image.getType(), new Throwable());
+        		logger.warning("Could not convert image of type ["+image.getType()+"], lets just hope the data is usable");
         	}
         }
         else
         {
+        	logger.warning("The databuffer was not a DataBufferByte, fall back to normal element getting");
         	data = (byte[])image.getRaster().getDataElements(0, 0, getWidth(), getHeight(), null);
-        	System.out.println("Foobar: "+image.getRaster().getDataBuffer());
         }
         if(_width == twidth && _height == theight && !flip)
         {
