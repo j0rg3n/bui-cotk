@@ -268,20 +268,13 @@ public class CachingAWTTextFactory extends BTextFactory
         
         //System.out.println("createText("+styledtext+", "+origtext+", "+layout+", "+color+", "+effect+", "+effectSize);
         BTextKey cached_key = null;
-        if(length < 40 && styledtext != null)
+        if(length < 400 && styledtext != null)
         {
 	        cached_key = new BTextKey(styledtext);
 	        SoftReference<BText> cached = cached_BTexts.get(cached_key);
 	        BText cached_text = null;
 	        if(cached != null && (cached_text = cached.get()) != null)
 	        {
-	        	/*
-	        	if(!styledtext.equals(origtext))
-	        	{
-	        		System.err.println("Using cached: "+styledtext+" : "+origtext);
-	        		Thread.dumpStack();
-	        	}
-	        	*/
 	        	return cached_text;
 	        }
         }
@@ -320,6 +313,10 @@ public class CachingAWTTextFactory extends BTextFactory
                                                 BufferedImage.TYPE_4BYTE_ABGR);
         Graphics2D gfx = image.createGraphics();
         try {
+	        AffineTransform tx = AffineTransform.getScaleInstance(1, -1);
+            tx.translate(0, -size.height);
+            gfx.setTransform(tx);
+
             if (effect == OUTLINE) {
                 if (_antialias) {
                     gfx.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
@@ -386,14 +383,14 @@ public class CachingAWTTextFactory extends BTextFactory
                 if (effect == SHADOW) {
                     gfx.setColor(new Color(effectColor.r, effectColor.g,
                                            effectColor.b, effectColor.a));
-                    float tx = effectSize - 1;
+                    float tx1 = effectSize - 1;
                     float ty = layout.getAscent() + effectSize;
                     if (_isMacOS) {
-                        gfx.translate(tx, ty);
+                        gfx.translate(tx1, ty);
                         gfx.fill(layout.getOutline(null));
-                        gfx.translate(-tx, -ty);
+                        gfx.translate(-tx1, -ty);
                     } else {
-                        layout.draw(gfx, tx, ty);
+                        layout.draw(gfx, tx1, ty);
                     }
                     dx = 1;
                     gfx.setComposite(ocomp);
@@ -414,7 +411,7 @@ public class CachingAWTTextFactory extends BTextFactory
 
         // TODO: render into a properly sized image in the first place and create a JME Image
         // directly
-        final BImage bimage = new BImage(image);
+        final BImage bimage = new BImage(image, false);
 
 //         final ByteBuffer idata =
 //             ByteBuffer.allocateDirect(4 * image.getWidth() * image.getHeight());

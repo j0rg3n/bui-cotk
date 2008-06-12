@@ -25,13 +25,16 @@ import java.net.URL;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.nio.FloatBuffer;
+import java.util.Arrays;
 import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.imageio.ImageIO;
 
 import java.awt.Graphics2D;
 import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
+import java.awt.image.DataBufferByte;
 
 import org.lwjgl.opengl.GLContext;
 
@@ -130,23 +133,31 @@ public class BImage extends Quad
 
         // render the image into a raster of the proper format
         boolean hasAlpha = TextureManager.hasAlpha(image);
-        int type = hasAlpha ? BufferedImage.TYPE_4BYTE_ABGR : BufferedImage.TYPE_3BYTE_BGR;
-        BufferedImage tex = new BufferedImage(twidth, theight, type);
-        AffineTransform tx = null;
-        if (flip) {
-            tx = AffineTransform.getScaleInstance(1, -1);
-            tx.translate(0, -_height);
-        }
-        Graphics2D gfx = (Graphics2D) tex.getGraphics();
-        gfx.drawImage(image, tx, null);
-        gfx.dispose();
-
-        // grab the image memory and stuff it into a direct byte buffer
-        ByteBuffer scratch = ByteBuffer.allocateDirect(
-            (hasAlpha ? 4 : 3) * twidth * theight).order(ByteOrder.nativeOrder());
-        byte data[] = (byte[])tex.getRaster().getDataElements(0, 0, twidth, theight, null);
-        scratch.clear();
-        scratch.put(data);
+        int bpp = (hasAlpha ? 4 : 3);
+		ByteBuffer scratch = ByteBuffer.allocateDirect(
+                bpp * twidth * theight).order(ByteOrder.nativeOrder());
+		if(image instanceof BufferedImage)
+		{
+        	BufferedImage bimage = (BufferedImage)image;
+        	putImageToByteBuffer(bimage, twidth, theight, scratch, flip);
+		}
+		else
+		{
+        	logger.info("Non-bufferd image, doing things the old fasion way");
+	        int type = hasAlpha ? BufferedImage.TYPE_4BYTE_ABGR : BufferedImage.TYPE_3BYTE_BGR;
+	        BufferedImage tex = new BufferedImage(twidth, theight, type);
+	        AffineTransform tx = null;
+	        if (flip) {
+	            tx = AffineTransform.getScaleInstance(1, -1);
+	            tx.translate(0, -_height);
+	        }
+	        Graphics2D gfx = (Graphics2D) tex.getGraphics();
+	        gfx.drawImage(image, tx, null);
+	        gfx.dispose();
+	        // grab the image memory and stuff it into a direct byte buffer
+	        scratch.clear();
+	        scratch.put((byte[])tex.getRaster().getDataElements(0, 0, twidth, theight, null));
+		}
         scratch.flip();
         Image textureImage = new Image();
         textureImage.setType(hasAlpha ? Image.RGBA8888 : Image.RGB888);
@@ -188,40 +199,80 @@ public class BImage extends Quad
         }
 
         // grab the image memory and stuff it into a direct byte buffer
-        Image textureImage = getTextureState().getTexture().getImage();
-        ByteBuffer scratch = textureImage.getData();
-        scratch.clear();
-        int bpp = (TextureManager.hasAlpha(image) ? 4 : 3);
-        byte data[] = (byte[])image.getRaster().getDataElements(0, 0, getWidth(), getHeight(), null);
-        if(_width == twidth && _height == theight)
+        ByteBuffer scratch = getTextureState().getTexture().getImage().getData();
+        putImageToByteBuffer(image, twidth, theight, scratch, flip);
+
+        getTextureState().setNeedsRefresh(true);
+        getTextureState().load(0);
+        updateRenderState();
+    }
+
+	private void putImageToByteBuffer(BufferedImage image, int twidth, int theight, ByteBuffer scratch, boolean flip)
+	{
+        int bpp = image.getColorModel().hasAlpha() ? 4 : 3;
+        byte data[];
+		scratch.clear();
+        if(image.getRaster().getDataBuffer() instanceof DataBufferByte)
+        {
+        	data = ((DataBufferByte)image.getRaster().getDataBuffer()).getData();
+        	switch(image.getType())
+        	{
+        	case BufferedImage.TYPE_4BYTE_ABGR:
+	        	for(int i = 0; i < data.length; i += bpp)
+	        	{
+	        		byte b0 = data[i+0];
+	        		byte b1 = data[i+1];
+	        		byte b2 = data[i+2];
+	        		byte b3 = data[i+3];
+	        		data[i+0] = b3;
+	        		data[i+1] = b2; // green (v)
+	        		data[i+2] = b1; // blue
+	        		data[i+3] = b0; // alpha (v)
+	        	}
+	        	break;
+        	case BufferedImage.TYPE_3BYTE_BGR:
+	        	for(int i = 0; i < data.length; i += bpp)
+	        	{
+	        		byte b0 = data[i+0];
+	        		byte b1 = data[i+1];
+	        		byte b2 = data[i+2];
+	        		data[i+0] = b2; // red
+	        		data[i+1] = b1; // green
+	        		data[i+2] = b0; // blue
+	        	}
+	        	break;
+        	default:
+        		logger.log(Level.WARNING, "Could not convert image of type:"+image.getType(), new Throwable());
+        	}
+        }
+        else
+        {
+        	data = (byte[])image.getRaster().getDataElements(0, 0, getWidth(), getHeight(), null);
+        	System.out.println("Foobar: "+image.getRaster().getDataBuffer());
+        }
+        if(_width == twidth && _height == theight && !flip)
         {
         	// Easy !
         	scratch.put(data);
         }
         else
         {
+        	int row_size = _width * bpp;
+        	int h = image.getHeight();
+        	int pad_size = (twidth - _width)*bpp;
         	for(int y = 0; y < _height; y++)
         	{
-        		scratch.put(data, y*_width*bpp, _width*bpp);
+        		int row_y = (flip ? (h-y-1) : y);
+        		scratch.put(data, row_y*row_size, row_size);
         		// Just fill crap in for the rest
-        		scratch.put(data, 0, (twidth - _width)*bpp);
+        		if(pad_size > 0)
+        		{
+        			scratch.put(data, 0, pad_size);
+        		}
         	}
         }
         scratch.flip();
-        //Image textureImage = new Image();
-        //textureImage.setType(hasAlpha ? Image.RGBA8888 : Image.RGB888);
-        //textureImage.setWidth(twidth);
-        //textureImage.setHeight(theight);
-        //textureImage.setData(scratch);
-        getTextureState().setNeedsRefresh(true);
-        getTextureState().load(0);
-        updateRenderState();
-
-        //setImage(textureImage);
-
-        // make sure we have a unique default color object
-        //getBatch(0).getDefaultColor().set(ColorRGBA.white);
-    }
+	}
 
 
     /**
@@ -450,6 +501,7 @@ public class BImage extends Quad
         return (Integer.bitCount(value) > 1) ? (Integer.highestOneBit(value) << 1) : value;
     }
 
+    private final static Logger logger = Logger.getLogger(BImage.class.getName());
     protected TextureState _tstate;
     protected int _width, _height;
     protected int _toffset_x, _toffset_y;

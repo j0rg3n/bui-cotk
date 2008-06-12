@@ -28,7 +28,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.Reader;
 import java.io.StreamTokenizer;
-import java.lang.ref.WeakReference;
+import java.lang.ref.SoftReference;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -161,7 +161,7 @@ public class BStyleSheet
             }
 
             // first check the cache
-            WeakReference<BImage> iref = _cache.get(path);
+            SoftReference<BImage> iref = _cache.get(path);
             BImage image;
             if (iref != null && (image = iref.get()) != null) {
                 return image;
@@ -173,7 +173,7 @@ public class BStyleSheet
             	throw new IOException("Can't locate image '" + path + "'.");
             }
             image = new BImage(url);
-            _cache.put(path, new WeakReference<BImage>(image));
+            _cache.put(path, new SoftReference<BImage>(image));
             return image;
         }
 
@@ -184,7 +184,7 @@ public class BStyleSheet
             }
 
             // first check the cache
-            WeakReference<BCursor> cref = _ccache.get(path);
+            SoftReference<BCursor> cref = _ccache.get(path);
             BCursor cursor;
             if (cref != null && (cursor = cref.get()) != null) {
                 return cursor;
@@ -204,17 +204,17 @@ public class BStyleSheet
             } finally {
                 g.dispose();
             }
-            _ccache.put(path, new WeakReference<BCursor>(cursor));
+            _ccache.put(path, new SoftReference<BCursor>(cursor));
             return cursor;
         }
 
         /** A cache of {@link BImage} instances. */
-        protected HashMap<String,WeakReference<BImage>> _cache =
-            new HashMap<String,WeakReference<BImage>>();
+        protected HashMap<String,SoftReference<BImage>> _cache =
+            new HashMap<String,SoftReference<BImage>>();
 
         /** A cache of {@link BCursor} instances. */
-        protected HashMap<String, WeakReference<BCursor>> _ccache =
-            new HashMap<String, WeakReference<BCursor>>();
+        protected HashMap<String, SoftReference<BCursor>> _ccache =
+            new HashMap<String, SoftReference<BCursor>>();
     }
 
     /** A font style constant. */
