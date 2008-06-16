@@ -32,6 +32,11 @@ public class BSimpleScrollPane extends BContainer
 	{
 		this(child, autohide, BorderLayout.EAST);
 	}
+	
+	public void setVBarStyleClass(String styleClass)
+	{
+		_vbar.setStyleClass(styleClass);
+	}
 
 	public BComponent getMainArea()
 	{

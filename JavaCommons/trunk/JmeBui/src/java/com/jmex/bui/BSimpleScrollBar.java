@@ -49,7 +49,7 @@ public class BSimpleScrollBar extends BContainer implements BConstants
 		// listen for mouse wheel events
 		addListener(_wheelListener = _model.createWheelListener());
 		// create our buttons and backgrounds
-		String oprefix = "scrollbar_v";
+		String oprefix = getStyleClass()+"_v";
 		_well = new BComponent();
 		_well.setStyleClass(oprefix + "well");
 		add(_well, BorderLayout.CENTER);
