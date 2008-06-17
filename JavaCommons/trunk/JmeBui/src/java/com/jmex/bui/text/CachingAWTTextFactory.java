@@ -161,6 +161,10 @@ public class CachingAWTTextFactory extends BTextFactory
                 if (nextret == -1) {
                     nextret = text.length();
                 }
+                else if(nextret == 0) {
+                	// Fake a space before first new-line character
+                	throw new IllegalArgumentException("cannot handle newline as first character: "+text);
+                }
 
                 // measure out as much text as we can render in one line
                 layout = measurer.nextLayout(maxWidth, nextret, false);
