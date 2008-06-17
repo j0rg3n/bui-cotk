@@ -200,7 +200,7 @@ public class Label
         int xoff = 0, yoff = 0;
         switch (_orient) {
         case HORIZONTAL:
-            if (_icon != null) {
+        	if (_icon != null) {
                 _ix = getXOffset(insets, contWidth, size.width);
                 _iy = getYOffset(insets, contHeight, _icon.getHeight());
                 xoff = (_icon.getWidth() + _gap);
@@ -208,6 +208,13 @@ public class Label
             if (config.glyphs != null) {
                 _tx = getXOffset(insets, contWidth, size.width) + xoff;
                 _ty = getYOffset(insets, contHeight, config.glyphs.size.height);
+            }
+            // Swap icon/text placement
+            if(_container.getHorizontalAlignment() == RIGHT &&
+            		config.glyphs != null &&
+            		_icon != null) {
+            	_tx = _ix;
+            	_ix += (config.glyphs.size.width + _gap);
             }
             break;
 
