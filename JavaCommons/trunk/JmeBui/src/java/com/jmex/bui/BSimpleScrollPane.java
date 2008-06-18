@@ -106,6 +106,31 @@ public class BSimpleScrollPane extends BContainer
 	{
 		return _vport;
 	}
+
+	/**
+	 * This method will scroll the pane such that the given component is fully visible.
+	 * @param component
+	 * @throws IllegalArgumentException - if the component does not have the main area as an ansestor.
+	 */
+	public void scrollToShow(BComponent component)
+	{
+		int y_pos = 0;
+		BComponent tmp = component;
+		while(tmp != getMainArea())
+		{
+			y_pos += tmp.getY();
+			System.out.println("y_pos:"+y_pos);
+			tmp = tmp.getParent();
+			if(tmp == null)
+				throw new IllegalArgumentException("The component "+component+" did not have "+getMainArea()+" as an ansestor");
+		}
+		int scrollToTop = getModel().getRange() - y_pos - component.getHeight();
+		int scrollToBottom = getModel().getRange() - y_pos - getModel().getExtent();
+		System.out.println("Math.max("+getModel().getValue()+", Math.min("+scrollToBottom+", "+scrollToTop+"));");
+		int scrollTo = Math.max(scrollToBottom, Math.min(getModel().getValue(), scrollToTop));
+		getModel().setValue(scrollTo);
+	}
+
 	
 	protected BViewport _vport;
 	protected BSimpleScrollBar _vbar;
