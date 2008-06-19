@@ -119,14 +119,14 @@ public class BSimpleScrollPane extends BContainer
 		while(tmp != getMainArea())
 		{
 			y_pos += tmp.getY();
-			System.out.println("y_pos:"+y_pos);
+			//System.out.println("y_pos:"+y_pos);
 			tmp = tmp.getParent();
 			if(tmp == null)
 				throw new IllegalArgumentException("The component "+component+" did not have "+getMainArea()+" as an ansestor");
 		}
 		int scrollToTop = getModel().getRange() - y_pos - component.getHeight();
 		int scrollToBottom = getModel().getRange() - y_pos - getModel().getExtent();
-		System.out.println("Math.max("+getModel().getValue()+", Math.min("+scrollToBottom+", "+scrollToTop+"));");
+		//System.out.println("Math.max("+getModel().getValue()+", Math.min("+scrollToBottom+", "+scrollToTop+"));");
 		int scrollTo = Math.max(scrollToBottom, Math.min(getModel().getValue(), scrollToTop));
 		getModel().setValue(scrollTo);
 	}
