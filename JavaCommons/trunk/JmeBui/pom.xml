@@ -1,18 +1,64 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project>
-  <modelVersion>4.0.0</modelVersion>
-  <groupId>com.jmex</groupId>
-  <artifactId>bui</artifactId>
-  <name>Banana User Interface</name>
-  <version>0.0.1-SNAPSHOT</version>
-  <description/>
-  
-  <dependencies>
-    <dependency>
-      <groupId>com.jmonkeyengine</groupId>
-      <artifactId>jme</artifactId>
-      <version>0.0.1-SNAPSHOT</version>
-    </dependency>
-  </dependencies>  
-  
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>com.jmonkeyengine.jmex</groupId>
+	<artifactId>bui</artifactId>
+	<name>Banana User Interface</name>
+	<version>0.0.1-SNAPSHOT</version>
+	<description />
+
+
+	<distributionManagement>
+		<repository>
+			<id>gamalocus.net-ssh</id>
+			<url>
+				scpexe://gamalocus.com/home/apache/websites/www.gamalocus.com/maven2
+			</url>
+		</repository>
+	</distributionManagement>
+
+
+
+	<dependencies>
+		<dependency>
+			<groupId>com.jmonkeyengine</groupId>
+			<artifactId>jme</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+		</dependency>
+	</dependencies>
+	
+	<build>
+		<plugins>
+
+			<plugin>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<configuration>
+					<source>1.5</source>
+					<target>1.5</target>
+					<encoding>UTF-8</encoding>
+				</configuration>
+			</plugin>
+
+			<plugin>
+				<artifactId>maven-resources-plugin</artifactId>
+				<configuration>
+					<encoding>UTF-8</encoding>
+				</configuration>
+			</plugin>
+
+			<plugin>
+				<artifactId>maven-source-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>attach-sources</id>
+						<phase>verify</phase>
+						<goals>
+							<goal>jar</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+	</build>
+
 </project>
