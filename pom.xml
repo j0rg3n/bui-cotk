@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project>
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>com.jmonkeyengine.jmex</groupId>
+	<artifactId>bui</artifactId>
+	<name>Banana User Interface</name>
+	<version>1.0.1-SNAPSHOT</version>
+	<description />
+
+	<distributionManagement>
+		<repository>
+			<id>gamalocus.com-dev</id>
+			<url>
+				scpexe://dev.cotwl.net/home/cotk/maven2/repository
+			</url>
+		</repository>
+		<snapshotRepository>
+			<id>gamalocus.com-snapshot-dev</id>
+			<url>
+				scpexe://dev.cotwl.net/home/cotk/maven2/snapshotRepository
+			</url>
+		</snapshotRepository>
+	</distributionManagement>
+
+	<scm>
+		<connection>
+			scm:svn:svn+ssh://svn.cotwl.net/home/cotk/subversion/common/JavaCommons/trunk/JmeBui
+		</connection>
+		<developerConnection>
+			scm:svn:svn+ssh://svn.cotwl.net/home/cotk/subversion/common/JavaCommons/trunk/JmeBui
+		</developerConnection>
+		<url>https://trac.cotwl.net/browser/TRUNK</url>
+	</scm>
+
+	<dependencies>
+		<dependency>
+			<groupId>com.jmonkeyengine</groupId>
+			<artifactId>jme</artifactId>
+			<version>1.0.1-SNAPSHOT</version>
+		</dependency>
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>4.4</version>
+		</dependency>
+	</dependencies>
+
+	<build>
+		<plugins>
+
+			<plugin>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<configuration>
+					<source>1.5</source>
+					<target>1.5</target>
+					<encoding>UTF-8</encoding>
+				</configuration>
+			</plugin>
+
+			<plugin>
+				<artifactId>maven-resources-plugin</artifactId>
+				<configuration>
+					<encoding>UTF-8</encoding>
+				</configuration>
+			</plugin>
+
+			<plugin>
+				<artifactId>maven-source-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>attach-sources</id>
+						<phase>verify</phase>
+						<goals>
+							<goal>jar</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+	</build>
+
+</project>
