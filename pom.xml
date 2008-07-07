@@ -3,8 +3,8 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.jmonkeyengine.jmex</groupId>
 	<artifactId>bui</artifactId>
-	<name>Banana User Interface</name>
-	<version>1.0.1-SNAPSHOT</version>
+	<name>Banana User Interface (Cotk variant)</name>
+	<version>1.0.2-SNAPSHOT</version>
 	<description />
 
 	<distributionManagement>
@@ -24,12 +24,12 @@
 
 	<scm>
 		<connection>
-			scm:svn:svn+ssh://svn.cotwl.net/home/cotk/subversion/common/JavaCommons/trunk/JmeBui
+			scm:svn:https://bui-cotk.googlecode.com/svn/trunk
 		</connection>
 		<developerConnection>
-			scm:svn:svn+ssh://svn.cotwl.net/home/cotk/subversion/common/JavaCommons/trunk/JmeBui
+			scm:svn:https://bui-cotk.googlecode.com/svn/trunk
 		</developerConnection>
-		<url>https://trac.cotwl.net/browser/TRUNK</url>
+		<url>http://code.google.com/p/bui-cotk/source/browse</url>
 	</scm>
 
 	<dependencies>
