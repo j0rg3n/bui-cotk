@@ -4,7 +4,7 @@
 	<groupId>com.jmonkeyengine.jmex</groupId>
 	<artifactId>bui</artifactId>
 	<name>Banana User Interface (Cotk variant)</name>
-	<version>1.0.3</version>
+	<version>1.0.4-SNAPSHOT</version>
 	<description />
 
 	<distributionManagement>
@@ -50,9 +50,9 @@
 	</repositories>
 
 	<scm>
-		<connection>scm:svn:https://bui-cotk.googlecode.com/svn/tags/bui-1.0.3</connection>
-		<developerConnection>scm:svn:https://bui-cotk.googlecode.com/svn/tags/bui-1.0.3</developerConnection>
-		<url>http://code.google.com/p/bui-cotk/source/browse/tags/bui-1.0.3</url>
+		<connection>scm:svn:https://bui-cotk.googlecode.com/svn/trunk</connection>
+		<developerConnection>scm:svn:https://bui-cotk.googlecode.com/svn/trunk</developerConnection>
+		<url>http://code.google.com/p/bui-cotk/source/browse</url>
 	</scm>
 
 	<dependencies>
