@@ -1,0 +1,9 @@
+Additions:
+
+BImageBackground
+	- Offset on image-backgrounds (in most modes)
+	- Cropping of image-backgrounds
+	
+BFileField : A field much like the combo-box (drop down) but one that displays a file/path
+BFileChooser : The dialog that lets the user select a file/directory for the BFileField
+ResourceProvder : boolean flag to indicate if the image is REQUIRED or OPTIONAL
