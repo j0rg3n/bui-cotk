@@ -39,24 +39,11 @@ import java.awt.image.BufferedImage;
 import java.text.AttributedString;
 
 import java.lang.ref.SoftReference;
-import java.nio.ByteBuffer;
-import java.nio.ByteOrder;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Hashtable;
-import java.util.logging.Level;
-
-import org.lwjgl.opengl.GL11;
-
-import com.jme.image.Image;
-import com.jme.image.Texture;
-import com.jme.math.Vector3f;
 import com.jme.renderer.ColorRGBA;
 import com.jme.renderer.Renderer;
-import com.jme.scene.Geometry;
-import com.jme.scene.Spatial;
-import com.jme.system.DisplaySystem;
-import com.jme.util.TextureManager;
 
 import com.jmex.bui.BConstants;
 import com.jmex.bui.BImage;
