@@ -25,6 +25,7 @@ import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Composite;
 import java.awt.Font;
+import java.awt.FontMetrics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
 import java.awt.Shape;
@@ -37,25 +38,14 @@ import java.awt.geom.AffineTransform;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 import java.text.AttributedString;
-
-import java.nio.ByteBuffer;
-import java.nio.ByteOrder;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.logging.Level;
+import java.util.LinkedList;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
-import org.lwjgl.opengl.GL11;
-
-import com.jme.image.Image;
-import com.jme.image.Texture;
-import com.jme.math.Vector3f;
 import com.jme.renderer.ColorRGBA;
 import com.jme.renderer.Renderer;
-import com.jme.scene.Geometry;
-import com.jme.scene.Spatial;
-import com.jme.system.DisplaySystem;
-import com.jme.util.TextureManager;
-
 import com.jmex.bui.BConstants;
 import com.jmex.bui.BImage;
 import com.jmex.bui.Log;
@@ -126,7 +116,7 @@ public class AWTTextFactory extends BTextFactory
     }
 
     // documentation inherited
-    public BText[] wrapText (String text, ColorRGBA color, int effect, int effectSize,
+    public BText[] wrapTextOriginal (String text, ColorRGBA color, int effect, int effectSize,
                              ColorRGBA effectColor, int maxWidth)
     {
         // the empty string will break things; so use a single space instead
@@ -179,6 +169,77 @@ public class AWTTextFactory extends BTextFactory
 
         return texts.toArray(new BText[texts.size()]);
     }
+    
+    static long calcOtotalt, calcPtotalt ;
+    
+    public BText[] wrapText(String str, ColorRGBA color, int effect, int effectSize, ColorRGBA effectColor, int maxWidth)
+	{
+    	//wrapTextOriginal(str, color, effect, effectSize, effectColor, maxWidth);
+    	return wrapTextPaul(str, color, effect, effectSize, effectColor, maxWidth);
+	}
+    
+    public BText[] wrapTextPaul(String text, ColorRGBA color, int effect, int effectSize, ColorRGBA effectColor, int maxWidth)
+	{
+    	LinkedList<BText> list = new LinkedList<BText>();
+        Graphics2D gfx = _stub.createGraphics();
+        FontMetrics fm = gfx.getFontMetrics(_attrs.get(TextAttribute.FONT));
+        
+        text += " ";
+		
+		int j = 0;
+		int i = 0;
+		do
+		{
+	        TextLayout layout;
+	        
+			for (int tmpWidth = j = 0; tmpWidth < maxWidth & i < text.length(); i++, j++)
+			{
+				tmpWidth += fm.charWidth(text.charAt(i));
+			}
+			
+			Pattern wrapRE = Pattern.compile(".{0,"+i+"}(\\p{Blank}|\\p{Punct})");
+			Matcher m = wrapRE.matcher(text.substring(i-j, i));
+			m.find();
+			String mgroup = m.group();
+			
+			if(fm.stringWidth(mgroup) > maxWidth)
+			{
+				//take one step back.
+				i--;
+				j--;
+				//and try again.
+				m = wrapRE.matcher(text.substring(i-j, i));
+				m.find();
+				mgroup = m.group();
+			}
+
+			gfx = _stub.createGraphics();
+			try
+			{
+				if (_antialias)
+				{
+					gfx.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
+				}
+				layout = new TextLayout(parseStyledText(mgroup, _attrs, null, effect != BConstants.PLAIN).getIterator(), gfx.getFontRenderContext());
+			}
+			finally
+			{
+				gfx.dispose();
+			}
+			//ensureChache is called and bounds are calculated.
+			layout.getBounds();
+			
+			list.add(createText(mgroup, layout, color, effect, effectSize, effectColor, mgroup.length(), true));
+
+			// subtract from i the characters we just went through
+			i = i - j;
+			// and add the ones we actually made text of
+			i += mgroup.length();
+		}
+		while (i < text.length());
+		
+		return list.toArray(new BText[list.size()]);
+	}
 
 	BufferedImage getGlowBackground(char c, Dimension size, ColorRGBA color)
 	{
@@ -616,7 +677,7 @@ public class AWTTextFactory extends BTextFactory
     }
 
     protected boolean _antialias;
-    protected HashMap<TextAttribute, Font> _attrs = new HashMap<TextAttribute, Font>();
+    protected HashMap<TextAttribute, Font> _attrs = new HashMap<TextAttribute, Font>(2);
     protected int _height;
     protected BufferedImage _stub;
 

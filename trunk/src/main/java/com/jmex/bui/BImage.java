@@ -136,14 +136,14 @@ public class BImage extends Quad
         int bpp = (hasAlpha ? 4 : 3);
 		ByteBuffer scratch = ByteBuffer.allocateDirect(
                 bpp * twidth * theight).order(ByteOrder.nativeOrder());
-		if(image instanceof BufferedImage)
+		try
 		{
-        	BufferedImage bimage = (BufferedImage)image;
-        	putImageToByteBuffer(bimage, twidth, theight, scratch, flip);
+			BufferedImage bimage = (BufferedImage) image;
+			putImageToByteBuffer(bimage, twidth, theight, scratch, flip);
 		}
-		else
+		catch (Exception e)
 		{
-        	logger.info("Non-bufferd image, doing things the old fasion way");
+        	logger.info("Non-bufferd/Unsuported-type image, doing things the old fasion way");
 	        int type = hasAlpha ? BufferedImage.TYPE_4BYTE_ABGR : BufferedImage.TYPE_3BYTE_BGR;
 	        BufferedImage tex = new BufferedImage(twidth, theight, type);
 	        AffineTransform tx = null;
