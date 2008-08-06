@@ -1,18 +1,18 @@
 #summary Notes on getting started
 
-= Getting started =
+= Getting started notes =
 
-With Maven:
+== With Maven ==
+You will need m2e(Maven Integration for Eclipse) and subversion. You can install them by using the following update sites from within Eclipse:
 
 *Maven Integration for Eclipse*( http://m2eclipse.codehaus.org/ )
 
-You can install the Maven Integration for Eclipse by using the following update site from within Eclipse:
+Update site:
+ * Name: m2e
+ URL:   http://m2eclipse.sonatype.org/update/
+ * Name: m2eDev
+ URL:   http://m2eclipse.sonatype.org/update-dev/
 
- http://m2eclipse.sonatype.org/update/
-
-Stable development builds can be installed from separate update:
-
- http://m2eclipse.sonatype.org/update-dev/
 
 
 *Subclipse* ( http://subclipse.tigris.org/install.html )
@@ -26,6 +26,12 @@ Update site:
 
  * Name: Subclipse 1.0.x (Eclipse 3.0/3.1)
  URL:  http://subclipse.tigris.org/update_1.0.x
+
+
+=== Adding cotk-bui ===
+Right click on the package explore and choose New > Other.
+from the menu, find maven and select Checkout Maven from SCM.
+Choose svn as type and insert the bui-cotk url (  )
 
 
 
