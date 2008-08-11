@@ -1,6 +1,7 @@
 #summary Small snippets of help for new-commers and forgetful peers.
 
 == No lwjgl in java.library.path ==
+==== at java.lang.ClassLoader.loadLibrary(ClassLoader.java:1682) ====
 
 The Bui tests will give this error if you have correctly specified lwjgl and the other jME requirements, but not specified lwjgl native library path.
 
@@ -31,4 +32,20 @@ java.lang.UnsatisfiedLinkError: no lwjgl in java.library.path
 	at com.jme.app.BaseSimpleGame.initSystem(BaseSimpleGame.java:344)
 	at com.jme.app.BaseGame.start(BaseGame.java:65)
 	at com.jmex.bui.tests.LineBreakTest.main(LineBreakTest.java:80)
+}}}
+
+== java.lang.NullPointerException ==
+==== at java.io.Reader.<init> ====
+
+This ocurs because the system cannot find the style sheet or a other resource.
+
+=== Exception ===
+{{{
+java.lang.NullPointerException
+	at java.io.Reader.<init>(Unknown Source)
+	at java.io.InputStreamReader.<init>(Unknown Source)
+	at com.jmex.bui.tests.BaseTest.simpleInitGame(BaseTest.java:53)
+	at com.jme.app.BaseSimpleGame.initGame(BaseSimpleGame.java:506)
+	at com.jme.app.BaseGame.start(BaseGame.java:69)
+	at com.jmex.bui.tests.LineBreakTest.main(LineBreakTest.java:81)
 }}}
