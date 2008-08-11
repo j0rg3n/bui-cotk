@@ -31,7 +31,12 @@ Update site:
 === Adding cotk-bui ===
 Right click on the package explore and choose New > Other.
 from the menu, find maven and select Checkout Maven from SCM.
-Choose svn as type and insert the bui-cotk url (  )
+Choose svn as type and insert the bui-cotk url ( http://bui-cotk.googlecode.com/svn/trunk/ )
+
+
+== Running Test ==
+
+open the run dialog. specify project and class ( i.e com.jmex.bui.tests.LineBreakTest )
 
 
 
