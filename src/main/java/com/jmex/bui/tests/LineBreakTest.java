@@ -37,7 +37,8 @@ public class LineBreakTest extends BaseTest implements BConstants, ActionListene
     private int height = 720;
     private String text;
     private BLabel nl; 
-    private BLabel sl; 
+    private BLabel sl;
+	private BLabel nl2; 
     
     protected void createWindows(BRootNode root, BStyleSheet style) 
     {
@@ -50,7 +51,7 @@ public class LineBreakTest extends BaseTest implements BConstants, ActionListene
 
         text = "The newline (line feed) character (\\u000A):\n";
         text += "The carriage-return character (\\u000D):\r";
-        for (int i = 0; i < 500; i++)
+        for (int i = 0; i < 4; i++)
 		{
             text += "@=#FF1111(This is red.) Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.";
         	//text += i+" ";
@@ -59,6 +60,11 @@ public class LineBreakTest extends BaseTest implements BConstants, ActionListene
         BButton button = new BButton("Change size");
         button.addListener(this);
         window.add(button);
+        
+
+        nl2 = new BLabel(text);
+		nl2.setStyleClass("normaltext");
+		window.add(nl2);
 
         nl = new BLabel(text);
 		nl.setStyleClass("normaltext");
@@ -83,6 +89,8 @@ public class LineBreakTest extends BaseTest implements BConstants, ActionListene
 
     public void actionPerformed(ActionEvent event)
 	{
+		nl2.setText("");
+		nl2.setText(text);
 		nl.setText("");
 		nl.setText(text);
 		sl.setText("");
