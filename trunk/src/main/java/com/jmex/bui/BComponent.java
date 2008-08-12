@@ -25,6 +25,7 @@ import java.nio.IntBuffer;
 import java.security.InvalidParameterException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.logging.ConsoleHandler;
 import java.util.logging.Level;
 
 import org.lwjgl.opengl.GL11;
@@ -736,7 +737,7 @@ public class BComponent
 
         // handle mouse hover detection
         if (_enabled && event instanceof MouseEvent) {
-            int ostate = getState();
+            final int ostate = getState();
             MouseEvent mev = (MouseEvent)event;
             switch (mev.getType()) {
             case MouseEvent.MOUSE_ENTERED:
@@ -750,8 +751,12 @@ public class BComponent
             }
 
             // update our component state if necessary
-            if (getState() != ostate) {
-                stateDidChange();
+			if (getState() != ostate) 
+			{
+				if (didStateChange(ostate)) 
+				{
+					stateDidChange();
+				}
             }
             if (processed && changeCursor()) {
                 updateCursor(_cursor);
@@ -772,11 +777,21 @@ public class BComponent
 
         return processed;
     }
+    
+    public boolean didStateChange(final int ostate) {
+		return (_backgrounds[ostate] != null
+				|| _backgrounds[getState()] != _backgrounds[ostate]
+				&& _colors[ostate] != null
+				|| _colors[getState()] != _colors[ostate]
+				&& _insets[ostate] != null
+				|| _insets[getState()] != _insets[ostate]
+				&& _borders[ostate] != null || _borders[getState()] != _borders[ostate]);
+	}
 
     /**
-     * Instructs this component to lay itself out. This is called as a result of the component
-     * changing size.
-     */
+	 * Instructs this component to lay itself out. This is called as a result of
+	 * the component changing size.
+	 */
     protected void layout ()
     {
         // we have nothing to do by default

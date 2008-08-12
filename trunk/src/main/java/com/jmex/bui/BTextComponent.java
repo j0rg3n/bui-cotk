@@ -217,6 +217,20 @@ public abstract class BTextComponent extends BComponent
         }
         return null;
     }
+    
+    @Override
+    public boolean didStateChange(int ostate) {
+    	return (_backgrounds[ostate] != null|| _backgrounds[getState()] != _backgrounds[ostate]
+				&& _colors[ostate] != null|| _colors[getState()] != _colors[ostate]
+				&& _insets[ostate] != null|| _insets[getState()] != _insets[ostate]
+				&& _borders[ostate] != null|| _borders[getState()] != _borders[ostate]
+				&& _haligns != null || _haligns[getState()] != _haligns[ostate]
+				&& _valigns != null || _valigns[getState()] != _valigns[ostate]
+				&& _teffects != null || _teffects[getState()] != _teffects[ostate]
+				&& _effsizes != null || _effsizes[getState()] != _effsizes[ostate]
+				&& _lineSpacings != null || _lineSpacings[getState()] != _lineSpacings[ostate]
+				&& _effcols[ostate] != null || _effcols[getState()] != _effcols[ostate]);
+	}
 
     protected int[] _haligns;
     protected int[] _valigns;

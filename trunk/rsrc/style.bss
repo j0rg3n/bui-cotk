@@ -157,7 +157,18 @@ vslider {
 
 //
 // These are for testing
-
+smalltext {
+  color: #FFFFFF;
+  font: "Dialog" plain 8;
+}
+smalltext:hover {
+  text-effect: shadow;
+  effect-color: #000000;
+}
+normaltext {
+  color: #FFFFFF;
+  font: "Dialog" plain 10;
+}
 left {
   font: "Dialog" bold 16;
   text-align: left;
