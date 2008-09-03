@@ -25,7 +25,6 @@ import java.nio.IntBuffer;
 import java.security.InvalidParameterException;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.logging.ConsoleHandler;
 import java.util.logging.Level;
 
 import org.lwjgl.opengl.GL11;
@@ -751,13 +750,13 @@ public class BComponent
             }
 
             // update our component state if necessary
-			if (getState() != ostate) 
+			if (getState() != ostate)
 			{
-				if (didStateChange(ostate)) 
+				//if (didStateChange(ostate))
 				{
 					stateDidChange();
 				}
-            }
+			}
             if (processed && changeCursor()) {
                 updateCursor(_cursor);
             }
@@ -778,14 +777,9 @@ public class BComponent
         return processed;
     }
     
-    public boolean didStateChange(final int ostate) {
-		return (_backgrounds[ostate] != null
-				|| _backgrounds[getState()] != _backgrounds[ostate]
-				&& _colors[ostate] != null
-				|| _colors[getState()] != _colors[ostate]
-				&& _insets[ostate] != null
-				|| _insets[getState()] != _insets[ostate]
-				&& _borders[ostate] != null || _borders[getState()] != _borders[ostate]);
+    public boolean didStateChange(final int ostate)
+	{
+		return (_backgrounds[getState()] != null || _backgrounds[getState()] != _backgrounds[ostate] && _colors[getState()] != null || _colors[getState()] != _colors[ostate] && _insets[getState()] != null || _insets[getState()] != _insets[ostate] && _borders[getState()] != null || _borders[getState()] != _borders[ostate]);
 	}
 
     /**
