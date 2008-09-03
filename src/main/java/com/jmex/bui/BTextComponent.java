@@ -210,26 +210,44 @@ public abstract class BTextComponent extends BComponent
 
     protected int[] checkNonDefaultVal (int[] styles, int defval1, int defval2)
     {
-        for (int ii = 0; ii < styles.length; ii++) {
-            if (styles[ii] != defval1 && styles[ii] != defval2) {
-                return styles;
-            }
-        }
+        for (int ii = 0; ii < styles.length; ii++)
+		{
+			if (styles[ii] != defval1 && styles[ii] != defval2)
+			{
+				return styles;
+			}
+		}
         return null;
     }
     
     @Override
-    public boolean didStateChange(int ostate) {
-    	return (_backgrounds[ostate] != null|| _backgrounds[getState()] != _backgrounds[ostate]
-				&& _colors[ostate] != null|| _colors[getState()] != _colors[ostate]
-				&& _insets[ostate] != null|| _insets[getState()] != _insets[ostate]
-				&& _borders[ostate] != null|| _borders[getState()] != _borders[ostate]
-				&& _haligns != null || _haligns[getState()] != _haligns[ostate]
-				&& _valigns != null || _valigns[getState()] != _valigns[ostate]
-				&& _teffects != null || _teffects[getState()] != _teffects[ostate]
-				&& _effsizes != null || _effsizes[getState()] != _effsizes[ostate]
-				&& _lineSpacings != null || _lineSpacings[getState()] != _lineSpacings[ostate]
-				&& _effcols[ostate] != null || _effcols[getState()] != _effcols[ostate]);
+    public boolean didStateChange(int ostate) 
+    {
+    	//we should change if new background is different from old background or
+    	//newColor != from oldcolor or
+    	//--||--
+    	//--||--
+    	// _haligns is different from null and the new _halign is different from the old _halign or default _haling if the old was non existing
+    	return ((_backgrounds[getState()] != _backgrounds[ostate]) ||
+				(_colors[getState()] != _colors[ostate]) ||
+				(_insets[getState()] != _insets[ostate]) ||
+				(_borders[getState()] != _borders[ostate]) ||
+				(_haligns != null && (_haligns[getState()] 	!= _haligns[ getTrueState(_haligns,ostate) ])) ||
+				(_valigns != null && (_valigns[getState()] 	!= _valigns[ getTrueState(_valigns,ostate) ])) ||
+				(_teffects != null && (_teffects[getState()] 	!= _teffects[getTrueState(_teffects,ostate)])) ||
+				(_effsizes != null && (_effsizes[getState()] 	!= _effsizes[getTrueState(_effsizes,ostate)])) ||
+				(_lineSpacings != null && (_lineSpacings[getState()] != _lineSpacings[getTrueState(_lineSpacings,ostate)]))||
+				(_effcols != null && (_effcols[getState()] != _effcols[ostate]))||
+				(_textfacts[getState()] != _textfacts[ostate]));
+	}
+    
+    /**
+	 * Returns the given state or DEFAULT if invalid/empty
+	 * _var may not be null
+	 */
+	public int getTrueState(int[] _var, int ostate)
+	{
+		return (_var[ostate] != -1 ? ostate : DEFAULT);
 	}
 
     protected int[] _haligns;
