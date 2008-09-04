@@ -298,7 +298,7 @@ public class BImage extends Quad
     /**
      * Returns the width of this image.
      */
-    public int getImageWidth ()
+    public float getWidth ()
     {
         return _width;
     }
@@ -306,7 +306,7 @@ public class BImage extends Quad
     /**
      * Returns the height of this image.
      */
-    public int getImageHeight ()
+    public float getHeight ()
     {
         return _height;
     }
