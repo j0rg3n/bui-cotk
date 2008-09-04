@@ -752,7 +752,7 @@ public class BComponent
             // update our component state if necessary
 			if (getState() != ostate)
 			{
-				//if (didStateChange(ostate))
+				if (didStateChange(ostate))
 				{
 					stateDidChange();
 				}
