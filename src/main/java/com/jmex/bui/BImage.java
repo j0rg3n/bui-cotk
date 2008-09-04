@@ -19,34 +19,36 @@
 // Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 
 package com.jmex.bui;
-
+import java.awt.Graphics2D;
+import java.awt.geom.AffineTransform;
+import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.net.URL;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.nio.FloatBuffer;
-import java.util.Arrays;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.imageio.ImageIO;
 
-import java.awt.Graphics2D;
-import java.awt.geom.AffineTransform;
-import java.awt.image.BufferedImage;
-import java.awt.image.DataBufferByte;
-
 import org.lwjgl.opengl.GLContext;
 
 import com.jme.image.Image;
 import com.jme.image.Texture;
+import com.jme.image.Texture2D;
+import com.jme.image.Image.Format;
+import com.jme.image.Texture.MagnificationFilter;
+import com.jme.image.Texture.MinificationFilter;
 import com.jme.renderer.ColorRGBA;
 import com.jme.renderer.Renderer;
 import com.jme.scene.Spatial;
 import com.jme.scene.shape.Quad;
-import com.jme.scene.state.AlphaState;
+import com.jme.scene.state.BlendState;
 import com.jme.scene.state.RenderState;
 import com.jme.scene.state.TextureState;
+import com.jme.scene.state.BlendState.DestinationFunction;
+import com.jme.scene.state.BlendState.SourceFunction;
 import com.jme.system.DisplaySystem;
 import com.jme.util.TextureManager;
 
@@ -55,6 +57,9 @@ import com.jme.util.TextureManager;
  */
 public class BImage extends Quad
 {
+	
+	private static final long serialVersionUID = 1L;
+	
     /** An interface for pooling OpenGL textures. */
     public interface TexturePool
     {
@@ -69,13 +74,14 @@ public class BImage extends Quad
         public void releaseTextures (TextureState tstate);
     }
 
-    /** An alpha state that blends the source plus one minus destination. */
-    public static AlphaState blendState;
+    /**
+     * A blend state that blends the source plus one minus destination.
+     */
+    public static BlendState blendState;
 
     /**
-     * Configures the supplied spatial with transparency in the standard user interface sense which
-     * is that transparent pixels show through to the background but non-transparent pixels are not
-     * blended with what is behind them.
+     * Configures the supplied spatial with transparency in the standard user interface sense which is that transparent
+     * pixels show through to the background but non-transparent pixels are not blended with what is behind them.
      */
     public static void makeTransparent (Spatial target)
     {
@@ -83,9 +89,9 @@ public class BImage extends Quad
     }
 
     /**
-     * Sets the texture pool from which to acquire and release OpenGL texture objects.
-     * Applications can provide a pool in order to avoid the rapid creation and destruction of
-     * OpenGL textures.  The default pool always creates new textures and deletes released ones.
+     * Sets the texture pool from which to acquire and release OpenGL texture objects. Applications can provide a pool
+     * in order to avoid the rapid creation and destruction of OpenGL textures.  The default pool always creates new
+     * textures and deletes released ones.
      */
     public static void setTexturePool (TexturePool pool)
     {
@@ -136,7 +142,7 @@ public class BImage extends Quad
         int bpp = (hasAlpha ? 4 : 3);
 		ByteBuffer scratch = ByteBuffer.allocateDirect(
                 bpp * twidth * theight).order(ByteOrder.nativeOrder());
-		try
+		/*try
 		{
 			BufferedImage bimage = (BufferedImage) image;
 			putImageToByteBuffer(bimage, twidth, theight, scratch, flip);
@@ -144,7 +150,7 @@ public class BImage extends Quad
 		catch (Exception e)
 		{
         	logger.info("Non-bufferd/Unsuported-type image, doing things the old fasion way");
-	        int type = hasAlpha ? BufferedImage.TYPE_4BYTE_ABGR : BufferedImage.TYPE_3BYTE_BGR;
+	   */   int type = hasAlpha ? BufferedImage.TYPE_4BYTE_ABGR : BufferedImage.TYPE_3BYTE_BGR;
 	        BufferedImage tex = new BufferedImage(twidth, theight, type);
 	        AffineTransform tx = null;
 	        if (flip) {
@@ -158,9 +164,9 @@ public class BImage extends Quad
 	        scratch.clear();
 	        scratch.put((byte[])tex.getRaster().getDataElements(0, 0, twidth, theight, null));
 	        scratch.flip();
-		}
+		//}
         Image textureImage = new Image();
-        textureImage.setType(hasAlpha ? Image.RGBA8888 : Image.RGB888);
+        textureImage.setFormat(hasAlpha ? Format.RGBA8 : Format.RGBA8);
         textureImage.setWidth(twidth);
         textureImage.setHeight(theight);
         textureImage.setData(scratch);
@@ -168,7 +174,7 @@ public class BImage extends Quad
         setImage(textureImage);
 
         // make sure we have a unique default color object
-        getBatch(0).getDefaultColor().set(ColorRGBA.white);
+        getDefaultColor().set(ColorRGBA.white);
     }
     
     /**
@@ -185,7 +191,7 @@ public class BImage extends Quad
      * @param image
      * @param flip
      */
-    public void reUploadImage(BufferedImage image, boolean flip)
+/*    public void reUploadImage(BufferedImage image, boolean flip)
     {
     	// We can only do this with equal size.
         assert (image.getWidth(null) == getWidth() 
@@ -273,7 +279,7 @@ public class BImage extends Quad
         }
         scratch.flip();
 	}
-
+*/
 
     /**
      * Creates an image of the specified size, using the supplied JME image data. The image should
@@ -292,7 +298,7 @@ public class BImage extends Quad
     /**
      * Returns the width of this image.
      */
-    public int getWidth ()
+    public int getImageWidth ()
     {
         return _width;
     }
@@ -300,7 +306,7 @@ public class BImage extends Quad
     /**
      * Returns the height of this image.
      */
-    public int getHeight ()
+    public int getImageHeight ()
     {
         return _height;
     }
@@ -313,14 +319,14 @@ public class BImage extends Quad
         if (transparent) {
             setRenderState(blendState);
         } else {
-            clearRenderState(RenderState.RS_ALPHA);
+            clearRenderState(RenderState.RS_BLEND);
         }
         updateRenderState();
     }
     
     public boolean isTransparent ()
     {
-    	return getRenderState(RenderState.RS_ALPHA) != null;
+    	return getRenderState(RenderState.RS_BLEND) != null;
     }
 
     /**
@@ -333,7 +339,7 @@ public class BImage extends Quad
             releaseTexture();
         }
 
-        Texture texture = new Texture();
+        Texture texture = new Texture2D();
         texture.setImage(image);
 
         _twidth = image.getWidth();
@@ -347,11 +353,11 @@ public class BImage extends Quad
     		Log.log.log(Level.WARNING, "NPOT image set as texture ("+_twidth+"x"+_theight+", this will look bad", new Throwable());
     	}
 
-        texture.setFilter(Texture.FM_LINEAR);
-        texture.setMipmapState(Texture.MM_LINEAR);
+        texture.setMagnificationFilter(MagnificationFilter.Bilinear);
+        texture.setMinificationFilter(MinificationFilter.BilinearNearestMipMap);
         _tstate.setTexture(texture);
         _tstate.setEnabled(true);
-        _tstate.setCorrection(TextureState.CM_AFFINE);
+        _tstate.setCorrectionType(TextureState.CorrectionType.Affine);
         setRenderState(_tstate);
         updateRenderState();
 
@@ -372,7 +378,7 @@ public class BImage extends Quad
         float ux = (sx+swidth) / (float)_twidth;
         float uy = (sy+sheight) / (float)_theight;
 
-        FloatBuffer tcoords = getTextureBuffer(0, 0);
+        FloatBuffer tcoords = getTextureCoords().get(0).coords;
         tcoords.clear();
         tcoords.put(lx).put(uy);
         tcoords.put(lx).put(ly);
@@ -428,7 +434,7 @@ public class BImage extends Quad
         localTranslation.y = ty + theight/2f;
         updateGeometricState(0, true);
 
-        getBatch(0).getDefaultColor().a = alpha;
+        getDefaultColor().a = alpha;
         draw(renderer);
     }
 
@@ -521,10 +527,10 @@ public class BImage extends Quad
     };
 
     static {
-        blendState = DisplaySystem.getDisplaySystem().getRenderer().createAlphaState();
+        blendState = DisplaySystem.getDisplaySystem().getRenderer().createBlendState();
         blendState.setBlendEnabled(true);
-        blendState.setSrcFunction(AlphaState.SB_SRC_ALPHA);
-        blendState.setDstFunction(AlphaState.DB_ONE_MINUS_SRC_ALPHA);
+        blendState.setSourceFunction(SourceFunction.SourceAlpha);
+        blendState.setDestinationFunction(DestinationFunction.OneMinusSourceAlpha);
         blendState.setEnabled(true);
         _supportsNonPowerOfTwo = GLContext.getCapabilities().GL_ARB_texture_non_power_of_two;
     }

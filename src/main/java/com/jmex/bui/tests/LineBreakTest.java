@@ -83,7 +83,7 @@ public class LineBreakTest extends BaseTest implements BConstants, ActionListene
     {
         Logger.global.setLevel(Level.OFF);
         LineBreakTest app = new LineBreakTest();
-        app.setDialogBehaviour(NEVER_SHOW_PROPS_DIALOG);
+        app.setConfigShowMode(ConfigShowMode.NeverShow);
         app.start();
     }
 

@@ -96,7 +96,7 @@ public class ImageBackground extends BBackground
 
         // compute the frame for our framed mode if one was not specially provided
         if (_frame == null && (_mode == FRAME_X || _mode == FRAME_Y || _mode == FRAME_XY)) {
-            int twidth = _image.getWidth(), theight = _image.getHeight();
+            int twidth = Math.round(_image.getWidth()), theight = Math.round(_image.getHeight());
             _frame = new Insets();
             _frame.left = twidth/3;
             _frame.right = twidth/3;
@@ -173,7 +173,7 @@ public class ImageBackground extends BBackground
 		_offsetx = offsetx;
 		_offsety = offsety;
 		// Fit offset into interval [0;iheight/width)
-		int iheight = _image.getHeight(), iwidth = _image.getWidth();
+		int iwidth = Math.round(_image.getWidth()), iheight = Math.round(_image.getHeight());
 		// TODO: this can be done without a while-loop
 		while (_offsety < 0)
 			_offsety += iheight;
@@ -212,8 +212,8 @@ public class ImageBackground extends BBackground
 		else
 		{
 			// With clipping
-			int sx = (_image.getWidth() - width) / 2 + _offsetx;
-			int sy = (_image.getHeight() - height) / 2 + _offsety;
+			int sx = Math.round((_image.getWidth() - width) / 2 + _offsetx);
+			int sy = Math.round((_image.getHeight() - height) / 2 + _offsety);
 			_image.render(renderer, sx, sy, width, height, x, y, width, height, alpha);
 		}
     }
@@ -224,12 +224,12 @@ public class ImageBackground extends BBackground
     	switch (_mode)
 		{
 		case SCALE_X:
-			y = (height - _image.getHeight()) / 2;
-			height = _image.getHeight();
+			y = (height - Math.round(_image.getHeight())) / 2;
+			height = Math.round(_image.getHeight());
 			break;
 		case SCALE_Y:
-			x = (width - _image.getWidth()) / 2;
-			width = _image.getWidth();
+			x = (width - Math.round(_image.getWidth())) / 2;
+			width = Math.round(_image.getWidth());
 			break;
 		}
 		// width -= _offsetx/2;
@@ -255,7 +255,7 @@ public class ImageBackground extends BBackground
     protected void renderTiled (
         Renderer renderer, int x, int y, int width, int height, float alpha)
     {
-		int iwidth = _image.getWidth(), iheight = _image.getHeight();
+		int iwidth = Math.round(_image.getWidth()), iheight = Math.round(_image.getHeight());
 		if (_mode == TILE_X)
 		{
 			renderRow(renderer, x, y, width, Math.min(height, iheight), alpha);
@@ -299,7 +299,7 @@ public class ImageBackground extends BBackground
     protected void renderRow (
         Renderer renderer, int x, int y, int width, int iheight, float alpha)
     {
-		int iwidth = _image.getWidth();
+		int iwidth = Math.round(_image.getWidth());
 		int across = (width - _offsetx) / iwidth;
 		// Render the first part
 		if (_offsetx != 0)
@@ -321,7 +321,7 @@ public class ImageBackground extends BBackground
         Renderer renderer, int x, int y, int width, int height, float alpha)
     {
         // render each of our image sections appropriately
-        int twidth = _image.getWidth(), theight = _image.getHeight();
+        int twidth = Math.round(_image.getWidth()), theight = Math.round(_image.getHeight());
 
         // draw the corners
         _image.render(renderer, 0, 0, _frame.left, _frame.bottom, x, y, alpha);
