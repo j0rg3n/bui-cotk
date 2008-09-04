@@ -31,7 +31,7 @@ public class BAtlasImage extends BImage
         updateRenderState();
     	//setImage(orig.)
         // make sure we have a unique default color object
-        getBatch(0).getDefaultColor().set(ColorRGBA.white);
+        getDefaultColor().set(ColorRGBA.white);
     }
 
     // Used to keep the original alive.
