@@ -383,7 +383,11 @@ public class BContainer extends BComponent
                 return child;
             }
         }
-        return getNextFocus();
+        BComponent next = getNextFocus();
+        if(current != null && next == null) {
+        	next = getNextFocus(null);
+        }
+        return next;
     }
 
     /**
