@@ -22,6 +22,7 @@ package com.jmex.bui;
 
 import org.lwjgl.opengl.GL11;
 
+import com.jme.input.KeyInput;
 import com.jme.renderer.ColorRGBA;
 import com.jme.renderer.Renderer;
 
@@ -197,62 +198,58 @@ public class BTextField extends BTextComponent
                             setCursorPos(pos);
                         }
                     }
-                    break;
+                    return true;
 
                 case DELETE:
                     if (_cursp < _text.getLength()) {
                         _text.remove(_cursp, 1);
                     }
-                    break;
+                    return true;
 
                 case CURSOR_LEFT:
                     setCursorPos(Math.max(0, _cursp-1));
-                    break;
+                    return true;
 
                 case CURSOR_RIGHT:
                     setCursorPos(Math.min(_text.getLength(), _cursp+1));
-                    break;
+                    return true;
 
                 case START_OF_LINE:
                     setCursorPos(0);
-                    break;
+                    return true;
 
                 case END_OF_LINE:
                     setCursorPos(_text.getLength());
-                    break;
+                    return true;
 
                 case ACTION:
                     emitEvent(new ActionEvent(
                                   this, kev.getWhen(), kev.getModifiers(), ""));
-                    break;
+                    return true;
 
                 case RELEASE_FOCUS:
                     getWindow().requestFocus(null);
-                    break;
+                    return true;
 
                 case CLEAR:
                     _text.setText("");
-                    break;
+                    return true;
 
                 default:
                     // insert printable and shifted printable characters
                     char c = kev.getKeyChar();
-                	//System.out.println("modifiers:"+modifiers);
+                	System.out.println("c:"+kev.getKeyCode());
                     if ((modifiers & ~(KeyEvent.SHIFT_DOWN_MASK | KeyEvent.ALT_DOWN_MASK)) == 0 &&
                         !Character.isISOControl(c)) {
-                        String text = String.valueOf(kev.getKeyChar());
+                        String text = String.valueOf(c);
                         //System.out.println("text:"+text);
                         if (_text.insert(_cursp, text)) {
                             setCursorPos(_cursp + 1);
                         }
-                    } else {
-                        //return super.dispatchEvent(event);
-                    	return true;
+                        return true;
                     }
-                    break;
                 }
-
-                return true; // we've consumed these events
+                //return true; // we've consumed these events
             }
 
         } else if (event instanceof MouseEvent) {
