@@ -238,8 +238,7 @@ public class BTextField extends BTextComponent
                 default:
                     // insert printable and shifted printable characters
                     char c = kev.getKeyChar();
-                	System.out.println("c:"+kev.getKeyCode());
-                    if ((modifiers & ~(KeyEvent.SHIFT_DOWN_MASK | KeyEvent.ALT_DOWN_MASK)) == 0 &&
+                    if (/*(modifiers & ~(KeyEvent.SHIFT_DOWN_MASK | KeyEvent.ALT_DOWN_MASK)) == 0 && */
                         !Character.isISOControl(c)) {
                         String text = String.valueOf(c);
                         //System.out.println("text:"+text);
