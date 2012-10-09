@@ -174,7 +174,7 @@ public class AWTTextFactory extends BTextFactory
     
     public BText[] wrapText(String str, ColorRGBA color, int effect, int effectSize, ColorRGBA effectColor, int maxWidth)
 	{
-    	//wrapTextOriginal(str, color, effect, effectSize, effectColor, maxWidth);
+    	//return wrapTextOriginal(str, color, effect, effectSize, effectColor, maxWidth);
     	return wrapTextPaul(str, color, effect, effectSize, effectColor, maxWidth);
 	}
     
@@ -197,7 +197,7 @@ public class AWTTextFactory extends BTextFactory
 				tmpWidth += fm.charWidth(text.charAt(i));
 			}
 			
-			Pattern wrapRE = Pattern.compile(".{0,"+i+"}(\\p{Blank}|\\p{Punct})");
+			Pattern wrapRE = Pattern.compile(".{0,"+i+"}(\\p{Blank}|\\p{Punct}|\\n)");
 			Matcher m = wrapRE.matcher(text.substring(i-j, i));
 			m.find();
 			String mgroup = m.group();
